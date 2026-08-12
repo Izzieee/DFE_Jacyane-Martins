@@ -1,12 +1,43 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E1 - Estrutura semântica e acessível da interface</title>
-</head>
-<body>
-    
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>E1 - S.T.E.P (Estrutura semântica e acessível da interface)</title>
+  </head>
+  <body>
+    <header>
+      <h1>S.T.E.P</h1>
+      <h2>Simple Task Execution Platform</h2>
+    </header>
+
+    <!--Será que eu poderia fazer uma tag nav? -->
+    <!--Dá problema se usar div nessa parte?-->
+
+    <div class="busca-filtros">
+      <label for="titulo-tarefa">Título:</label>
+      <input type="text" id="titulo-tarefa" />
+
+      <label for="status">Status:</label>
+      <select id="status">
+        <option value="sel">Selecione...</option>
+        <option value="fazer">A fazer</option>
+        <option value="andamento">Em andamento</option>
+        <option value="revisao">Revisão</option>
+        <option value="concluido">Concluído</option>
+      </select>
+
+      <label for="prioridade">Prioridade:</label>
+      <select id="prioridade">
+        <option value="baixa">Baixa</option>
+        <option value="media">Média</option>
+        <option value="alta">Alta</option>
+      </select> 
+    </div>
+
+    <main>
+        
+
+    </main>
+  </body>
 </html>
