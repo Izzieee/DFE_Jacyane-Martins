@@ -8,7 +8,7 @@
   <body>
     <header>
       <h1>S.T.E.P</h1>
-      <h2>Simple Task Execution Platform</h2>
+      <p>Simple Task Execution Platform</p>
     </header>
 
     <!--Será que eu poderia fazer uma tag nav? -->
@@ -24,7 +24,7 @@
         <option value="fazer">A fazer</option>
         <option value="andamento">Em andamento</option>
         <option value="revisao">Revisão</option>
-        <option value="concluido">Concluído</option>
+        <option value="concluida">Concluída</option>
       </select>
 
       <label for="prioridade">Prioridade:</label>
@@ -36,8 +36,29 @@
     </div>
 
     <main>
-        
+        <section aria-labelledby="fazer-titulo">
+            <h2  id="fazer-titulo">A fazer</h2>
+            <ul>
+                <li>
+                    <section></section>
+                </li>
+                <li>
+                    <section></section>
+                </li>
+            </ul>
+        </section>
 
+        <section aria-labelledby="andamento-titulo">
+            <h2 id="andamento-titulo">Em andamento</h2>
+        </section>
+
+        <section aria-labelledby="revisao-titulo">
+            <h2 id="revisao-titulo">Em revisão</h2>
+        </section>
+
+        <section aria-labelledby="concluida-titulo">
+            <h2 id="concluida-titulo">Concluída</h2>
+        </section>
     </main>
   </body>
 </html>
