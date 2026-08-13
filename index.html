@@ -14,51 +14,91 @@
     <!--Será que eu poderia fazer uma tag nav? -->
     <!--Dá problema se usar div nessa parte?-->
 
-    <div class="busca-filtros">
-      <label for="titulo-tarefa">Título:</label>
-      <input type="text" id="titulo-tarefa" />
+<div class="busca-filtros">
+  <label for="titulo-tarefa">Título da tarefa:</label>
+  <input type="text" id="titulo-tarefa" />
 
-      <label for="status">Status:</label>
-      <select id="status">
-        <option value="sel">Selecione...</option>
-        <option value="fazer">A fazer</option>
-        <option value="andamento">Em andamento</option>
-        <option value="revisao">Revisão</option>
-        <option value="concluida">Concluída</option>
-      </select>
+  <label for="status">Status:</label>
+  <select id="status">
+    <option value="sel">Selecione...</option>
+    <option value="fazer">A fazer</option>
+    <option value="andamento">Em andamento</option>
+    <option value="revisao">Revisão</option>
+    <option value="concluida">Concluída</option>
+  </select>
 
-      <label for="prioridade">Prioridade:</label>
-      <select id="prioridade">
-        <option value="baixa">Baixa</option>
-        <option value="media">Média</option>
-        <option value="alta">Alta</option>
-      </select> 
-    </div>
+  <fieldset>
+    <legend>Prioridade</legend>
+    <label>
+      <input type="radio" name="prioridade" value="baixa" />
+      Baixa
+    </label>
+    <label>
+      <input type="radio" name="prioridade" value="media" />
+      Média
+    </label>
+    <label>
+      <input type="radio" name="prioridade" value="alta" />
+      Alta
+    </label>
+  </fieldset>
+</div>
 
     <main>
-        <section aria-labelledby="fazer-titulo">
-            <h2  id="fazer-titulo">A fazer</h2>
-            <ul>
-                <li>
-                    <section></section>
-                </li>
-                <li>
-                    <section></section>
-                </li>
-            </ul>
-        </section>
+    <section aria-labelledby="fazer-titulo">
+        <h2 id="fazer-titulo">A fazer</h2>
+        <ul>
+            <li>
+                <article>
+                    <h3>Estudar HTML</h3>
+                    <p>Revisar semântica e acessibilidade</p>
+                </article>
+            </li>
+            <li>
+                <article>
+                    <h3>Fazer exercícios</h3>
+                    <p>Praticar estrutura de listas</p>
+                </article>
+            </li>
+        </ul>
+    </section>
 
-        <section aria-labelledby="andamento-titulo">
-            <h2 id="andamento-titulo">Em andamento</h2>
-        </section>
+    <section aria-labelledby="andamento-titulo">
+        <h2 id="andamento-titulo">Em andamento</h2>
+        <ul>
+            <li>
+                <article>
+                    <h3>Projeto E1</h3>
+                    <p>Estrutura semântica e acessível</p>
+                </article>
+            </li>
+        </ul>
+    </section>
 
-        <section aria-labelledby="revisao-titulo">
-            <h2 id="revisao-titulo">Em revisão</h2>
-        </section>
+    <section aria-labelledby="revisao-titulo">
+        <h2 id="revisao-titulo">Em revisão</h2>
+        <ul>
+            <li>
+                <article>
+                    <h3>Projeto E2</h3>
+                    <p>Revisar estrutura semântica e acessível</p>
+                </article>
+            </li>
+        </ul>
+    </section>
 
-        <section aria-labelledby="concluida-titulo">
-            <h2 id="concluida-titulo">Concluída</h2>
-        </section>
-    </main>
+    <section aria-labelledby="concluida-titulo">
+        <h2 id="concluida-titulo">Concluída</h2>
+        <ul>
+            <li>
+                <article>
+                    <h3>Projeto E3</h3>
+                    <p>Finalizar implementação</p>
+                </article>
+            </li>
+        </ul>
+    </section>
+</main>
+
   </body>
 </html>
