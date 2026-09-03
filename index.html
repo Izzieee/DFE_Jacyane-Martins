@@ -1,173 +1,124 @@
 <!doctype html>
 <html lang="pt-BR">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E1 - S.T.E.P (Estrutura semântica e acessível da interface)</title>
-    <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+    <title>E3 - Gerenciador de Tarefas</title>
+    <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
     <header>
-      <h1>S.T.E.P</h1>
-      <p>Simple Task Execution Platform</p>
+        <h1>S_T_E_P</h1>
+        <p>Simple Task Execution Platform</p>
     </header>
 
     <section class="busca-filtros">
-      <label for="titulo-tarefa">Título da tarefa:</label>
-      <input
-        type="text"
-        id="titulo-tarefa"
-        placeholder="Digite o título da tarefa"
-      />
+        <label for="titulo-tarefa">Título da tarefa:</label>
+        <input
+            type="text"
+            id="titulo-tarefa"
+            placeholder="Digite o título da tarefa"
+        />
 
-      <label for="status">Status:</label>
-      <select id="status">
-        <option value="sel">Selecione...</option>
-        <option value="fazer">A fazer</option>
-        <option value="andamento">Em andamento</option>
-        <option value="revisao">Revisão</option>
-        <option value="concluida">Concluída</option>
-      </select>
+        <label for="status">Status:</label>
+        <select id="status">
+            <option value="sel">Selecione...</option>
+            <option value="fazer">A fazer</option>
+            <option value="andamento">Em andamento</option>
+            <option value="revisao">Revisão</option>
+            <option value="concluida">Concluída</option>
+        </select>
 
-      <fieldset>
-        <legend>Prioridade</legend>
-        <label>
-          <input type="radio" name="prioridade" value="baixa" />
-          Baixa
-        </label>
-        <label>
-          <input type="radio" name="prioridade" value="media" />
-          Média
-        </label>
-        <label>
-          <input type="radio" name="prioridade" value="alta" />
-          Alta
-        </label>
-      </fieldset>
+        <fieldset>
+            <legend>Prioridade</legend>
+            <label>
+                <input type="radio" name="prioridade" value="baixa" />
+                Baixa
+            </label>
+            <label>
+                <input type="radio" name="prioridade" value="media" />
+                Média
+            </label>
+            <label>
+                <input type="radio" name="prioridade" value="alta" />
+                Alta
+            </label>
+        </fieldset>
 
-      <button type="button">Filtrar</button>
-      <button type="button">Limpar filtros</button>
+        <button type="button">Filtrar</button>
+        <button type="button">Limpar filtros</button>
     </section>
 
     <main>
-      <section aria-labelledby="fazer-titulo">
-        <h2 id="fazer-titulo">A fazer</h2>
-        <ul>
-          <li class="prioridade-alta">
-            <article>
-              <h3>Estudar HTML</h3>
-              <p><strong>Projeto:</strong> E1 - Desenvolvimento Front-End</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 15/08/2026</p>
-              <p><strong>Prioridade:</strong> Alta</p>
-            </article>
-          </li>
-          <li class="prioridade-media">
-            <article>
-              <h3>Fazer exercícios CSS</h3>
-              <p><strong>Projeto:</strong> E1 - Desenvolvimento Front-End</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 16/08/2026</p>
-              <p><strong>Prioridade:</strong> Média</p>
-            </article>
-          </li>
-        </ul>
-      </section>
+        <div id="status-region" role="status" aria-live="polite"></div>
 
-      <section aria-labelledby="andamento-titulo">
-        <h2 id="andamento-titulo">Em andamento</h2>
-        <ul>
-          <li class="prioridade-alta">
-            <article>
-              <h3>Projeto E1 - Estrutura semântica</h3>
-              <p><strong>Projeto:</strong> E1 - Desenvolvimento Front-End</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 20/08/2026</p>
-              <p><strong>Prioridade:</strong> Alta</p>
-            </article>
-          </li>
-          <li class="prioridade-media">
-            <article>
-              <h3>Consultas no SQL Server</h3>
-              <p><strong>Projeto:</strong> Banco de Dados</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 18/08/2026</p>
-              <p><strong>Prioridade:</strong> Média</p>
-            </article>
-          </li>
-          <li class="prioridade-alta">
-            <article>
-              <h3>Implementação de funcionalidades JavaScript</h3>
-              <p><strong>Projeto:</strong> E1 - Desenvolvimento Front-End</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 22/08/2026</p>
-              <p><strong>Prioridade:</strong> Alta</p>
-            </article>
-          </li>
-        </ul>
-      </section>
+        <div id="tarefas-container"></div>
 
-      <section aria-labelledby="revisao-titulo">
-        <h2 id="revisao-titulo">Em revisão</h2>
-        <ul>
-          <li class="prioridade-media">
-            <article>
-              <h3>Documentação Projeto Nativa</h3>
-              <p><strong>Projeto:</strong> Projeto Nativa</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 14/08/2026</p>
-              <p><strong>Prioridade:</strong> Média</p>
-            </article>
-          </li>
-          <li class="prioridade-baixa">
-            <article>
-              <h3>Revisão de código CSS</h3>
-              <p><strong>Projeto:</strong> E1 - Desenvolvimento Front-End</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 17/08/2026</p>
-              <p><strong>Prioridade:</strong> Baixa</p>
-            </article>
-          </li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="concluida-titulo">
-        <h2 id="concluida-titulo">Concluída</h2>
-        <ul>
-          <li class="prioridade-alta">
-            <article>
-              <h3>Estudar para prova Huawei</h3>
-              <p><strong>Projeto:</strong> Grupo de Pesquisa</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 09/08/2026</p>
-              <p><strong>Prioridade:</strong> Alta</p>
-            </article>
-          </li>
-          <li class="prioridade-alta">
-            <article>
-              <h3>Projeto E3 - Finalizar implementação</h3>
-              <p><strong>Projeto:</strong> E3 - Desenvolvimento</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 10/08/2026</p>
-              <p><strong>Prioridade:</strong> Alta</p>
-            </article>
-          </li>
-          <li class="prioridade-baixa">
-            <article>
-              <h3>Inglês instrumental - Vocabulário</h3>
-              <p><strong>Projeto:</strong> Inglês Instrumental</p>
-              <p><strong>Responsável:</strong> Jacyane Martins</p>
-              <p><strong>Prazo:</strong> 08/08/2026</p>
-              <p><strong>Prioridade:</strong> Baixa</p>
-            </article>
-          </li>
-        </ul>
-      </section>
+        <!-- TAREFAS ESTÁTICAS (COMENTADAS - NÃO REMOVER AINDA) -->
+        <!-- 
+        <section aria-labelledby="fazer-titulo">
+            <h2 id="fazer-titulo">A fazer</h2>
+            <ul>
+                ... tarefas estáticas ...
+            </ul>
+        </section>
+        ... outras seções ...
+        -->
     </main>
 
     <footer>
-      <p>&copy; E1 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
-      <p>Última atualização: 26/08/2026 - Status: Em Desenvolvimento</p>
+        <div class="redes-sociais">
+            <h4>Me acompanhe também:</h4>
+            <div class="icones-sociais">
+                <a href="https://github.com/Izzieee" target="_blank" aria-label="Nossa página no GitHub">
+                    <img id="icone-github" src="logo/github.png" alt="" />
+                </a>
+                <a href="https://www.instagram.com/jacy_martins_" target="_blank" aria-label="Nosso perfil no Instagram">
+                    <img src="logo/instagram.png" alt="" />
+                </a>
+                <a href="https://www.linkedin.com/in/jacyane-martins-a6b0723a3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" aria-label="Nossa página no LinkedIn">
+                    <img src="logo/linkedln.png" alt="" />
+                </a>
+            </div>
+        </div>
+        
+        <p>&copy; E3 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
+        <p>Última atualização: 02/09/2026 - Status: Em Desenvolvimento</p>
     </footer>
-  </body>
+
+    <script type="module">
+
+        import { carregarTarefas } from './js/api.js';
+        import { renderizarEstado } from './js/estados.js';
+        import { renderizarTarefas } from './js/renderizacao.js';
+
+        // Torna a função de renderização acessível globalmente
+        window.renderizarTarefas = renderizarTarefas;
+
+        // Função principal
+        async function iniciarAplicacao() {
+            // 1. ESTADO: CARREGANDO (antes do await)
+            renderizarEstado('carregando', []);
+
+            try {
+                // 2. BUSCAR DADOS
+                const tarefas = await carregarTarefas();
+
+                // 3. VERIFICAR SE VEIO ALGO
+                if (tarefas.length === 0) {
+                    renderizarEstado('vazio', []);
+                } else {
+                    renderizarEstado('sucesso', tarefas);
+                }
+
+            } catch (erro) {
+                // 4. ESTADO: ERRO
+                renderizarEstado('erro', erro);
+            }
+        }
+
+        // Iniciar
+        iniciarAplicacao();
+    </script>
+</body>
 </html>

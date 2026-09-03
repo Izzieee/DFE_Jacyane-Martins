@@ -1,0 +1,94 @@
+{
+  "tarefas": [
+    {
+      "id": 1,
+      "titulo": "Estudar HTML",
+      "status": "fazer",
+      "prioridade": "alta",
+      "prazo": "15/08/2026",
+      "projeto": "E1 - Desenvolvimento Front-End",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 2,
+      "titulo": "Fazer exercícios CSS",
+      "status": "fazer",
+      "prioridade": "media",
+      "prazo": "16/08/2026",
+      "projeto": "E1 - Desenvolvimento Front-End",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 3,
+      "titulo": "Projeto E1 - Estrutura semântica",
+      "status": "andamento",
+      "prioridade": "alta",
+      "prazo": "20/08/2026",
+      "projeto": "E1 - Desenvolvimento Front-End",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 4,
+      "titulo": "Consultas no SQL Server",
+      "status": "andamento",
+      "prioridade": "media",
+      "prazo": "18/08/2026",
+      "projeto": "Banco de Dados",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 5,
+      "titulo": "Implementação de funcionalidades JavaScript",
+      "status": "andamento",
+      "prioridade": "alta",
+      "prazo": "22/08/2026",
+      "projeto": "E1 - Desenvolvimento Front-End",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 6,
+      "titulo": "Documentação Projeto Nativa",
+      "status": "revisao",
+      "prioridade": "media",
+      "prazo": "14/08/2026",
+      "projeto": "Projeto Nativa",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 7,
+      "titulo": "Revisão de código CSS",
+      "status": "revisao",
+      "prioridade": "baixa",
+      "prazo": "17/08/2026",
+      "projeto": "E1 - Desenvolvimento Front-End",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 8,
+      "titulo": "Estudar para prova Huawei",
+      "status": "concluida",
+      "prioridade": "alta",
+      "prazo": "09/08/2026",
+      "projeto": "Grupo de Pesquisa",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 9,
+      "titulo": "Projeto E3 - Finalizar implementação",
+      "status": "concluida",
+      "prioridade": "alta",
+      "prazo": "10/08/2026",
+      "projeto": "E3 - Desenvolvimento",
+      "responsavel": "Jacyane Martins"
+    },
+    {
+      "id": 10,
+      "titulo": "Inglês instrumental - Vocabulário",
+      "status": "concluida",
+      "prioridade": "baixa",
+      "prazo": "08/08/2026",
+      "projeto": "Inglês Instrumental",
+      "responsavel": "Jacyane Martins"
+    }
+  ]
+}
