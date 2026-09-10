@@ -1,20 +1,15 @@
 // js/estados.js
-// RESPONSABILIDADE: DECIDIR QUAL TELA MOSTRAR - NENHUMA REQUISIÇÃO AQUI!
 
 export function renderizarEstado(estado, dados) {
     const container = document.getElementById('tarefas-container');
     const statusRegion = document.getElementById('status-region');
-    
+
     if (!container || !statusRegion) {
-        console.error('Elementos necessários não encontrados');
+        console.error('Elementos não encontrados');
         return;
     }
 
-    // Limpar o container
     container.innerHTML = '';
-
-    // Pegar a função de renderização
-    const renderizarTarefas = window.renderizarTarefas;
 
     switch (estado) {
         case 'carregando':
@@ -28,19 +23,31 @@ export function renderizarEstado(estado, dados) {
             break;
 
         case 'sucesso':
-            renderizarTarefas(dados);
-            const qtd = dados.length;
-            statusRegion.textContent = `${qtd} tarefa${qtd > 1 ? 's' : ''} carregada${qtd > 1 ? 's' : ''}`;
+            // Aqui `dados` é a lista VISÍVEL (já filtrada/ordenada)
+            if (dados.length === 0) {
+                // Resultado vazio: filtros não acharam nada
+                container.innerHTML = `
+                    <div class="estado-vazio">
+                        <p>🔍 Nenhum resultado para os critérios</p>
+                        <p class="subtitulo">Tente alterar ou limpar os filtros</p>
+                    </div>
+                `;
+                statusRegion.textContent = 'Nenhum resultado para os critérios selecionados';
+            } else {
+                window.renderizarTarefas(dados);
+                const total = window.estadoTotal || dados.length;
+                statusRegion.textContent = `${dados.length} de ${total} tarefa${total > 1 ? 's' : ''}`;
+            }
             break;
 
-        case 'vazio':
+        case 'origem-vazia':
             container.innerHTML = `
                 <div class="estado-vazio">
-                    <p>📭 Nenhuma tarefa encontrada</p>
-                    <p class="subtitulo">Sua lista está vazia no momento</p>
+                    <p>📭 Nenhuma tarefa cadastrada</p>
+                    <p class="subtitulo">O arquivo de dados está vazio</p>
                 </div>
             `;
-            statusRegion.textContent = 'Nenhuma tarefa encontrada';
+            statusRegion.textContent = 'Nenhuma tarefa cadastrada';
             break;
 
         case 'erro':
@@ -49,13 +56,13 @@ export function renderizarEstado(estado, dados) {
 
             if (dados instanceof Error) {
                 if (dados.name === 'TypeError') {
-                    mensagemErro = 'Falha de rede: não foi possível conectar ao servidor. Verifique sua conexão com a internet.';
+                    mensagemErro = 'Falha de rede: verifique sua conexão.';
                     icone = '🌐';
                 } else if (dados.name === 'SyntaxError') {
-                    mensagemErro = 'Erro de formato: o arquivo de dados está mal formatado. Verifique a estrutura do JSON.';
+                    mensagemErro = 'Erro de formato: o JSON está mal formatado.';
                     icone = '📄';
                 } else {
-                    mensagemErro = dados.message || 'Erro desconhecido ao carregar os dados.';
+                    mensagemErro = dados.message || 'Erro desconhecido.';
                 }
             } else {
                 mensagemErro = 'Erro desconhecido ao carregar os dados.';
@@ -70,6 +77,6 @@ export function renderizarEstado(estado, dados) {
             break;
 
         default:
-            console.warn(`Estado desconhecido: ${estado}`);
+            console.warn('Estado desconhecido:', estado);
     }
 }
