@@ -14,15 +14,11 @@
 
     <section class="busca-filtros">
         <label for="titulo-tarefa">Título da tarefa:</label>
-        <input
-            type="text"
-            id="titulo-tarefa"
-            placeholder="Digite o título da tarefa"
-        />
+        <input type="text" id="titulo-tarefa" placeholder="Digite o título da tarefa" />
 
         <label for="status">Status:</label>
         <select id="status">
-            <option value="sel">Selecione...</option>
+            <option value="todos">Todos</option>
             <option value="fazer">A fazer</option>
             <option value="andamento">Em andamento</option>
             <option value="revisao">Revisão</option>
@@ -31,39 +27,24 @@
 
         <fieldset>
             <legend>Prioridade</legend>
-            <label>
-                <input type="radio" name="prioridade" value="baixa" />
-                Baixa
-            </label>
-            <label>
-                <input type="radio" name="prioridade" value="media" />
-                Média
-            </label>
-            <label>
-                <input type="radio" name="prioridade" value="alta" />
-                Alta
-            </label>
+            <label><input type="radio" name="prioridade" value="baixa" /> Baixa</label>
+            <label><input type="radio" name="prioridade" value="media" /> Média</label>
+            <label><input type="radio" name="prioridade" value="alta" /> Alta</label>
         </fieldset>
 
-        <button type="button">Filtrar</button>
-        <button type="button">Limpar filtros</button>
+        <label for="ordenacao">Ordenar por:</label>
+        <select id="ordenacao">
+            <option value="padrao">Padrão</option>
+            <option value="prazo">Prazo</option>
+        </select>
+
+        <button type="button" id="btn-filtrar">Filtrar</button>
+        <button type="button" id="btn-limpar">Limpar filtros</button>
     </section>
 
     <main>
         <div id="status-region" role="status" aria-live="polite"></div>
-
         <div id="tarefas-container"></div>
-
-        <!-- TAREFAS ESTÁTICAS (COMENTADAS - NÃO REMOVER AINDA) -->
-        <!-- 
-        <section aria-labelledby="fazer-titulo">
-            <h2 id="fazer-titulo">A fazer</h2>
-            <ul>
-                ... tarefas estáticas ...
-            </ul>
-        </section>
-        ... outras seções ...
-        -->
     </main>
 
     <footer>
@@ -82,43 +63,10 @@
             </div>
         </div>
         
-        <p>&copy; E3 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
-        <p>Última atualização: 02/09/2026 - Status: Em Desenvolvimento</p>
+        <p>&copy; E4 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
+        <p>Última atualização: 10/09/2026 - Status: Em Desenvolvimento</p>
     </footer>
 
-    <script type="module">
-
-        import { carregarTarefas } from './js/api.js';
-        import { renderizarEstado } from './js/estados.js';
-        import { renderizarTarefas } from './js/renderizacao.js';
-
-        // Torna a função de renderização acessível globalmente
-        window.renderizarTarefas = renderizarTarefas;
-
-        // Função principal
-        async function iniciarAplicacao() {
-            // 1. ESTADO: CARREGANDO (antes do await)
-            renderizarEstado('carregando', []);
-
-            try {
-                // 2. BUSCAR DADOS
-                const tarefas = await carregarTarefas();
-
-                // 3. VERIFICAR SE VEIO ALGO
-                if (tarefas.length === 0) {
-                    renderizarEstado('vazio', []);
-                } else {
-                    renderizarEstado('sucesso', tarefas);
-                }
-
-            } catch (erro) {
-                // 4. ESTADO: ERRO
-                renderizarEstado('erro', erro);
-            }
-        }
-
-        // Iniciar
-        iniciarAplicacao();
-    </script>
+    <script type="module" src="./js/app.js"></script>
 </body>
 </html>
