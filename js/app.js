@@ -142,3 +142,5 @@ function conectarEventosDelegados() {
 
 // Iniciar
 iniciarAplicacao();
+//APENAS PARA TESTE
+window.estado = estado;

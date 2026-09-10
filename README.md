@@ -17,4 +17,3 @@ Repositório dedicado à entrega da E1 até a E4 da matéria de Desenvolvimento 
 - HTML, CSS, JavaScript (módulos ES)
 - Fetch API
 - GitHub Pages
-
