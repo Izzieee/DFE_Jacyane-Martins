@@ -3,50 +3,118 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>E3 - Gerenciador de Tarefas</title>
+    <title>S.T.E.P — Canivete de Tarefas</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+
+    <!-- ============================================ -->
+    <!-- CABEÇALHO -->
+    <!-- ============================================ -->
     <header>
         <h1>S_T_E_P</h1>
-        <p>Simple Task Execution Platform</p>
+        <p>Canivete de Tarefas</p>
     </header>
 
-    <section class="busca-filtros">
-        <label for="titulo-tarefa">Título da tarefa:</label>
-        <input type="text" id="titulo-tarefa" placeholder="Digite o título da tarefa" />
+    <!-- ============================================ -->
+    <!-- ALTERNADOR DE MODOS -->
+    <!-- ============================================ -->
+    <nav class="modos" aria-label="Modos de visualização">
+        <button type="button" data-modo="kanban" class="ativo">
+            📋 Kanban
+        </button>
+        <button type="button" data-modo="acervo">
+            📚 Acervo
+        </button>
+        <button type="button" data-modo="mapa">
+            🕸️ Mapa
+        </button>
+        <button type="button" data-modo="legado">
+            📤 Legado
+        </button>
+    </nav>
 
-        <label for="status">Status:</label>
-        <select id="status">
-            <option value="todos">Todos</option>
-            <option value="fazer">A fazer</option>
-            <option value="andamento">Em andamento</option>
-            <option value="revisao">Revisão</option>
-            <option value="concluida">Concluída</option>
-        </select>
+    <!-- ============================================ -->
+    <!-- REGIÃO DE STATUS (acessibilidade) -->
+    <!-- ============================================ -->
+    <div id="status-region" role="status" aria-live="polite"></div>
 
-        <fieldset>
-            <legend>Prioridade</legend>
-            <label><input type="radio" name="prioridade" value="baixa" /> Baixa</label>
-            <label><input type="radio" name="prioridade" value="media" /> Média</label>
-            <label><input type="radio" name="prioridade" value="alta" /> Alta</label>
-        </fieldset>
+    <!-- ============================================ -->
+    <!-- MODO: KANBAN -->
+    <!-- ============================================ -->
+    <section id="modo-kanban" class="modo ativo">
+        <!-- Filtros -->
+        <section class="busca-filtros">
+            <label for="titulo-tarefa">Título da tarefa:</label>
+            <input type="text" id="titulo-tarefa" placeholder="Digite o título da tarefa" />
 
-        <label for="ordenacao">Ordenar por:</label>
-        <select id="ordenacao">
-            <option value="padrao">Padrão</option>
-            <option value="prazo">Prazo</option>
-        </select>
+            <label for="status">Status:</label>
+            <select id="status">
+                <option value="todos">Todos</option>
+                <option value="fazer">A fazer</option>
+                <option value="andamento">Em andamento</option>
+                <option value="revisao">Revisão</option>
+                <option value="concluida">Concluída</option>
+            </select>
 
-        <button type="button" id="btn-filtrar">Filtrar</button>
-        <button type="button" id="btn-limpar">Limpar filtros</button>
+            <fieldset>
+                <legend>Prioridade</legend>
+                <label><input type="radio" name="prioridade" value="baixa" /> Baixa</label>
+                <label><input type="radio" name="prioridade" value="media" /> Média</label>
+                <label><input type="radio" name="prioridade" value="alta" /> Alta</label>
+            </fieldset>
+
+            <label for="ordenacao">Ordenar por:</label>
+            <select id="ordenacao">
+                <option value="padrao">Padrão</option>
+                <option value="prazo">Prazo</option>
+            </select>
+
+            <button type="button" id="btn-filtrar">Filtrar</button>
+            <button type="button" id="btn-limpar">Limpar filtros</button>
+        </section>
+
+        <!-- Container dos cartões -->
+        <div id="tarefas-container"></div>
     </section>
 
-    <main>
-        <div id="status-region" role="status" aria-live="polite"></div>
-        <div id="tarefas-container"></div>
-    </main>
+    <!-- ============================================ -->
+    <!-- MODO: ACERVO -->
+    <!-- ============================================ -->
+    <section id="modo-acervo" class="modo">
+        <h2>📚 Acervo Vivo</h2>
+        <p class="aviso">Em breve: tarefas concluídas com anotações.</p>
+    </section>
 
+    <!-- ============================================ -->
+    <!-- MODO: MAPA -->
+    <!-- ============================================ -->
+    <section id="modo-mapa" class="modo">
+        <h2>🕸️ Mapa de Conexões</h2>
+        <p class="aviso">Em breve: grafo de tarefas conectadas por tags.</p>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- MODO: LEGADO -->
+    <!-- ============================================ -->
+    <section id="modo-legado" class="modo">
+        <h2>📤 Legado</h2>
+        <p class="aviso">Em breve: tutoriais publicados.</p>
+    </section>
+
+    <!-- ============================================ -->
+    <!-- MODAL (oculto por padrão) -->
+    <!-- ============================================ -->
+    <div id="modal" class="modal" hidden>
+        <div class="modal-conteudo">
+            <button type="button" class="modal-fechar" aria-label="Fechar">✕</button>
+            <div id="modal-corpo"></div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
     <footer>
         <div class="redes-sociais">
             <h4>Me acompanhe também:</h4>
@@ -57,16 +125,18 @@
                 <a href="https://www.instagram.com/jacy_martins_" target="_blank" aria-label="Nosso perfil no Instagram">
                     <img src="logo/instagram.png" alt="" />
                 </a>
-                <a href="https://www.linkedin.com/in/jacyane-martins-a6b0723a3?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank" aria-label="Nossa página no LinkedIn">
+                <a href="https://www.linkedin.com/in/jacyane-martins-a6b0723a3" target="_blank" aria-label="Nossa página no LinkedIn">
                     <img src="logo/linkedln.png" alt="" />
                 </a>
             </div>
         </div>
-        
-        <p>&copy; E4 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
-        <p>Última atualização: 10/09/2026 - Status: Em Desenvolvimento</p>
+        <p>&copy; S.T.E.P — Canivete de Tarefas | Jacyane Carvalho Martins</p>
+        <p>Última atualização: 17/09/2026</p>
     </footer>
 
+    <!-- ============================================ -->
+    <!-- SCRIPT PRINCIPAL -->
+    <!-- ============================================ -->
     <script type="module" src="./js/app.js"></script>
 </body>
 </html>
