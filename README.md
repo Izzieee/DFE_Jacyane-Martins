@@ -4,7 +4,7 @@ Repositório dedicado à entrega da E1 até a E4 da matéria de Desenvolvimento 
 
 # Gerenciador de Tarefas
 
-🌐 **Aplicação publicada:** https://izzieee.github.io/DFE_Jacyane-Martins/
+🌐 **Aplicação publicada:** https://izzieee.github.io/DFE_Jacyane-Martins
 
 ## Funcionalidades
 - Busca por título
