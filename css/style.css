@@ -9,41 +9,40 @@
 }
 
 :root {
-    --background: 0 0% 4%;
-    --foreground: 0 0% 96%;
+    --background: 220 40% 8%;
+    --foreground: 210 100% 96%;
 
     --card: 0 0% 6%;
     --card-foreground: 0 0% 96%;
 
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 96%;
+    --secondary: 216 26% 16%;
+    --secondary-foreground: 210 100% 96%;
 
-    --muted: 0 0% 12%;
-    --muted-foreground: 0 0% 55%;
+    --muted: 214 24% 17%;
+    --muted-foreground: 210 25% 72%;
 
-    --accent: 0 0% 14%;
-    --accent-foreground: 0 0% 96%;
+    --accent: 216 40% 18%;
+    --accent-foreground: 210 100% 96%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 10%;
-    --ring: 0 0% 96%;
+    --border: 214 31% 34%;
+    --input: 216 24% 14%;
+    --ring: 210 100% 74%;
 
-    --terminal-green: 0 0% 88%;
-    --terminal-amber: 40 100% 60%;
-    --terminal-cyan: 0 0% 75%;
-    --terminal-dim: 0 0% 40%;
+    --terminal-green: 196 100% 75%;
+    --terminal-amber: 206 100% 72%;
+    --terminal-cyan: 200 100% 75%;
+    --terminal-dim: 214 28% 60%;
 
     /* Únicas cores saturadas do sistema: reservadas para sinalizar prioridade */
     --priority-high: 0 78% 56%;
     --priority-medium: 28 92% 54%;
     --priority-low: 142 60% 42%;
 
-    --grid-color: 0 0% 10%;
+    --grid-color: 213 38% 18%;
 
-    /* status agora mapeados para tons de cinza/branco do terminal, não mais dourado */
     --status-a-fazer: hsl(var(--terminal-dim));
     --status-em-andamento: hsl(var(--terminal-cyan));
     --status-em-revisao: hsl(var(--terminal-amber));
@@ -55,7 +54,8 @@
     --space-3: 1rem;
     --space-4: 1.5rem;
     --space-5: 2.5rem;
-    --focus-ring: 3px solid hsl(var(--foreground));
+    --focus-ring: 3px solid hsl(var(--ring));
+    --ease-glass: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 :focus-visible {
@@ -80,11 +80,21 @@ body {
     padding: var(--space-3);
     background-color: hsl(var(--background));
     background-image:
+        radial-gradient(ellipse 80% 50% at 50% -10%, hsl(var(--ring) / 0.12), transparent 60%),
         linear-gradient(hsl(var(--grid-color)) 1px, transparent 1px),
         linear-gradient(90deg, hsl(var(--grid-color)) 1px, transparent 1px);
-    background-size: 32px 32px;
-    background-position: -1px -1px;
+    background-size: 100% 100%, 32px 32px, 32px 32px;
+    background-position: 0 0, -1px -1px, -1px -1px;
     position: relative;
+}
+
+body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    box-shadow: inset 0 0 180px rgba(0, 0, 0, 0.75);
+    z-index: 40;
 }
 
 body.scanline::before {
@@ -245,11 +255,21 @@ body.scanline::before {
 #tarefas-container section h2 {
     font-size: clamp(0.85rem, 0.8rem + 0.4vw, 1rem);
     font-weight: 700;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: hsl(var(--foreground));
     padding-bottom: var(--space-2);
     border-bottom: 3px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+#tarefas-container section h2::before {
+    content: '//';
+    color: hsl(var(--terminal-dim));
+    font-weight: 700;
+    letter-spacing: 0;
 }
 
 /* Cores das bordas por status: mantidas como tons monocromáticos do terminal */
@@ -274,12 +294,15 @@ body.scanline::before {
     min-width: 0;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    transition: border-color 0.2s ease, opacity 0.2s ease, background-color 0.2s ease;
+    transition: border-color 0.25s var(--ease-glass), background-color 0.25s var(--ease-glass),
+        transform 0.25s var(--ease-glass), box-shadow 0.25s var(--ease-glass);
 }
 
 #tarefas-container ul li:hover {
     border-color: hsl(var(--foreground));
     background: hsl(var(--secondary) / 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
 }
 
 #tarefas-container ul li article {
@@ -314,7 +337,9 @@ body.scanline::before {
 
 #tarefas-container ul li article p:last-of-type {
     margin-top: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
     width: fit-content;
     padding: var(--space-1) var(--space-2);
     border: 1px solid hsl(var(--foreground));
@@ -323,6 +348,16 @@ body.scanline::before {
     text-transform: uppercase;
     font-size: 0.7rem;
     color: hsl(var(--foreground));
+}
+
+#tarefas-container ul li article p:last-of-type::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
 }
 
 /* ========================================== */
@@ -416,6 +451,16 @@ header {
     text-align: center;
 }
 
+/* Cantos em estilo HUD — reforça a identidade de terminal/console */
+header::after {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    pointer-events: none;
+    border: 1px solid hsl(var(--foreground) / 0.14);
+    z-index: 1;
+}
+
 header::before {
     content: '';
     position: absolute;
@@ -432,11 +477,12 @@ header > * {
 }
 
 header h1 {
-    font-size: clamp(2rem, 1.4rem + 3vw, 3rem);
+    font-size: clamp(2.2rem, 1.2rem + 3vw, 3.2rem);
     font-weight: 700;
-    letter-spacing: 0.14em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: hsl(var(--foreground));
+    text-shadow: 0 0 24px hsl(var(--foreground) / 0.25);
 }
 
 header h1::after {
@@ -455,12 +501,32 @@ header h1::after {
     50%, 100% { opacity: 0; }
 }
 
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 hsl(var(--terminal-green) / 0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 4px hsl(var(--terminal-green) / 0); }
+}
+
 header p {
     font-size: clamp(0.8rem, 0.7rem + 0.4vw, 0.95rem);
     color: hsl(var(--muted-foreground));
     margin-top: var(--space-2);
     letter-spacing: 0.08em;
     font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+}
+
+header p::before {
+    content: '';
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: hsl(var(--terminal-green));
+    animation: pulse-dot 2s ease-in-out infinite;
+    flex-shrink: 0;
 }
 
 /* ========================================== */
@@ -477,7 +543,7 @@ header p {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: var(--space-4);
+    gap: var(--space-3);
 }
 
 .busca-filtros label {
@@ -488,41 +554,31 @@ header p {
     text-transform: uppercase;
 }
 
-.busca-filtros > div,
-.busca-filtros form,
-.busca-filtros fieldset {
-    width: 100%;
-}
-
-.busca-filtros form {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: end;
-    gap: var(--space-3);
-}
-
-.busca-filtros .campo-busca,
-.busca-filtros .campo-filtro,
-.busca-filtros .campo-acoes {
-    flex: 1 1 220px;
-    min-width: 220px;
-}
-
 .busca-filtros input[type="text"],
 .busca-filtros select {
-    padding: var(--space-2) var(--space-3);
+    padding: 0.8rem 1rem;
     border: 1px solid hsl(var(--border));
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-family: inherit;
     background: hsl(var(--secondary) / 0.8);
     color: hsl(var(--foreground));
-    min-height: 2.75rem;
+    min-height: 3.2rem;
     width: 100%;
+    line-height: 1.4;
 }
 
 .busca-filtros select {
     max-width: 100%;
     text-overflow: ellipsis;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='none' stroke='%23f3f3f0' stroke-width='2'%3E%3Cpath d='M5 7.5L10 12.5L15 7.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right var(--space-2) center;
+    background-size: 14px;
+    padding-right: calc(var(--space-4) + var(--space-2));
+    cursor: pointer;
 }
 
 .busca-filtros input[type="text"]:focus-visible,
@@ -538,6 +594,7 @@ header p {
     flex-wrap: wrap;
     align-items: center;
     gap: var(--space-3);
+    width: 100%;
 }
 
 .busca-filtros fieldset legend {
@@ -560,6 +617,8 @@ header p {
     min-height: 24px;
     text-transform: none;
     letter-spacing: normal;
+    line-height: 1.5;
+    white-space: normal;
 }
 
 .busca-filtros fieldset input[type="radio"] {
@@ -567,6 +626,7 @@ header p {
     width: 1.3rem;
     height: 1.3rem;
     cursor: pointer;
+    flex-shrink: 0;
 }
 
 .busca-filtros button {
@@ -579,7 +639,7 @@ header p {
     font-family: inherit;
     cursor: pointer;
     border-radius: 0;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.25s var(--ease-glass), color 0.25s var(--ease-glass), border-color 0.25s var(--ease-glass);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -624,7 +684,8 @@ main {
 /* FOOTER */
 /* ========================================== */
 footer {
-    background: hsl(var(--card));
+    position: relative;
+    background: linear-gradient(180deg, hsl(220 42% 14%), hsl(216 32% 10%));
     border: 1px solid hsl(var(--border));
     padding: 20px;
     text-align: center;
@@ -634,11 +695,27 @@ footer {
     width: 100%;
     max-width: 1200px;
     border-radius: 0;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+footer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, hsl(var(--foreground) / 0.4), transparent);
 }
 
 .redes-sociais {
     text-align: center;
     padding: 20px 0;
+    width: 100%;
 }
 
 .redes-sociais h4 {
@@ -650,9 +727,19 @@ footer {
     color: hsl(var(--foreground));
 }
 
+.icones-sociais {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
 .icones-sociais a {
-    margin: 0 10px;
-    display: inline-block;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icones-sociais img {
@@ -725,8 +812,13 @@ footer {
     header::before,
     #tarefas-container section::before,
     body.scanline::before,
-    header h1::after {
+    header h1::after,
+    header p::before {
         animation: none;
+    }
+
+    #tarefas-container ul li {
+        transition: none;
     }
 }
 
@@ -753,4 +845,28 @@ footer {
 ::selection {
     background: hsl(var(--foreground));
     color: hsl(var(--background));
+}
+
+/* Scrollbar discreta, coerente com o vidro do resto da interface */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--terminal-dim));
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) hsl(var(--background));
 }
