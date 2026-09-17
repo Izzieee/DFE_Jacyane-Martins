@@ -1,13 +1,22 @@
 // js/estado.js
 
+// ==========================================
+// ESTADO ÚNICO DA APLICAÇÃO
+// ==========================================
 export const estado = {
-    tarefas: [],          // array ORIGINAL (nunca alterado)
-    busca: '',            // texto digitado
-    status: 'todos',      // filtro de status
-    prioridade: 'todas',  // filtro de prioridade
-    ordenacao: 'padrao',  // 'padrao' ou 'prazo'
-    carregando: false,
-    erro: null
+    // ===== CAMPOS DA E4 =====
+    tarefas: [],              // array original (nunca alterado)
+    busca: '',                // texto digitado na busca
+    status: 'todos',          // filtro de status
+    prioridade: 'todas',      // filtro de prioridade
+    ordenacao: 'padrao',      // 'padrao' ou 'prazo'
+    carregando: false,        // true enquanto busca dados
+    erro: null,               // erro atual (se houver)
+
+    // ===== NOVOS CAMPOS (FASE 1) =====
+    modo: 'kanban',           // 'kanban', 'acervo', 'mapa', 'legado'
+    tagSelecionada: null,     // qual tag está filtrada (acervo/mapa)
+    tarefaSelecionada: null   // qual tarefa está no modal
 };
 
 // ==========================================
@@ -40,7 +49,6 @@ export function derivarListaVisivel(estadoAtual) {
     // 5. APLICAR ORDENAÇÃO (copiar de novo antes de sort)
     if (estadoAtual.ordenacao === 'prazo') {
         lista = [...lista].sort((a, b) => {
-            // Converte "15/08/2026" para Date
             const dataA = converterData(a.prazo);
             const dataB = converterData(b.prazo);
             return dataA - dataB;
@@ -50,7 +58,10 @@ export function derivarListaVisivel(estadoAtual) {
     return lista;
 }
 
-// Função auxiliar para converter "DD/MM/AAAA" em Date
+// ==========================================
+// FUNÇÃO AUXILIAR
+// Converte "DD/MM/AAAA" em Date
+// ==========================================
 function converterData(texto) {
     if (!texto) return new Date(0);
     const [dia, mes, ano] = texto.split('/');

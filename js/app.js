@@ -4,15 +4,38 @@ import { renderizarEstado } from './estados.js';
 import { renderizarTarefas } from './renderizacao.js';
 import { estado, derivarListaVisivel } from './estado.js';
 
-// Torna funções acessíveis globalmente (usadas por estados.js)
+// Torna funções acessíveis globalmente
 window.renderizarTarefas = renderizarTarefas;
 
 // ==========================================
+// ALTERNADOR DE MODOS
+// ==========================================
+function trocarModo(novoModo) {
+    // 1. Esconde todos os modos
+    document.querySelectorAll('.modo').forEach(secao => {
+        secao.classList.remove('ativo');
+    });
+
+    // 2. Mostra o modo escolhido
+    const secao = document.getElementById(`modo-${novoModo}`);
+    if (secao) secao.classList.add('ativo');
+
+    // 3. Atualiza os botões
+    document.querySelectorAll('nav.modos button').forEach(btn => {
+        btn.classList.toggle('ativo', btn.dataset.modo === novoModo);
+    });
+
+    // 4. Atualiza o estado
+    estado.modo = novoModo;
+
+    // 5. Re-renderiza
+    renderizar();
+}
+
+// ==========================================
 // PONTO ÚNICO DE RENDERIZAÇÃO
-// Toda mudança no estado passa por aqui
 // ==========================================
 export function renderizar() {
-    // Caso especial: carregando ou erro
     if (estado.carregando) {
         renderizarEstado('carregando', []);
         return;
@@ -22,25 +45,94 @@ export function renderizar() {
         return;
     }
 
-    // Origem vazia (JSON sem tarefas)
     if (estado.tarefas.length === 0) {
         renderizarEstado('origem-vazia', []);
         return;
     }
 
-    // Derivar lista visível
+    // Decide o que renderizar com base no modo ativo
     const listaVisivel = derivarListaVisivel(estado);
     window.estadoTotal = estado.tarefas.length;
 
-    // Sucesso (pode ser lista cheia ou resultado vazio)
-    renderizarEstado('sucesso', listaVisivel);
+    // Por enquanto, só o Kanban funciona
+    // Nas próximas fases, adicionamos acervo/mapa/legado
+    if (estado.modo === 'kanban') {
+        renderizarEstado('sucesso', listaVisivel);
+    } else {
+        // Modos ainda não implementados
+        // (nas próximas fases)
+        console.log('Modo ainda não implementado:', estado.modo);
+    }
+}
+
+// ==========================================
+// CONECTAR CONTROLES
+// ==========================================
+function conectarControles() {
+    // Alternador de modos
+    document.querySelectorAll('nav.modos button').forEach(btn => {
+        btn.addEventListener('click', () => {
+            trocarModo(btn.dataset.modo);
+        });
+    });
+
+    // Filtros do Kanban
+    const busca = document.getElementById('titulo-tarefa');
+    const status = document.getElementById('status');
+    const prioridade = document.querySelectorAll('input[name="prioridade"]');
+    const limpar = document.getElementById('btn-limpar');
+    const ordenacao = document.getElementById('ordenacao');
+
+    busca?.addEventListener('input', (e) => {
+        estado.busca = e.target.value;
+        renderizar();
+    });
+
+    status?.addEventListener('change', (e) => {
+        estado.status = e.target.value;
+        renderizar();
+    });
+
+    prioridade.forEach(radio => {
+        radio.addEventListener('change', (e) => {
+            estado.prioridade = e.target.value;
+            renderizar();
+        });
+    });
+
+    ordenacao?.addEventListener('change', (e) => {
+        estado.ordenacao = e.target.value;
+        renderizar();
+    });
+
+    limpar?.addEventListener('click', () => {
+        estado.busca = '';
+        estado.status = 'todos';
+        estado.prioridade = 'todas';
+        estado.ordenacao = 'padrao';
+
+        if (busca) busca.value = '';
+        if (status) status.value = 'todos';
+        prioridade.forEach(r => { r.checked = false; });
+        if (ordenacao) ordenacao.value = 'padrao';
+
+        renderizar();
+    });
+
+    // Modal - fechar
+    const modal = document.getElementById('modal');
+    document.querySelector('.modal-fechar')?.addEventListener('click', () => {
+        modal.hidden = true;
+    });
+    modal?.addEventListener('click', (e) => {
+        if (e.target === modal) modal.hidden = true;
+    });
 }
 
 // ==========================================
 // INICIALIZAÇÃO
 // ==========================================
 async function iniciarAplicacao() {
-    // 1. Estado: carregando (ANTES do await)
     estado.carregando = true;
     renderizar();
 
@@ -54,93 +146,9 @@ async function iniciarAplicacao() {
         estado.erro = erro;
     }
 
-    // 2. Renderizar com o resultado
     renderizar();
-
-    // 3. Conectar os controles (só UMA vez)
     conectarControles();
-    conectarEventosDelegados();
 }
 
-// ==========================================
-// CONECTAR OS CONTROLES AO ESTADO
-// ==========================================
-function conectarControles() {
-    const busca = document.getElementById('titulo-tarefa');
-    const status = document.getElementById('status');
-    const prioridade = document.querySelectorAll('input[name="prioridade"]');
-    const limpar = document.getElementById('btn-limpar');
-
-    // Busca por título
-    busca?.addEventListener('input', (e) => {
-        estado.busca = e.target.value;
-        renderizar();
-    });
-
-    // Filtro de status
-    status?.addEventListener('change', (e) => {
-        estado.status = e.target.value;
-        renderizar();
-    });
-
-    // Filtro de prioridade (radios)
-    prioridade.forEach(radio => {
-        radio.addEventListener('change', (e) => {
-            estado.prioridade = e.target.value;
-            renderizar();
-        });
-    });
-
-    // Botão Limpar filtros
-    limpar?.addEventListener('click', () => {
-        // 1. Resetar o ESTADO
-        estado.busca = '';
-        estado.status = 'todos';
-        estado.prioridade = 'todas';
-        estado.ordenacao = 'padrao';
-
-        // 2. Resetar os CONTROLES
-        if (busca) busca.value = '';
-        if (status) status.value = 'todos';
-        prioridade.forEach(r => { r.checked = false; });
-
-        // 3. Renderizar
-        renderizar();
-    });
-
-    // Ordenação (se você criar um select de ordenação)
-    const ordenacao = document.getElementById('ordenacao');
-    ordenacao?.addEventListener('change', (e) => {
-        estado.ordenacao = e.target.value;
-        renderizar();
-    });
-}
-
-// ==========================================
-// EVENTOS DELEGADOS DOS CARTÕES (da E3)
-// ==========================================
-function conectarEventosDelegados() {
-    const container = document.getElementById('tarefas-container');
-    if (!container) return;
-
-    container.addEventListener('click', (evento) => {
-        if (!(evento.target instanceof Element)) return;
-
-        const botao = evento.target.closest('button[data-acao="ver-detalhes"]');
-        if (!botao || !container.contains(botao)) return;
-
-        const cartao = botao.closest('[data-tarefa-id]');
-        const tarefa = estado.tarefas.find(
-            item => item.id === Number(cartao?.dataset.tarefaId)
-        );
-
-        if (tarefa) {
-            console.log('Detalhes da tarefa:', tarefa);
-        }
-    });
-}
-
-// Iniciar
 iniciarAplicacao();
-//APENAS PARA TESTE
 window.estado = estado;
