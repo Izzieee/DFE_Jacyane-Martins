@@ -6,8 +6,22 @@
       "status": "fazer",
       "prioridade": "alta",
       "prazo": "15/08/2026",
+      "concluidaEm": null,
       "projeto": "E1 - Desenvolvimento Front-End",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["HTML", "Acessibilidade", "Frontend"],
+      "passos": [
+        "Ler a documentação MDN sobre tags semânticas",
+        "Aplicar article, section, header, footer",
+        "Validar no W3C Validator"
+      ],
+      "aprendizados": [
+        "Tags semânticas melhoram acessibilidade",
+        "ARIA complementa, não substitui HTML semântico"
+      ],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 2,
@@ -15,8 +29,19 @@
       "status": "fazer",
       "prioridade": "media",
       "prazo": "16/08/2026",
+      "concluidaEm": null,
       "projeto": "E1 - Desenvolvimento Front-End",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["CSS", "Frontend"],
+      "passos": [
+        "Estudar Flexbox",
+        "Praticar Grid",
+        "Fazer 5 exercícios do Frontend Mentor"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 3,
@@ -24,8 +49,19 @@
       "status": "andamento",
       "prioridade": "alta",
       "prazo": "20/08/2026",
+      "concluidaEm": null,
       "projeto": "E1 - Desenvolvimento Front-End",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["HTML", "Acessibilidade", "Frontend"],
+      "passos": [
+        "Estruturar o HTML com tags semânticas",
+        "Adicionar atributos ARIA",
+        "Testar com leitor de tela"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [1],
+      "publica": false
     },
     {
       "id": 4,
@@ -33,8 +69,19 @@
       "status": "andamento",
       "prioridade": "media",
       "prazo": "18/08/2026",
+      "concluidaEm": null,
       "projeto": "Banco de Dados",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["SQL", "Banco de Dados"],
+      "passos": [
+        "Criar tabelas de exemplo",
+        "Praticar SELECT com JOIN",
+        "Otimizar consultas lentas"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 5,
@@ -42,8 +89,19 @@
       "status": "andamento",
       "prioridade": "alta",
       "prazo": "22/08/2026",
+      "concluidaEm": null,
       "projeto": "E1 - Desenvolvimento Front-End",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["JavaScript", "Frontend", "Async"],
+      "passos": [
+        "Implementar manipulação do DOM",
+        "Adicionar eventos",
+        "Testar no navegador"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 6,
@@ -51,8 +109,19 @@
       "status": "revisao",
       "prioridade": "media",
       "prazo": "14/08/2026",
+      "concluidaEm": null,
       "projeto": "Projeto Nativa",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["Documentação", "Projeto"],
+      "passos": [
+        "Revisar requisitos",
+        "Documentar arquitetura",
+        "Criar diagramas"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 7,
@@ -60,8 +129,19 @@
       "status": "revisao",
       "prioridade": "baixa",
       "prazo": "17/08/2026",
+      "concluidaEm": null,
       "projeto": "E1 - Desenvolvimento Front-End",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["CSS", "Frontend", "Revisão"],
+      "passos": [
+        "Revisar variáveis CSS",
+        "Verificar responsividade",
+        "Validar no W3C"
+      ],
+      "aprendizados": [],
+      "anotacoes": [],
+      "relacionadas": [2],
+      "publica": false
     },
     {
       "id": 8,
@@ -69,8 +149,24 @@
       "status": "concluida",
       "prioridade": "alta",
       "prazo": "09/08/2026",
+      "concluidaEm": "08/08/2026",
       "projeto": "Grupo de Pesquisa",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["Redes", "Huawei", "Prova"],
+      "passos": [
+        "Revisar conceitos de redes",
+        "Fazer simulados",
+        "Revisar pontos fracos"
+      ],
+      "aprendizados": [
+        "Modelo OSI é fundamental pra entender redes",
+        "Praticar com simulados ajuda muito"
+      ],
+      "anotacoes": [
+        { "data": "08/08/2026", "texto": "Fiz 3 simulados e acertei 85%" }
+      ],
+      "relacionadas": [],
+      "publica": false
     },
     {
       "id": 9,
@@ -78,8 +174,27 @@
       "status": "concluida",
       "prioridade": "alta",
       "prazo": "10/08/2026",
+      "concluidaEm": "05/09/2026",
       "projeto": "E3 - Desenvolvimento",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["JavaScript", "Async", "Fetch", "Frontend"],
+      "passos": [
+        "Criar api.js com fetch",
+        "Verificar response.ok",
+        "Tratar 4 tipos de erro",
+        "Implementar os 4 estados da tela"
+      ],
+      "aprendizados": [
+        "fetch não rejeita no 404",
+        "Duas esperas: cabeçalho e corpo",
+        "Vazio não é erro"
+      ],
+      "anotacoes": [
+        { "data": "05/09/2026", "texto": "Aprendi que fetch não rejeita no 404" },
+        { "data": "10/09/2026", "texto": "Revisitando: catch distingue TypeError e SyntaxError" }
+      ],
+      "relacionadas": [3, 5],
+      "publica": false
     },
     {
       "id": 10,
@@ -87,8 +202,23 @@
       "status": "concluida",
       "prioridade": "baixa",
       "prazo": "08/08/2026",
+      "concluidaEm": "07/08/2026",
       "projeto": "Inglês Instrumental",
-      "responsavel": "Jacyane Martins"
+      "responsavel": "Jacyane Martins",
+      "tags": ["Inglês", "Vocabulário"],
+      "passos": [
+        "Listar 50 palavras técnicas",
+        "Criar flashcards",
+        "Revisar diariamente"
+      ],
+      "aprendizados": [
+        "Vocabulário técnico de frontend em inglês é essencial"
+      ],
+      "anotacoes": [],
+      "relacionadas": [],
+      "publica": false
     }
-  ]
+  ],
+  "tags": ["HTML", "CSS", "JavaScript", "Async", "Fetch", "Frontend", "SQL", "Banco de Dados", "Documentação", "Projeto", "Revisão", "Redes", "Huawei", "Prova", "Inglês", "Vocabulário", "Acessibilidade"],
+  "projetos": ["E1 - Desenvolvimento Front-End", "E3 - Desenvolvimento", "Banco de Dados", "Projeto Nativa", "Grupo de Pesquisa", "Inglês Instrumental"]
 }
