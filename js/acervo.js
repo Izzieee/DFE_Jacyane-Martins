@@ -1,9 +1,6 @@
 // js/acervo.js
-// RESPONSABILIDADE: MODO ACERVO — tarefas concluídas com detalhes
+import { abrirModalEvolucao, abrirModal } from './modal.js';
 
-// ==========================================
-// DERIVAÇÃO: filtra só as concluídas + busca por tag
-// ==========================================
 export function derivarAcervo(estado) {
     let lista = estado.tarefas.filter(t => t.status === 'concluida');
 
@@ -27,9 +24,6 @@ export function derivarAcervo(estado) {
     return lista;
 }
 
-// ==========================================
-// RENDERIZAÇÃO: lista de tarefas do acervo
-// ==========================================
 export function renderizarAcervo(lista) {
     const container = document.getElementById('acervo-container');
     if (!container) return;
@@ -54,17 +48,13 @@ export function renderizarAcervo(lista) {
             </header>
 
             <div class="tags-cartao">
-                ${(tarefa.tags || []).map(tag => 
-                    `<span class="tag">${tag}</span>`
-                ).join('')}
+                ${(tarefa.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
 
             ${tarefa.aprendizados && tarefa.aprendizados.length > 0 ? `
                 <div class="resumo-aprendizados">
                     <strong>💡 Aprendizados:</strong>
-                    <ul>
-                        ${tarefa.aprendizados.map(a => `<li>${a}</li>`).join('')}
-                    </ul>
+                    <ul>${tarefa.aprendizados.map(a => `<li>${a}</li>`).join('')}</ul>
                 </div>
             ` : ''}
 
@@ -75,23 +65,20 @@ export function renderizarAcervo(lista) {
             ` : ''}
 
             <footer class="acervo-acoes">
+                <button type="button" class="btn-acervo btn-evoluir-acervo" data-acao="evoluir">
+                    ⬆️ Evoluir Tarefa
+                </button>
                 <button type="button" class="btn-acervo" data-acao="ver-detalhes">
                     👁️ Ver detalhes
                 </button>
-                <button type="button" class="btn-acervo" data-acao="reabrir">
-                    🔄 Reabrir
-                </button>
-                <button type="button" class="btn-acervo" data-acao="clonar">
-                    📋 Clonar
+                <button type="button" class="btn-acervo" data-acao="publicar">
+                    ${tarefa.publica ? '🔒 Despublicar' : '📤 Publicar'}
                 </button>
             </footer>
         </article>
     `).join('');
 }
 
-// ==========================================
-// RENDERIZAÇÃO: tags disponíveis (filtros)
-// ==========================================
 export function renderizarTagsDisponiveis() {
     const container = document.getElementById('acervo-tags');
     if (!container) return;
@@ -105,15 +92,11 @@ export function renderizarTagsDisponiveis() {
     const tagSelecionada = window.estado.tagSelecionada;
 
     container.innerHTML = `
-        <button type="button" 
-                class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" 
-                data-tag="">
+        <button type="button" class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" data-tag="">
             Todas
         </button>
         ${tags.map(tag => `
-            <button type="button" 
-                    class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" 
-                    data-tag="${tag}">
+            <button type="button" class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" data-tag="${tag}">
                 ${tag}
             </button>
         `).join('')}

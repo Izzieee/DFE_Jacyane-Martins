@@ -1541,3 +1541,279 @@ nav.modos button.ativo {
         grid-template-columns: repeat(3, 1fr);
     }
 }
+
+/* ========================================== */
+/* BOTÕES DE AÇÃO NO KANBAN */
+/* ========================================== */
+.acoes-kanban {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.btn-evoluir,
+.btn-retornar,
+.btn-arquivar {
+    flex: 1 1 auto;
+    padding: var(--space-1) var(--space-2);
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-evoluir {
+    background: #2ecc71;
+    color: #0a0a0a;
+}
+
+.btn-evoluir:hover {
+    background: #27ae60;
+}
+
+.btn-retornar {
+    background: #e74c3c;
+    color: #ffffff;
+}
+
+.btn-retornar:hover {
+    background: #c0392b;
+}
+
+.btn-arquivar {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+}
+
+.btn-arquivar:hover {
+    background: var(--color-accent-dim);
+}
+
+/* ========================================== */
+/* DRAG & DROP */
+/* ========================================== */
+.coluna-drop {
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.coluna-drop.drop-ativa {
+    background: rgba(255, 215, 0, 0.1);
+    border-color: var(--color-accent);
+}
+
+.coluna-vazia {
+    padding: var(--space-3);
+    text-align: center;
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 0.85rem;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius);
+    background: transparent;
+    list-style: none;
+}
+
+li.arrastando {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+li[draggable="true"] {
+    cursor: grab;
+}
+
+li[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+/* Botão Ver Detalhes no Kanban */
+.btn-ver {
+    margin-top: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid currentColor;
+    color: inherit;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-ver:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+/* ========================================== */
+/* AÇÕES AVANÇADAS NO MODAL */
+/* ========================================== */
+.acoes-avancadas {
+    margin-top: var(--space-3);
+    border-top: 1px solid var(--color-border);
+    padding-top: var(--space-2);
+}
+
+.acoes-avancadas summary {
+    cursor: pointer;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    padding: var(--space-2);
+    list-style: none;
+    user-select: none;
+}
+
+.acoes-avancadas summary:hover {
+    color: var(--color-accent);
+}
+
+.acoes-avancadas summary::-webkit-details-marker {
+    display: none;
+}
+
+.acoes-avancadas-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+}
+
+.btn-acao-avancada {
+    padding: var(--space-2);
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius);
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.btn-acao-avancada:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+}
+
+/* ========================================== */
+/* FORM DE EVOLUÇÃO */
+/* ========================================== */
+.form-evolucao {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+}
+
+.form-evolucao label {
+    font-weight: 600;
+    color: var(--color-accent);
+    font-size: 0.9rem;
+}
+
+.form-evolucao textarea,
+.form-evolucao select,
+.form-evolucao input[type="text"] {
+    width: 100%;
+    padding: var(--space-2);
+    background: var(--color-surface-alt);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.95rem;
+}
+
+.form-evolucao textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.form-evolucao textarea:focus-visible,
+.form-evolucao select:focus-visible,
+.form-evolucao input:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-color: var(--color-accent);
+}
+
+/* Botão Evoluir no acervo */
+.btn-evoluir-acervo {
+    background: #2ecc71 !important;
+    color: #0a0a0a !important;
+    border-color: #2ecc71 !important;
+    font-weight: 700;
+}
+
+.btn-evoluir-acervo:hover {
+    background: #27ae60 !important;
+}
+
+/* ========================================== */
+/* BOTÃO NOVA TAREFA */
+/* ========================================== */
+.barra-acoes-kanban {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.btn-nova-tarefa {
+    padding: var(--space-2) var(--space-4);
+    background: #2ecc71;
+    color: #0a0a0a;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    min-height: 2.75rem;
+}
+
+.btn-nova-tarefa:hover {
+    background: #27ae60;
+}
+
+/* ========================================== */
+/* BOTÃO EXCLUIR NO KANBAN */
+/* ========================================== */
+.btn-excluir {
+    margin-top: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: rgba(231, 76, 60, 0.9);
+    color: #ffffff;
+    border: 1px solid #e74c3c;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+}
+
+.btn-excluir:hover {
+    background: #c0392b;
+}
+
+/* ========================================== */
+/* BOTÃO EVOLUIR NO ACERVO */
+/* ========================================== */
+.btn-evoluir-acervo {
+    background: #2ecc71 !important;
+    color: #0a0a0a !important;
+    border-color: #2ecc71 !important;
+    font-weight: 700;
+}
+
+.btn-evoluir-acervo:hover {
+    background: #27ae60 !important;
+}

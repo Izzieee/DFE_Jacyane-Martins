@@ -8,11 +8,17 @@
 </head>
 <body>
 
+    <!-- ============================================ -->
+    <!-- CABEÇALHO -->
+    <!-- ============================================ -->
     <header>
         <h1>S_T_E_P</h1>
         <p>Canivete de Tarefas</p>
     </header>
 
+    <!-- ============================================ -->
+    <!-- ALTERNADOR DE MODOS -->
+    <!-- ============================================ -->
     <nav class="modos" aria-label="Modos de visualização">
         <button type="button" data-modo="kanban" class="ativo">📋 Kanban</button>
         <button type="button" data-modo="acervo">📚 Acervo</button>
@@ -20,9 +26,14 @@
         <button type="button" data-modo="legado">📤 Legado</button>
     </nav>
 
+    <!-- ============================================ -->
+    <!-- REGIÃO DE STATUS (acessibilidade) -->
+    <!-- ============================================ -->
     <div id="status-region" role="status" aria-live="polite"></div>
 
+    <!-- ============================================ -->
     <!-- MODO: KANBAN -->
+    <!-- ============================================ -->
     <section id="modo-kanban" class="modo ativo">
         <section class="busca-filtros">
             <label for="titulo-tarefa">Título da tarefa:</label>
@@ -54,10 +65,18 @@
             <button type="button" id="btn-limpar">Limpar filtros</button>
         </section>
 
+        <div class="barra-acoes-kanban">
+            <button type="button" id="btn-nova-tarefa" class="btn-nova-tarefa">
+                ➕ Nova Tarefa
+            </button>
+        </div>
+
         <div id="tarefas-container"></div>
     </section>
 
+    <!-- ============================================ -->
     <!-- MODO: ACERVO -->
+    <!-- ============================================ -->
     <section id="modo-acervo" class="modo">
         <h2>📚 Acervo Vivo</h2>
 
@@ -74,8 +93,9 @@
         <div id="acervo-container"></div>
     </section>
 
+    <!-- ============================================ -->
     <!-- MODO: MAPA -->
-    <!-- MODO: MAPA -->
+    <!-- ============================================ -->
     <section id="modo-mapa" class="modo">
         <h2>🕸️ Mapa de Conexões</h2>
 
@@ -89,8 +109,9 @@
         <div id="mapa-container"></div>
     </section>
 
+    <!-- ============================================ -->
     <!-- MODO: LEGADO -->
-    <!-- MODO: LEGADO -->
+    <!-- ============================================ -->
     <section id="modo-legado" class="modo">
         <h2>📤 Legado — Tutoriais Publicados</h2>
 
@@ -107,7 +128,9 @@
         <div id="legado-container"></div>
     </section>
 
+    <!-- ============================================ -->
     <!-- MODAL -->
+    <!-- ============================================ -->
     <div id="modal" class="modal" hidden>
         <div class="modal-conteudo">
             <button type="button" class="modal-fechar" aria-label="Fechar">✕</button>
@@ -115,6 +138,9 @@
         </div>
     </div>
 
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
     <footer>
         <div class="redes-sociais">
             <h4>Me acompanhe também:</h4>
@@ -134,6 +160,9 @@
         <p>Última atualização: 18/09/2026</p>
     </footer>
 
+    <!-- ============================================ -->
+    <!-- SCRIPT PRINCIPAL -->
+    <!-- ============================================ -->
     <script type="module" src="./js/app.js"></script>
 </body>
 </html>
