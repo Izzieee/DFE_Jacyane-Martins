@@ -1300,3 +1300,150 @@ nav.modos button.ativo {
     color: var(--color-accent);
     width: fit-content;
 }
+
+/* ========================================== */
+/* MODO MAPA */
+/* ========================================== */
+#mapa-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.mapa-info {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: var(--space-2);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+}
+
+/* Layout: barra lateral + grafo */
+.mapa-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+@media (min-width: 900px) {
+    .mapa-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+    .mapa-lateral {
+        width: 280px;
+        flex-shrink: 0;
+    }
+    .mapa-grafo {
+        flex: 1;
+        min-width: 0;
+    }
+}
+
+/* Barra lateral */
+.mapa-lateral {
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.mapa-lateral h3 {
+    color: var(--color-accent);
+    font-size: 1rem;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid var(--color-border);
+}
+
+.mapa-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+}
+
+.mapa-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mapa-item:hover {
+    border-color: var(--color-accent);
+    background: var(--color-surface);
+}
+
+.mapa-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+.mapa-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.mapa-item-info strong {
+    font-size: 0.85rem;
+    color: var(--color-text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mapa-item-info small {
+    font-size: 0.7rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Área do grafo */
+.mapa-grafo {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    overflow-x: auto;
+}
+
+.mapa-svg {
+    width: 100%;
+    height: auto;
+    min-width: 600px;
+    display: block;
+}
+
+.mapa-no {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.mapa-no:hover {
+    opacity: 0.7;
+}
+
+.mapa-no circle {
+    transition: r 0.2s ease;
+}
+
+.mapa-no:hover circle {
+    r: 32;
+}
