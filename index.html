@@ -8,42 +8,22 @@
 </head>
 <body>
 
-    <!-- ============================================ -->
-    <!-- CABEÇALHO -->
-    <!-- ============================================ -->
     <header>
         <h1>S_T_E_P</h1>
         <p>Canivete de Tarefas</p>
     </header>
 
-    <!-- ============================================ -->
-    <!-- ALTERNADOR DE MODOS -->
-    <!-- ============================================ -->
     <nav class="modos" aria-label="Modos de visualização">
-        <button type="button" data-modo="kanban" class="ativo">
-            📋 Kanban
-        </button>
-        <button type="button" data-modo="acervo">
-            📚 Acervo
-        </button>
-        <button type="button" data-modo="mapa">
-            🕸️ Mapa
-        </button>
-        <button type="button" data-modo="legado">
-            📤 Legado
-        </button>
+        <button type="button" data-modo="kanban" class="ativo">📋 Kanban</button>
+        <button type="button" data-modo="acervo">📚 Acervo</button>
+        <button type="button" data-modo="mapa">🕸️ Mapa</button>
+        <button type="button" data-modo="legado">📤 Legado</button>
     </nav>
 
-    <!-- ============================================ -->
-    <!-- REGIÃO DE STATUS (acessibilidade) -->
-    <!-- ============================================ -->
     <div id="status-region" role="status" aria-live="polite"></div>
 
-    <!-- ============================================ -->
     <!-- MODO: KANBAN -->
-    <!-- ============================================ -->
     <section id="modo-kanban" class="modo ativo">
-        <!-- Filtros -->
         <section class="busca-filtros">
             <label for="titulo-tarefa">Título da tarefa:</label>
             <input type="text" id="titulo-tarefa" placeholder="Digite o título da tarefa" />
@@ -74,17 +54,13 @@
             <button type="button" id="btn-limpar">Limpar filtros</button>
         </section>
 
-        <!-- Container dos cartões -->
         <div id="tarefas-container"></div>
     </section>
 
-    <!-- ============================================ -->
     <!-- MODO: ACERVO -->
-    <!-- ============================================ -->
     <section id="modo-acervo" class="modo">
         <h2>📚 Acervo Vivo</h2>
 
-        <!-- Filtros do acervo -->
         <section class="busca-filtros">
             <label for="busca-acervo">Buscar por título ou tag:</label>
             <input type="text" id="busca-acervo" placeholder="Ex: JavaScript, HTML..." />
@@ -95,29 +71,22 @@
             </div>
         </section>
 
-        <!-- Lista de tarefas do acervo -->
         <div id="acervo-container"></div>
     </section>
 
-    <!-- ============================================ -->
     <!-- MODO: MAPA -->
-    <!-- ============================================ -->
     <section id="modo-mapa" class="modo">
         <h2>🕸️ Mapa de Conexões</h2>
         <p class="aviso">Em breve: grafo de tarefas conectadas por tags.</p>
     </section>
 
-    <!-- ============================================ -->
     <!-- MODO: LEGADO -->
-    <!-- ============================================ -->
     <section id="modo-legado" class="modo">
         <h2>📤 Legado</h2>
         <p class="aviso">Em breve: tutoriais publicados.</p>
     </section>
 
-    <!-- ============================================ -->
-    <!-- MODAL (oculto por padrão) -->
-    <!-- ============================================ -->
+    <!-- MODAL -->
     <div id="modal" class="modal" hidden>
         <div class="modal-conteudo">
             <button type="button" class="modal-fechar" aria-label="Fechar">✕</button>
@@ -125,9 +94,6 @@
         </div>
     </div>
 
-    <!-- ============================================ -->
-    <!-- FOOTER -->
-    <!-- ============================================ -->
     <footer>
         <div class="redes-sociais">
             <h4>Me acompanhe também:</h4>
@@ -143,14 +109,10 @@
                 </a>
             </div>
         </div>
-        
-        <p>&copy; E4 | Desenvolvimento Front-End | Jacyane Carvalho Martins</p>
-        <p>Última atualização: 10/09/2026 - Status: Em Desenvolvimento</p>
+        <p>&copy; S.T.E.P — Canivete de Tarefas | Jacyane Carvalho Martins</p>
+        <p>Última atualização: 18/09/2026</p>
     </footer>
 
-    <!-- ============================================ -->
-    <!-- SCRIPT PRINCIPAL -->
-    <!-- ============================================ -->
     <script type="module" src="./js/app.js"></script>
 </body>
 </html>

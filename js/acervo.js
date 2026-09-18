@@ -5,10 +5,8 @@
 // DERIVAÇÃO: filtra só as concluídas + busca por tag
 // ==========================================
 export function derivarAcervo(estado) {
-    // 1. Só tarefas concluídas
     let lista = estado.tarefas.filter(t => t.status === 'concluida');
 
-    // 2. Busca por título ou tag
     if (estado.buscaAcervo && estado.buscaAcervo.trim() !== '') {
         const termo = estado.buscaAcervo.toLowerCase();
         lista = lista.filter(tarefa => {
@@ -20,7 +18,6 @@ export function derivarAcervo(estado) {
         });
     }
 
-    // 3. Filtro por tag específica
     if (estado.tagSelecionada) {
         lista = lista.filter(tarefa =>
             tarefa.tags?.includes(estado.tagSelecionada)
@@ -37,7 +34,6 @@ export function renderizarAcervo(lista) {
     const container = document.getElementById('acervo-container');
     if (!container) return;
 
-    // Atualizar as tags disponíveis
     renderizarTagsDisponiveis();
 
     if (lista.length === 0) {
@@ -72,6 +68,12 @@ export function renderizarAcervo(lista) {
                 </div>
             ` : ''}
 
+            ${tarefa.anotacoes && tarefa.anotacoes.length > 0 ? `
+                <div class="contagem-anotacoes">
+                    📌 ${tarefa.anotacoes.length} anotaç${tarefa.anotacoes.length === 1 ? 'ão' : 'ões'}
+                </div>
+            ` : ''}
+
             <footer class="acervo-acoes">
                 <button type="button" class="btn-acervo" data-acao="ver-detalhes">
                     👁️ Ver detalhes
@@ -94,7 +96,6 @@ export function renderizarTagsDisponiveis() {
     const container = document.getElementById('acervo-tags');
     if (!container) return;
 
-    // Pega todas as tags únicas das tarefas concluídas
     const tagsUnicas = new Set();
     window.estado.tarefas
         .filter(t => t.status === 'concluida')
