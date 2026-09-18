@@ -839,7 +839,6 @@ footer::before {
     font-style: italic;
     text-align: center;
     padding: var(--space-3);
-<<<<<<< HEAD
     opacity: 0.6;
 }
 
@@ -965,7 +964,6 @@ nav.modos button.ativo {
 .modal-fechar:hover {
     border-color: var(--color-accent);
     color: var(--color-accent);
-=======
     opacity: 0.7;
 }
 
@@ -996,5 +994,58 @@ nav.modos button.ativo {
 * {
     scrollbar-width: thin;
     scrollbar-color: hsl(var(--border)) hsl(var(--background));
->>>>>>> 84f3d99880e5750183e97899ca858c4771ed5adc
 }
+
+/* ========================================== */
+/* TAGS NOS CARTÕES */
+/* ========================================== */
+.tags-cartao {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+}
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: var(--radius);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Em cartões de prioridade alta/média/baixa, as tags ficam claras */
+.prioridade-alta .tag,
+.prioridade-media .tag,
+.prioridade-baixa .tag {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.5);
+    color: #ffffff;
+}
+
+/* ========================================== */
+/* BOTÃO ARQUIVAR NO ACERVO */
+/* ========================================== */
+.btn-arquivar {
+    margin-top: var(--space-2);
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-arquivar:hover {
+    background: var(--color-accent-dim);
+}
+

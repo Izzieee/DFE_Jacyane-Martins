@@ -1,5 +1,6 @@
 // js/renderizacao.js
-// ⚠️ NÃO ALTERAR ESTA FUNÇÃO (exigência da E3)
+// ⚠️ NÃO ALTERAR A ESTRUTURA BÁSICA (exigência da E3)
+// Agora com tags e botão de arquivar
 
 export function renderizarTarefas(tarefas) {
     const container = document.getElementById('tarefas-container');
@@ -51,14 +52,31 @@ export function renderizarTarefas(tarefas) {
 
         tarefasStatus.forEach(tarefa => {
             const classePrioridade = prioridadeClasse[tarefa.prioridade] || '';
+            
+            // Renderizar tags (se houver)
+            const tagsHTML = (tarefa.tags && tarefa.tags.length > 0)
+                ? `<div class="tags-cartao">
+                     ${tarefa.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                   </div>`
+                : '';
+
+            // Botão "Arquivar no acervo" só se estiver concluída
+            const botaoArquivar = (tarefa.status === 'concluida')
+                ? `<button type="button" class="btn-arquivar" data-acao="arquivar">
+                     📚 Arquivar no acervo
+                   </button>`
+                : '';
+
             html += `
-                <li class="${classePrioridade}">
+                <li class="${classePrioridade}" data-tarefa-id="${tarefa.id}">
                     <article>
                         <h3>${tarefa.titulo}</h3>
                         <p><strong>Projeto:</strong> ${tarefa.projeto || 'Não informado'}</p>
                         <p><strong>Responsável:</strong> ${tarefa.responsavel || 'Não informado'}</p>
                         <p><strong>Prazo:</strong> ${tarefa.prazo || 'Sem prazo'}</p>
                         <p><strong>Prioridade:</strong> ${tarefa.prioridade || 'Não definida'}</p>
+                        ${tagsHTML}
+                        ${botaoArquivar}
                     </article>
                 </li>
             `;

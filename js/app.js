@@ -130,6 +130,27 @@ function conectarControles() {
 }
 
 // ==========================================
+// EVENTO DELEGADO: ARQUIVAR NO ACERVO
+// ==========================================
+const container = document.getElementById('tarefas-container');
+container?.addEventListener('click', (evento) => {
+    if (!(evento.target instanceof Element)) return;
+
+    const botao = evento.target.closest('button[data-acao="arquivar"]');
+    if (!botao || !container.contains(botao)) return;
+
+    const cartao = botao.closest('[data-tarefa-id]');
+    const id = Number(cartao?.dataset.tarefaId);
+    const tarefa = estado.tarefas.find(t => t.id === id);
+
+    if (tarefa) {
+        console.log('Arquivar tarefa:', tarefa);
+        // Na Fase 4, vamos fazer algo de verdade aqui
+        alert(`"${tarefa.titulo}" será arquivada no acervo! (em breve)`);
+    }
+});
+
+// ==========================================
 // INICIALIZAÇÃO
 // ==========================================
 async function iniciarAplicacao() {
