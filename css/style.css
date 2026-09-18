@@ -1,4 +1,14 @@
+/* ==========================================================================
+   S.T.E.P — Canivete de Tarefas
+   CSS limpo e organizado
+   ========================================================================== */
+
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Share+Tech+Mono&display=swap');
+
+
+/* ==========================================================================
+   1. RESET
+   ========================================================================== */
 
 *,
 *::before,
@@ -7,6 +17,11 @@
     margin: 0;
     padding: 0;
 }
+
+
+/* ==========================================================================
+   2. VARIÁVEIS
+   ========================================================================== */
 
 :root {
     --background: 220 40% 8%;
@@ -36,17 +51,11 @@
     --terminal-cyan: 200 100% 75%;
     --terminal-dim: 214 28% 60%;
 
-    /* Únicas cores saturadas do sistema: reservadas para sinalizar prioridade */
     --priority-high: 0 78% 56%;
     --priority-medium: 28 92% 54%;
     --priority-low: 142 60% 42%;
 
     --grid-color: 213 38% 18%;
-
-    --status-a-fazer: hsl(var(--terminal-dim));
-    --status-em-andamento: hsl(var(--terminal-cyan));
-    --status-em-revisao: hsl(var(--terminal-amber));
-    --status-concluido: hsl(var(--terminal-green));
 
     --radius: 0;
     --space-1: 0.25rem;
@@ -57,6 +66,11 @@
     --focus-ring: 3px solid hsl(var(--ring));
     --ease-glass: cubic-bezier(0.22, 1, 0.36, 1);
 }
+
+
+/* ==========================================================================
+   3. BASE
+   ========================================================================== */
 
 :focus-visible {
     outline: var(--focus-ring);
@@ -97,21 +111,39 @@ body::after {
     z-index: 40;
 }
 
-body.scanline::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background: linear-gradient(180deg, transparent 0%, hsl(var(--foreground) / 0.03) 50%, transparent 100%);
-    height: 120px;
-    animation: scanline 8s linear infinite;
-    z-index: 50;
+::selection {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
 }
 
-@keyframes scanline {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(100vh); }
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
 }
+
+::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border: 2px solid hsl(var(--background));
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--terminal-dim));
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) hsl(var(--background));
+}
+
+
+/* ==========================================================================
+   4. ANIMAÇÕES
+   ========================================================================== */
 
 @keyframes liquid-drift {
     0%   { background-position: 30% 20%; transform: scale(1) translateX(0); }
@@ -120,330 +152,36 @@ body.scanline::before {
     100% { transform: scale(1.02) translateX(12px) translateY(-8px); }
 }
 
-/* ========================================== */
-/* REGIÃO DE STATUS (acessibilidade) */
-/* ========================================== */
-#status-region {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid hsl(var(--border));
-    border-left: 3px solid hsl(var(--foreground));
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.07),
-        inset 0 -1px 0 rgba(0,0,0,0.3),
-        0 4px 24px rgba(0,0,0,0.4);
-    padding: var(--space-2) var(--space-3);
-    margin-bottom: var(--space-2);
-    color: hsl(var(--muted-foreground));
-    font-size: 0.85rem;
-    letter-spacing: 0.04em;
-    min-height: 50px;
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    align-items: center;
-    transition: border-color 0.3s ease;
-}
-
-/* ========================================== */
-/* ESTADOS DA TELA */
-/* ========================================== */
-
-.estado-carregando,
-.estado-vazio,
-.estado-erro {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-5) var(--space-3);
-    gap: var(--space-3);
-    min-height: 300px;
-    border: 1px solid hsl(var(--border));
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-}
-
-.estado-carregando p,
-.estado-vazio p {
-    color: hsl(var(--muted-foreground));
-    font-size: 0.95rem;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.spinner {
-    border: 4px solid hsl(var(--border));
-    border-top: 4px solid hsl(var(--foreground));
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: girar 0.8s linear infinite;
-}
-
 @keyframes girar {
     to { transform: rotate(360deg); }
 }
 
-.estado-vazio .subtitulo {
-    font-size: 0.85rem;
-    color: hsl(var(--terminal-dim));
-    opacity: 0.8;
+@keyframes caret-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
 }
 
-.estado-erro {
-    border: 1px solid hsl(var(--destructive) / 0.5);
-    background: hsl(var(--destructive) / 0.06);
+@keyframes pulse-dot {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 hsl(var(--terminal-green) / 0.5); }
+    50% { opacity: 0.6; box-shadow: 0 0 0 4px hsl(var(--terminal-green) / 0); }
 }
 
-.estado-erro p {
-    font-size: 1rem;
-    color: hsl(var(--destructive-foreground));
-    text-align: center;
-    max-width: 600px;
-}
 
-/* ========================================== */
-/* CONTAINER DINÂMICO DE TAREFAS */
-/* ========================================== */
-#tarefas-container {
-    width: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-4);
-    transition: opacity 0.3s ease;
-}
+/* ==========================================================================
+   5. HEADER
+   ========================================================================== */
 
-#tarefas-container section {
-    position: relative;
-    overflow: hidden;
-    border: 1px solid hsl(var(--border));
-    background: rgba(255,255,255,0.03);
-    backdrop-filter: blur(16px) saturate(140%);
-    -webkit-backdrop-filter: blur(16px) saturate(140%);
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.07),
-        inset 0 -1px 0 rgba(0,0,0,0.3),
-        0 4px 24px rgba(0,0,0,0.4);
-    padding: var(--space-3);
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    gap: var(--space-3);
-}
-
-#tarefas-container section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.06) 0%, transparent 70%);
-    animation: liquid-drift 12s ease-in-out infinite alternate;
-    z-index: 0;
-}
-
-#tarefas-container section > * {
-    position: relative;
-    z-index: 1;
-}
-
-#tarefas-container section h2 {
-    font-size: clamp(0.85rem, 0.8rem + 0.4vw, 1rem);
-    font-weight: 700;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: hsl(var(--foreground));
-    padding-bottom: var(--space-2);
-    border-bottom: 3px solid hsl(var(--border));
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-}
-
-#tarefas-container section h2::before {
-    content: '//';
-    color: hsl(var(--terminal-dim));
-    font-weight: 700;
-    letter-spacing: 0;
-}
-
-/* Cores das bordas por status: mantidas como tons monocromáticos do terminal */
-#tarefas-container section[data-status="fazer"] h2 { border-bottom-color: hsl(var(--terminal-dim)); }
-#tarefas-container section[data-status="andamento"] h2 { border-bottom-color: hsl(var(--terminal-cyan)); }
-#tarefas-container section[data-status="revisao"] h2 { border-bottom-color: hsl(var(--terminal-amber)); }
-#tarefas-container section[data-status="concluida"] h2 { border-bottom-color: hsl(var(--terminal-green)); }
-
-#tarefas-container ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-    min-width: 0;
-}
-
-#tarefas-container ul li {
-    background: hsl(var(--secondary) / 0.6);
-    border: 1px solid hsl(var(--border));
-    border-left: 3px solid hsl(var(--foreground));
-    padding: var(--space-3);
-    min-width: 0;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    transition: border-color 0.25s var(--ease-glass), background-color 0.25s var(--ease-glass),
-        transform 0.25s var(--ease-glass), box-shadow 0.25s var(--ease-glass);
-}
-
-#tarefas-container ul li:hover {
-    border-color: hsl(var(--foreground));
-    background: hsl(var(--secondary) / 0.9);
-    transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
-}
-
-#tarefas-container ul li article {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    min-width: 0;
-    gap: var(--space-2);
-}
-
-#tarefas-container ul li article h3 {
-    flex: 1 1 auto;
-    min-width: 0;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: hsl(var(--foreground));
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-#tarefas-container ul li article p {
-    flex: 0 0 auto;
-    font-size: 0.82rem;
-    color: hsl(var(--muted-foreground));
-    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
-}
-
-#tarefas-container ul li article p strong {
-    color: hsl(var(--foreground));
-}
-
-#tarefas-container ul li article p:last-of-type {
-    margin-top: auto;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--space-1);
-    width: fit-content;
-    padding: var(--space-1) var(--space-2);
-    border: 1px solid hsl(var(--foreground));
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    font-size: 0.7rem;
-    color: hsl(var(--foreground));
-}
-
-#tarefas-container ul li article p:last-of-type::before {
-    content: '';
-    display: inline-block;
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
-}
-
-/* ========================================== */
-/* PRIORIDADES — o único lugar do sistema com cor saturada */
-/* vermelho / laranja / verde, sobre o mesmo vidro fosco do resto da UI */
-/* ========================================== */
-#tarefas-container ul li.prioridade-alta {
-    background:
-        linear-gradient(135deg, hsl(var(--priority-high) / 0.28), hsl(var(--priority-high) / 0.10)) !important;
-    border-color: hsl(var(--priority-high) / 0.55) !important;
-    border-left-color: hsl(var(--priority-high)) !important;
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        0 0 24px hsl(var(--priority-high) / 0.12) !important;
-}
-
-#tarefas-container ul li.prioridade-alta article h3,
-#tarefas-container ul li.prioridade-alta article p,
-#tarefas-container ul li.prioridade-alta article p strong {
-    color: hsl(var(--foreground)) !important;
-}
-
-#tarefas-container ul li.prioridade-alta article p:last-of-type {
-    border-color: hsl(var(--priority-high)) !important;
-    color: hsl(var(--priority-high)) !important;
-    background: hsl(var(--priority-high) / 0.12) !important;
-}
-
-#tarefas-container ul li.prioridade-media {
-    background:
-        linear-gradient(135deg, hsl(var(--priority-medium) / 0.26), hsl(var(--priority-medium) / 0.09)) !important;
-    border-color: hsl(var(--priority-medium) / 0.55) !important;
-    border-left-color: hsl(var(--priority-medium)) !important;
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        0 0 24px hsl(var(--priority-medium) / 0.12) !important;
-}
-
-#tarefas-container ul li.prioridade-media article h3,
-#tarefas-container ul li.prioridade-media article p,
-#tarefas-container ul li.prioridade-media article p strong {
-    color: hsl(var(--foreground)) !important;
-}
-
-#tarefas-container ul li.prioridade-media article p:last-of-type {
-    border-color: hsl(var(--priority-medium)) !important;
-    color: hsl(var(--priority-medium)) !important;
-    background: hsl(var(--priority-medium) / 0.12) !important;
-}
-
-#tarefas-container ul li.prioridade-baixa {
-    background:
-        linear-gradient(135deg, hsl(var(--priority-low) / 0.24), hsl(var(--priority-low) / 0.08)) !important;
-    border-color: hsl(var(--priority-low) / 0.5) !important;
-    border-left-color: hsl(var(--priority-low)) !important;
-    box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.08),
-        0 0 24px hsl(var(--priority-low) / 0.1) !important;
-}
-
-#tarefas-container ul li.prioridade-baixa article h3,
-#tarefas-container ul li.prioridade-baixa article p,
-#tarefas-container ul li.prioridade-baixa article p strong {
-    color: hsl(var(--foreground)) !important;
-}
-
-#tarefas-container ul li.prioridade-baixa article p:last-of-type {
-    border-color: hsl(var(--priority-low)) !important;
-    color: hsl(var(--priority-low)) !important;
-    background: hsl(var(--priority-low) / 0.12) !important;
-}
-
-/* ========================================== */
-/* HEADER */
-/* ========================================== */
 header {
     position: relative;
     overflow: hidden;
     border: 1px solid hsl(var(--border) / 1.5);
-    background: rgba(255,255,255,0.05);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(24px) saturate(160%);
     -webkit-backdrop-filter: blur(24px) saturate(160%);
     box-shadow:
-        inset 0 1px 0 rgba(255,255,255,0.14),
-        inset 0 -1px 0 rgba(0,0,0,0.4),
-        0 8px 40px rgba(0,0,0,0.5);
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.4),
+        0 8px 40px rgba(0, 0, 0, 0.5);
     color: hsl(var(--foreground));
     padding: var(--space-4) var(--space-3);
     width: 100%;
@@ -451,7 +189,6 @@ header {
     text-align: center;
 }
 
-/* Cantos em estilo HUD — reforça a identidade de terminal/console */
 header::after {
     content: '';
     position: absolute;
@@ -466,7 +203,7 @@ header::before {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: radial-gradient(ellipse 70% 50% at 20% 15%, rgba(255,255,255,0.10) 0%, transparent 65%);
+    background: radial-gradient(ellipse 70% 50% at 20% 15%, rgba(255, 255, 255, 0.10) 0%, transparent 65%);
     animation: liquid-drift 8s ease-in-out infinite alternate;
     z-index: 0;
 }
@@ -496,16 +233,6 @@ header h1::after {
     animation: caret-blink 1s steps(2) infinite;
 }
 
-@keyframes caret-blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
-}
-
-@keyframes pulse-dot {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 hsl(var(--terminal-green) / 0.5); }
-    50% { opacity: 0.6; box-shadow: 0 0 0 4px hsl(var(--terminal-green) / 0); }
-}
-
 header p {
     font-size: clamp(0.8rem, 0.7rem + 0.4vw, 0.95rem);
     color: hsl(var(--muted-foreground));
@@ -529,12 +256,180 @@ header p::before {
     flex-shrink: 0;
 }
 
-/* ========================================== */
-/* BUSCA E FILTROS */
-/* ========================================== */
+
+/* ==========================================================================
+   6. ALTERNADOR DE MODOS (nav)
+   ========================================================================== */
+
+nav.modos {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+    padding: var(--space-2);
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+}
+
+nav.modos button {
+    flex: 1 1 auto;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--secondary) / 0.8);
+    color: hsl(var(--muted-foreground));
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s var(--ease-glass);
+}
+
+nav.modos button:hover {
+    border-color: hsl(var(--foreground));
+    color: hsl(var(--foreground));
+}
+
+nav.modos button.ativo {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   7. REGIÃO DE STATUS (acessibilidade)
+   ========================================================================== */
+
+#status-region {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--foreground));
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+        0 4px 24px rgba(0, 0, 0, 0.4);
+    padding: var(--space-2) var(--space-3);
+    color: hsl(var(--muted-foreground));
+    font-size: 0.85rem;
+    letter-spacing: 0.04em;
+    min-height: 50px;
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    align-items: center;
+}
+
+
+/* ==========================================================================
+   8. MODOS (seções)
+   ========================================================================== */
+
+.modo {
+    display: none;
+    width: 100%;
+    max-width: 1200px;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.modo.ativo {
+    display: flex;
+}
+
+.modo h2 {
+    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+    color: hsl(var(--foreground));
+    padding-bottom: var(--space-2);
+    border-bottom: 3px solid hsl(var(--border));
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.modo .aviso {
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    padding: var(--space-4);
+    text-align: center;
+    background: hsl(var(--card) / 0.6);
+    border: 1px dashed hsl(var(--border));
+}
+
+
+/* ==========================================================================
+   9. ESTADOS DA TELA (carregando, vazio, erro, origem-vazia)
+   ========================================================================== */
+
+.estado-carregando,
+.estado-vazio,
+.estado-erro {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-5) var(--space-3);
+    gap: var(--space-3);
+    min-height: 300px;
+    border: 1px solid hsl(var(--border));
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.estado-carregando p,
+.estado-vazio p {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.spinner {
+    border: 4px solid hsl(var(--border));
+    border-top: 4px solid hsl(var(--foreground));
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: girar 0.8s linear infinite;
+}
+
+.estado-vazio .subtitulo {
+    font-size: 0.85rem;
+    color: hsl(var(--terminal-dim));
+    opacity: 0.8;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.estado-erro {
+    border: 1px solid hsl(var(--destructive) / 0.5);
+    background: hsl(var(--destructive) / 0.06);
+}
+
+.estado-erro p {
+    font-size: 1rem;
+    color: hsl(var(--destructive-foreground));
+    text-align: center;
+    max-width: 600px;
+}
+
+
+/* ==========================================================================
+   10. BUSCA E FILTROS
+   ========================================================================== */
+
 .busca-filtros {
     border: 1px solid hsl(var(--border));
-    background: rgba(255,255,255,0.03);
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(16px) saturate(140%);
     -webkit-backdrop-filter: blur(16px) saturate(140%);
     padding: var(--space-3);
@@ -639,7 +534,7 @@ header p::before {
     font-family: inherit;
     cursor: pointer;
     border-radius: 0;
-    transition: background-color 0.25s var(--ease-glass), color 0.25s var(--ease-glass), border-color 0.25s var(--ease-glass);
+    transition: all 0.25s var(--ease-glass);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -669,9 +564,11 @@ header p::before {
     background: hsl(var(--secondary) / 0.6);
 }
 
-/* ========================================== */
-/* MAIN */
-/* ========================================== */
+
+/* ==========================================================================
+   11. MAIN
+   ========================================================================== */
+
 main {
     width: 100%;
     max-width: 1200px;
@@ -680,9 +577,1004 @@ main {
     gap: var(--space-3);
 }
 
-/* ========================================== */
-/* FOOTER */
-/* ========================================== */
+
+/* ==========================================================================
+   12. MODO KANBAN
+   ========================================================================== */
+
+#tarefas-container {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+}
+
+#tarefas-container section {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid hsl(var(--border));
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.07),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+        0 4px 24px rgba(0, 0, 0, 0.4);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    gap: var(--space-3);
+}
+
+#tarefas-container section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+    animation: liquid-drift 12s ease-in-out infinite alternate;
+    z-index: 0;
+}
+
+#tarefas-container section > * {
+    position: relative;
+    z-index: 1;
+}
+
+#tarefas-container section h2 {
+    font-size: clamp(0.85rem, 0.8rem + 0.4vw, 1rem);
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: hsl(var(--foreground));
+    padding-bottom: var(--space-2);
+    border-bottom: 3px solid hsl(var(--border));
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+}
+
+#tarefas-container section h2::before {
+    content: '//';
+    color: hsl(var(--terminal-dim));
+    font-weight: 700;
+    letter-spacing: 0;
+}
+
+#tarefas-container section[data-status="fazer"] h2 { border-bottom-color: hsl(var(--terminal-dim)); }
+#tarefas-container section[data-status="andamento"] h2 { border-bottom-color: hsl(var(--terminal-cyan)); }
+#tarefas-container section[data-status="revisao"] h2 { border-bottom-color: hsl(var(--terminal-amber)); }
+#tarefas-container section[data-status="concluida"] h2 { border-bottom-color: hsl(var(--terminal-green)); }
+
+#tarefas-container ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    min-width: 0;
+}
+
+#tarefas-container ul li {
+    background: hsl(var(--secondary) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--foreground));
+    padding: var(--space-3);
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    transition: all 0.25s var(--ease-glass);
+}
+
+#tarefas-container ul li:hover {
+    border-color: hsl(var(--foreground));
+    background: hsl(var(--secondary) / 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+#tarefas-container ul li article {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    gap: var(--space-2);
+}
+
+#tarefas-container ul li article h3 {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#tarefas-container ul li article p {
+    flex: 0 0 auto;
+    font-size: 0.82rem;
+    color: hsl(var(--muted-foreground));
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+}
+
+#tarefas-container ul li article p strong {
+    color: hsl(var(--foreground));
+}
+
+#tarefas-container ul li article p:last-of-type {
+    margin-top: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    width: fit-content;
+    padding: var(--space-1) var(--space-2);
+    border: 1px solid hsl(var(--foreground));
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: hsl(var(--foreground));
+}
+
+#tarefas-container ul li article p:last-of-type::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    flex-shrink: 0;
+}
+
+/* Prioridades */
+#tarefas-container ul li.prioridade-alta {
+    background: linear-gradient(135deg, hsl(var(--priority-high) / 0.28), hsl(var(--priority-high) / 0.10)) !important;
+    border-color: hsl(var(--priority-high) / 0.55) !important;
+    border-left-color: hsl(var(--priority-high)) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 24px hsl(var(--priority-high) / 0.12) !important;
+}
+
+#tarefas-container ul li.prioridade-alta article p:last-of-type {
+    border-color: hsl(var(--priority-high)) !important;
+    color: hsl(var(--priority-high)) !important;
+    background: hsl(var(--priority-high) / 0.12) !important;
+}
+
+#tarefas-container ul li.prioridade-media {
+    background: linear-gradient(135deg, hsl(var(--priority-medium) / 0.26), hsl(var(--priority-medium) / 0.09)) !important;
+    border-color: hsl(var(--priority-medium) / 0.55) !important;
+    border-left-color: hsl(var(--priority-medium)) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 24px hsl(var(--priority-medium) / 0.12) !important;
+}
+
+#tarefas-container ul li.prioridade-media article p:last-of-type {
+    border-color: hsl(var(--priority-medium)) !important;
+    color: hsl(var(--priority-medium)) !important;
+    background: hsl(var(--priority-medium) / 0.12) !important;
+}
+
+#tarefas-container ul li.prioridade-baixa {
+    background: linear-gradient(135deg, hsl(var(--priority-low) / 0.24), hsl(var(--priority-low) / 0.08)) !important;
+    border-color: hsl(var(--priority-low) / 0.5) !important;
+    border-left-color: hsl(var(--priority-low)) !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 24px hsl(var(--priority-low) / 0.1) !important;
+}
+
+#tarefas-container ul li.prioridade-baixa article p:last-of-type {
+    border-color: hsl(var(--priority-low)) !important;
+    color: hsl(var(--priority-low)) !important;
+    background: hsl(var(--priority-low) / 0.12) !important;
+}
+
+/* Título do cartão mantém texto claro em qualquer prioridade */
+#tarefas-container ul li.prioridade-alta article h3,
+#tarefas-container ul li.prioridade-alta article p,
+#tarefas-container ul li.prioridade-alta article p strong,
+#tarefas-container ul li.prioridade-media article h3,
+#tarefas-container ul li.prioridade-media article p,
+#tarefas-container ul li.prioridade-media article p strong,
+#tarefas-container ul li.prioridade-baixa article h3,
+#tarefas-container ul li.prioridade-baixa article p,
+#tarefas-container ul li.prioridade-baixa article p strong {
+    color: hsl(var(--foreground)) !important;
+}
+
+/* Drag & Drop */
+.coluna-drop {
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.coluna-drop.drop-ativa {
+    background: hsl(var(--foreground) / 0.05);
+    border-color: hsl(var(--foreground));
+}
+
+.coluna-vazia {
+    padding: var(--space-3);
+    text-align: center;
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    font-size: 0.85rem;
+    border: 2px dashed hsl(var(--border));
+    background: transparent;
+    list-style: none;
+}
+
+li.arrastando {
+    opacity: 0.5;
+    transform: scale(0.98);
+}
+
+li[draggable="true"] {
+    cursor: grab;
+}
+
+li[draggable="true"]:active {
+    cursor: grabbing;
+}
+
+/* Ações da tarefa concluída (arquivar + excluir) */
+.acoes-concluida {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.btn-arquivar {
+    padding: var(--space-1) var(--space-2);
+    background: hsl(var(--terminal-cyan) / 0.2);
+    color: hsl(var(--terminal-cyan));
+    border: 1px solid hsl(var(--terminal-cyan));
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-arquivar:hover {
+    background: hsl(var(--terminal-cyan));
+    color: hsl(var(--background));
+}
+
+.btn-excluir {
+    padding: var(--space-1) var(--space-2);
+    background: hsl(var(--priority-high) / 0.15);
+    color: hsl(var(--priority-high));
+    border: 1px solid hsl(var(--priority-high));
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-excluir:hover {
+    background: hsl(var(--priority-high));
+    color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   13. TAGS (compartilhado entre Kanban, Acervo, Modal)
+   ========================================================================== */
+
+.tags-cartao {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-1);
+    margin-top: var(--space-1);
+}
+
+.tag {
+    display: inline-block;
+    padding: 2px 8px;
+    background: hsl(var(--foreground) / 0.08);
+    border: 1px solid hsl(var(--border));
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.prioridade-alta .tag,
+.prioridade-media .tag,
+.prioridade-baixa .tag {
+    background: hsl(var(--foreground) / 0.12);
+    border-color: hsl(var(--foreground) / 0.3);
+    color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   14. BARRA DE AÇÕES DO KANBAN (Nova Tarefa)
+   ========================================================================== */
+
+.barra-acoes-kanban {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.btn-nova-tarefa {
+    padding: var(--space-2) var(--space-4);
+    background: hsl(var(--terminal-green) / 0.2);
+    color: hsl(var(--terminal-green));
+    border: 1px solid hsl(var(--terminal-green));
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 2.75rem;
+}
+
+.btn-nova-tarefa:hover {
+    background: hsl(var(--terminal-green));
+    color: hsl(var(--background));
+}
+
+
+/* ==========================================================================
+   15. MODO ACERVO
+   ========================================================================== */
+
+#modo-acervo .busca-filtros,
+#modo-mapa .busca-filtros,
+#modo-legado .busca-filtros {
+    flex-direction: column;
+    align-items: stretch;
+}
+
+#busca-acervo,
+#busca-legado {
+    width: 100%;
+    min-height: 2.75rem;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--secondary) / 0.8);
+    color: hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+#busca-acervo:focus-visible,
+#busca-legado:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-color: hsl(var(--foreground) / 0.8);
+}
+
+.tags-disponiveis {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.label-tags {
+    font-weight: 700;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+}
+
+.lista-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+}
+
+.tag-filtro {
+    padding: var(--space-1) var(--space-2);
+    background: hsl(var(--secondary) / 0.6);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--muted-foreground));
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.tag-filtro:hover {
+    border-color: hsl(var(--foreground));
+    color: hsl(var(--foreground));
+}
+
+.tag-filtro.ativa {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+}
+
+#acervo-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+.cartao-acervo {
+    background: hsl(var(--secondary) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--terminal-green));
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.acervo-cabecalho {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.acervo-cabecalho h3 {
+    color: hsl(var(--foreground));
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.data-conclusao {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.8rem;
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+}
+
+.resumo-aprendizados {
+    background: hsl(var(--background) / 0.5);
+    padding: var(--space-2);
+    border: 1px solid hsl(var(--border));
+    font-size: 0.85rem;
+}
+
+.resumo-aprendizados strong {
+    color: hsl(var(--terminal-amber));
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.resumo-aprendizados ul {
+    margin-top: var(--space-1);
+    padding-left: var(--space-4);
+    color: hsl(var(--muted-foreground));
+}
+
+.contagem-anotacoes {
+    display: inline-block;
+    padding: var(--space-1) var(--space-2);
+    background: hsl(var(--terminal-amber) / 0.1);
+    border: 1px solid hsl(var(--terminal-amber) / 0.5);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: hsl(var(--terminal-amber));
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    width: fit-content;
+}
+
+.acervo-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.btn-acervo {
+    flex: 1 1 auto;
+    padding: var(--space-1) var(--space-2);
+    background: transparent;
+    border: 1px solid hsl(var(--foreground) / 0.4);
+    color: hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-acervo:hover {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+}
+
+.btn-evoluir-acervo {
+    background: hsl(var(--terminal-green) / 0.15);
+    color: hsl(var(--terminal-green)) !important;
+    border-color: hsl(var(--terminal-green)) !important;
+}
+
+.btn-evoluir-acervo:hover {
+    background: hsl(var(--terminal-green)) !important;
+    color: hsl(var(--background)) !important;
+}
+
+
+/* ==========================================================================
+   16. MODO MAPA
+   ========================================================================== */
+
+#mapa-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.mapa-info {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.85rem;
+    text-align: center;
+    padding: var(--space-2);
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+    letter-spacing: 0.05em;
+}
+
+.mapa-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.mapa-lateral {
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+    padding: var(--space-3);
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.mapa-lateral h3 {
+    color: hsl(var(--foreground));
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid hsl(var(--border));
+}
+
+.mapa-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+}
+
+.mapa-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    border: 1px solid hsl(var(--border));
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mapa-item:hover {
+    border-color: hsl(var(--foreground));
+    background: hsl(var(--secondary) / 0.5);
+}
+
+.mapa-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1px solid hsl(var(--background));
+}
+
+.mapa-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.mapa-item-info strong {
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mapa-item-info small {
+    font-size: 0.68rem;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.mapa-grafo {
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+    padding: var(--space-3);
+    overflow-x: auto;
+}
+
+.mapa-svg {
+    width: 100%;
+    height: auto;
+    min-width: 600px;
+    display: block;
+}
+
+.mapa-no {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.mapa-no:hover {
+    opacity: 0.7;
+}
+
+.mapa-no circle {
+    transition: r 0.2s ease;
+}
+
+.mapa-no:hover circle {
+    r: 32;
+}
+
+
+/* ==========================================================================
+   17. MODO LEGADO
+   ========================================================================== */
+
+#legado-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+.cartao-legado {
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--terminal-amber));
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.legado-cabecalho {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.legado-cabecalho h3 {
+    color: hsl(var(--foreground));
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.data-publicacao {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.8rem;
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+}
+
+.legado-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.btn-legado {
+    flex: 1 1 auto;
+    padding: var(--space-1) var(--space-2);
+    background: transparent;
+    border: 1px solid hsl(var(--foreground) / 0.4);
+    color: hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-legado:hover {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   18. MODAL
+   ========================================================================== */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-3);
+    z-index: 1000;
+}
+
+.modal[hidden] {
+    display: none;
+}
+
+.modal-conteudo {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--border));
+    padding: var(--space-4);
+    max-width: 700px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.modal-fechar {
+    position: absolute;
+    top: var(--space-2);
+    right: var(--space-2);
+    background: transparent;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.modal-fechar:hover {
+    border-color: hsl(var(--foreground));
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+}
+
+#modal-corpo h2 {
+    color: hsl(var(--foreground));
+    margin-bottom: var(--space-3);
+    font-size: 1.15rem;
+    letter-spacing: 0.05em;
+}
+
+#modal-corpo h3 {
+    color: hsl(var(--terminal-amber));
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-2);
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+#modal-corpo p {
+    margin-bottom: var(--space-1);
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+}
+
+#modal-corpo ul,
+#modal-corpo ol {
+    padding-left: var(--space-4);
+    color: hsl(var(--muted-foreground));
+    margin-bottom: var(--space-2);
+    font-size: 0.9rem;
+}
+
+#modal-corpo .subtitulo {
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    margin-bottom: var(--space-3);
+}
+
+/* Timeline de anotações */
+.timeline {
+    list-style: none;
+    padding-left: 0;
+}
+
+.timeline li {
+    padding: var(--space-2) 0;
+    border-left: 2px solid hsl(var(--terminal-amber));
+    padding-left: var(--space-3);
+    margin-left: var(--space-2);
+    font-size: 0.88rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.timeline li strong {
+    color: hsl(var(--terminal-amber));
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+}
+
+.sem-anotacoes {
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    font-size: 0.88rem;
+}
+
+
+/* ==========================================================================
+   19. FORMULÁRIOS (anotação, evolução, nova tarefa)
+   ========================================================================== */
+
+.form-anotacao,
+.form-evolucao {
+    margin-top: var(--space-4);
+    padding-top: var(--space-3);
+    border-top: 2px solid hsl(var(--border));
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.form-evolucao {
+    border-top: none;
+    padding-top: 0;
+    margin-top: var(--space-3);
+}
+
+.form-anotacao label,
+.form-evolucao label {
+    font-weight: 700;
+    color: hsl(var(--terminal-amber));
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.form-anotacao textarea,
+.form-evolucao textarea,
+.form-evolucao select,
+.form-evolucao input[type="text"] {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--background) / 0.6);
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--border));
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 2.75rem;
+}
+
+.form-anotacao textarea {
+    min-height: 80px;
+}
+
+.form-evolucao textarea {
+    min-height: 60px;
+}
+
+.form-anotacao textarea:focus-visible,
+.form-evolucao textarea:focus-visible,
+.form-evolucao select:focus-visible,
+.form-evolucao input:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-color: hsl(var(--foreground) / 0.8);
+}
+
+.btn-anotar {
+    align-self: flex-start;
+    padding: var(--space-2) var(--space-4);
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border: 1px solid hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-anotar:hover {
+    background: transparent;
+    color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   20. AÇÕES AVANÇADAS (details/summary no modal)
+   ========================================================================== */
+
+.acoes-avancadas {
+    margin-top: var(--space-3);
+    border-top: 1px solid hsl(var(--border));
+    padding-top: var(--space-2);
+}
+
+.acoes-avancadas summary {
+    cursor: pointer;
+    color: hsl(var(--muted-foreground));
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: var(--space-2);
+    list-style: none;
+    user-select: none;
+    transition: color 0.2s ease;
+}
+
+.acoes-avancadas summary:hover {
+    color: hsl(var(--foreground));
+}
+
+.acoes-avancadas summary::-webkit-details-marker {
+    display: none;
+}
+
+.acoes-avancadas-conteudo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-2) 0;
+}
+
+.btn-acao-avancada {
+    padding: var(--space-2) var(--space-3);
+    background: transparent;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.2s ease;
+}
+
+.btn-acao-avancada:hover {
+    border-color: hsl(var(--foreground));
+    background: hsl(var(--foreground) / 0.05);
+}
+
+.btn-acao-perigo {
+    border-color: hsl(var(--priority-high) / 0.6);
+    color: hsl(var(--priority-high));
+}
+
+.btn-acao-perigo:hover {
+    background: hsl(var(--priority-high));
+    border-color: hsl(var(--priority-high));
+    color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   21. FOOTER
+   ========================================================================== */
+
 footer {
     position: relative;
     background: linear-gradient(180deg, hsl(220 42% 14%), hsl(216 32% 10%));
@@ -694,7 +1586,6 @@ footer {
     letter-spacing: 0.05em;
     width: 100%;
     max-width: 1200px;
-    border-radius: 0;
     margin-top: auto;
     display: flex;
     flex-direction: column;
@@ -758,9 +1649,10 @@ footer::before {
     width: 58px;
 }
 
-/* ========================================== */
-/* BREAKPOINTS */
-/* ========================================== */
+
+/* ==========================================================================
+   22. BREAKPOINTS
+   ========================================================================== */
 
 @media (min-width: 600px) {
     .busca-filtros {
@@ -794,6 +1686,28 @@ footer::before {
     .estado-erro {
         grid-column: 1 / -1;
     }
+
+    #acervo-container,
+    #legado-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 900px) {
+    .mapa-layout {
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .mapa-lateral {
+        width: 280px;
+        flex-shrink: 0;
+    }
+
+    .mapa-grafo {
+        flex: 1;
+        min-width: 0;
+    }
 }
 
 @media (min-width: 1080px) {
@@ -806,12 +1720,16 @@ footer::before {
     .estado-erro {
         grid-column: 1 / -1;
     }
+
+    #acervo-container,
+    #legado-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
     header::before,
     #tarefas-container section::before,
-    body.scanline::before,
     header h1::after,
     header p::before {
         animation: none;
@@ -820,1099 +1738,4 @@ footer::before {
     #tarefas-container ul li {
         transition: none;
     }
-}
-
-/* ========================================== */
-/* AJUSTES FINOS */
-/* ========================================== */
-#tarefas-container section {
-    min-width: 0;
-    overflow: hidden;
-}
-
-#tarefas-container ul {
-    min-width: 0;
-}
-
-.tarefas-vazias {
-    color: hsl(var(--terminal-dim));
-    font-style: italic;
-    text-align: center;
-    padding: var(--space-3);
-    opacity: 0.6;
-}
-
-/*Parte de releitura*/
-/* ========================================== */
-/* ALTERNADOR DE MODOS */
-/* ========================================== */
-nav.modos {
-    display: flex;
-    gap: var(--space-2);
-    flex-wrap: wrap;
-    justify-content: center;
-    width: 100%;
-    max-width: 1200px;
-    padding: var(--space-2);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-}
-
-nav.modos button {
-    flex: 1 1 auto;
-    min-height: 2.75rem;
-    padding: var(--space-2) var(--space-3);
-    border: 1px solid var(--color-border);
-    background: var(--color-surface-alt);
-    color: var(--color-text-muted);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius);
-    transition: all 0.2s ease;
-}
-
-nav.modos button:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-}
-
-nav.modos button.ativo {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    border-color: var(--color-accent);
-}
-
-/* ========================================== */
-/* MODOS (seções) */
-/* ========================================== */
-.modo {
-    display: none;
-    width: 100%;
-    max-width: 1200px;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-.modo.ativo {
-    display: flex;
-}
-
-.modo h2 {
-    font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
-    color: var(--color-accent);
-    padding-bottom: var(--space-2);
-    border-bottom: 3px solid var(--color-border);
-}
-
-.modo .aviso {
-    color: var(--color-text-muted);
-    font-style: italic;
-    padding: var(--space-4);
-    text-align: center;
-    background: var(--color-surface);
-    border: 1px dashed var(--color-border);
-    border-radius: var(--radius);
-}
-
-/* ========================================== */
-/* MODAL */
-/* ========================================== */
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: var(--space-3);
-    z-index: 1000;
-}
-
-.modal[hidden] {
-    display: none;
-}
-
-.modal-conteudo {
-    background: var(--color-surface);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius);
-    padding: var(--space-4);
-    max-width: 700px;
-    width: 100%;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-}
-
-.modal-fechar {
-    position: absolute;
-    top: var(--space-2);
-    right: var(--space-2);
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
-    border-radius: var(--radius);
-    font-size: 1rem;
-}
-
-.modal-fechar:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-    opacity: 0.7;
-}
-
-::selection {
-    background: hsl(var(--foreground));
-    color: hsl(var(--background));
-}
-
-/* Scrollbar discreta, coerente com o vidro do resto da interface */
-::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-}
-
-::-webkit-scrollbar-track {
-    background: hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb {
-    background: hsl(var(--border));
-    border: 2px solid hsl(var(--background));
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--terminal-dim));
-}
-
-* {
-    scrollbar-width: thin;
-    scrollbar-color: hsl(var(--border)) hsl(var(--background));
-}
-
-/* ========================================== */
-/* TAGS NOS CARTÕES */
-/* ========================================== */
-.tags-cartao {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1);
-    margin-top: var(--space-1);
-}
-
-.tag {
-    display: inline-block;
-    padding: 2px 8px;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--radius);
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: inherit;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Em cartões de prioridade alta/média/baixa, as tags ficam claras */
-.prioridade-alta .tag,
-.prioridade-media .tag,
-.prioridade-baixa .tag {
-    background: rgba(255, 255, 255, 0.25);
-    border-color: rgba(255, 255, 255, 0.5);
-    color: #ffffff;
-}
-
-/* ========================================== */
-/* BOTÃO ARQUIVAR NO ACERVO */
-/* ========================================== */
-.btn-arquivar {
-    margin-top: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-arquivar:hover {
-    background: var(--color-accent-dim);
-}
-
-/* ========================================== */
-/* MODO ACERVO */
-/* ========================================== */
-#modo-acervo .busca-filtros {
-    flex-direction: column;
-    align-items: stretch;
-}
-
-.tags-disponiveis {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.label-tags {
-    font-weight: 600;
-    color: var(--color-accent);
-    font-size: 0.95rem;
-}
-
-.lista-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-}
-
-.tag-filtro {
-    padding: var(--space-1) var(--space-2);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-text-muted);
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius);
-    transition: all 0.2s ease;
-}
-
-.tag-filtro:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-}
-
-.tag-filtro.ativa {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    border-color: var(--color-accent);
-}
-
-/* ========================================== */
-/* CARTÕES DO ACERVO */
-/* ========================================== */
-#acervo-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-}
-
-.cartao-acervo {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-left: 6px solid var(--color-accent);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.acervo-cabecalho {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-}
-
-.acervo-cabecalho h3 {
-    color: var(--color-text);
-    font-size: 1.05rem;
-}
-
-.data-conclusao {
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-}
-
-.resumo-aprendizados {
-    background: var(--color-surface-alt);
-    padding: var(--space-2);
-    border-radius: var(--radius);
-    font-size: 0.9rem;
-}
-
-.resumo-aprendizados strong {
-    color: var(--color-accent);
-}
-
-.resumo-aprendizados ul {
-    margin-top: var(--space-1);
-    padding-left: var(--space-4);
-    color: var(--color-text-muted);
-}
-
-.acervo-acoes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-2);
-}
-
-.btn-acervo {
-    flex: 1 1 auto;
-    padding: var(--space-1) var(--space-2);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-accent);
-    color: var(--color-accent);
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius);
-    transition: all 0.2s ease;
-}
-
-.btn-acervo:hover {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-}
-
-/* Timeline de anotações no modal */
-.timeline {
-    list-style: none;
-    padding-left: 0;
-}
-
-.timeline li {
-    padding: var(--space-2) 0;
-    border-left: 2px solid var(--color-accent);
-    padding-left: var(--space-3);
-    margin-left: var(--space-2);
-}
-
-/* Modal */
-#modal-corpo h2 {
-    color: var(--color-accent);
-    margin-bottom: var(--space-3);
-}
-
-#modal-corpo h3 {
-    color: var(--color-accent);
-    margin-top: var(--space-3);
-    margin-bottom: var(--space-2);
-    font-size: 1rem;
-}
-
-#modal-corpo p {
-    margin-bottom: var(--space-1);
-    color: var(--color-text-muted);
-}
-
-#modal-corpo ul, #modal-corpo ol {
-    padding-left: var(--space-4);
-    color: var(--color-text-muted);
-    margin-bottom: var(--space-2);
-}
-
-@media (min-width: 680px) {
-    #acervo-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1080px) {
-    #acervo-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* ========================================== */
-/* FORMULÁRIO DE ANOTAÇÃO */
-/* ========================================== */
-.form-anotacao {
-    margin-top: var(--space-4);
-    padding-top: var(--space-3);
-    border-top: 2px solid var(--color-border);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.form-anotacao label {
-    font-weight: 600;
-    color: var(--color-accent);
-    font-size: 0.95rem;
-}
-
-.form-anotacao textarea {
-    width: 100%;
-    padding: var(--space-2);
-    background: var(--color-surface-alt);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    resize: vertical;
-    min-height: 80px;
-}
-
-.form-anotacao textarea:focus-visible {
-    outline: var(--focus-ring);
-    outline-offset: 2px;
-    border-color: var(--color-accent);
-}
-
-.btn-anotar {
-    align-self: flex-start;
-    padding: var(--space-2) var(--space-4);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-anotar:hover {
-    background: var(--color-accent-dim);
-}
-
-.sem-anotacoes {
-    color: var(--color-text-muted);
-    font-style: italic;
-    font-size: 0.9rem;
-}
-
-/* Contagem de anotações no cartão do acervo */
-.contagem-anotacoes {
-    display: inline-block;
-    padding: var(--space-1) var(--space-2);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-accent);
-    border-radius: var(--radius);
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--color-accent);
-    width: fit-content;
-}
-
-/* ========================================== */
-/* MODO MAPA */
-/* ========================================== */
-#mapa-container {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-.mapa-info {
-    color: var(--color-text-muted);
-    font-size: 0.9rem;
-    text-align: center;
-    padding: var(--space-2);
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-}
-
-/* Layout: barra lateral + grafo */
-.mapa-layout {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-}
-
-@media (min-width: 900px) {
-    .mapa-layout {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-    .mapa-lateral {
-        width: 280px;
-        flex-shrink: 0;
-    }
-    .mapa-grafo {
-        flex: 1;
-        min-width: 0;
-    }
-}
-
-/* Barra lateral */
-.mapa-lateral {
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    max-height: 600px;
-    overflow-y: auto;
-}
-
-.mapa-lateral h3 {
-    color: var(--color-accent);
-    font-size: 1rem;
-    margin-bottom: var(--space-2);
-    padding-bottom: var(--space-2);
-    border-bottom: 2px solid var(--color-border);
-}
-
-.mapa-lista {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: 0;
-}
-
-.mapa-item {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    padding: var(--space-2);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.mapa-item:hover {
-    border-color: var(--color-accent);
-    background: var(--color-surface);
-}
-
-.mapa-cor {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.mapa-item-info {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-    flex: 1;
-}
-
-.mapa-item-info strong {
-    font-size: 0.85rem;
-    color: var(--color-text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.mapa-item-info small {
-    font-size: 0.7rem;
-    color: var(--color-text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Área do grafo */
-.mapa-grafo {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    overflow-x: auto;
-}
-
-.mapa-svg {
-    width: 100%;
-    height: auto;
-    min-width: 600px;
-    display: block;
-}
-
-.mapa-no {
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-}
-
-.mapa-no:hover {
-    opacity: 0.7;
-}
-
-.mapa-no circle {
-    transition: r 0.2s ease;
-}
-
-.mapa-no:hover circle {
-    r: 32;
-}
-
-/* ========================================== */
-/* MODO LEGADO */
-/* ========================================== */
-#legado-container {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--space-3);
-}
-
-.cartao-legado {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-left: 6px solid var(--color-accent);
-    border-radius: var(--radius);
-    padding: var(--space-3);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-}
-
-.legado-cabecalho {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-}
-
-.legado-cabecalho h3 {
-    color: var(--color-text);
-    font-size: 1.05rem;
-}
-
-.data-publicacao {
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-}
-
-.legado-acoes {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-2);
-}
-
-.btn-legado {
-    flex: 1 1 auto;
-    padding: var(--space-1) var(--space-2);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-accent);
-    color: var(--color-accent);
-    font-family: inherit;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius);
-    transition: all 0.2s ease;
-}
-
-.btn-legado:hover {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-}
-
-/* Botão Publicar no modal */
-.btn-publicar {
-    margin-top: var(--space-3);
-    padding: var(--space-2) var(--space-4);
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    width: 100%;
-}
-
-.btn-publicar:hover {
-    background: var(--color-accent-dim);
-}
-
-@media (min-width: 680px) {
-    #legado-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (min-width: 1080px) {
-    #legado-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-/* ========================================== */
-/* BOTÕES DE AÇÃO NO KANBAN */
-/* ========================================== */
-.acoes-kanban {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-1);
-    margin-top: var(--space-2);
-}
-
-.btn-evoluir,
-.btn-retornar,
-.btn-arquivar {
-    flex: 1 1 auto;
-    padding: var(--space-1) var(--space-2);
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.btn-evoluir {
-    background: #2ecc71;
-    color: #0a0a0a;
-}
-
-.btn-evoluir:hover {
-    background: #27ae60;
-}
-
-.btn-retornar {
-    background: #e74c3c;
-    color: #ffffff;
-}
-
-.btn-retornar:hover {
-    background: #c0392b;
-}
-
-.btn-arquivar {
-    background: var(--color-accent);
-    color: var(--color-on-accent);
-}
-
-.btn-arquivar:hover {
-    background: var(--color-accent-dim);
-}
-
-/* ========================================== */
-/* DRAG & DROP */
-/* ========================================== */
-.coluna-drop {
-    transition: background 0.2s ease, border-color 0.2s ease;
-}
-
-.coluna-drop.drop-ativa {
-    background: rgba(255, 215, 0, 0.1);
-    border-color: var(--color-accent);
-}
-
-.coluna-vazia {
-    padding: var(--space-3);
-    text-align: center;
-    color: var(--color-text-muted);
-    font-style: italic;
-    font-size: 0.85rem;
-    border: 2px dashed var(--color-border);
-    border-radius: var(--radius);
-    background: transparent;
-    list-style: none;
-}
-
-li.arrastando {
-    opacity: 0.5;
-    transform: scale(0.98);
-}
-
-li[draggable="true"] {
-    cursor: grab;
-}
-
-li[draggable="true"]:active {
-    cursor: grabbing;
-}
-
-/* Botão Ver Detalhes no Kanban */
-.btn-ver {
-    margin-top: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid currentColor;
-    color: inherit;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-ver:hover {
-    background: rgba(0, 0, 0, 0.5);
-}
-
-/* ========================================== */
-/* AÇÕES AVANÇADAS NO MODAL */
-/* ========================================== */
-.acoes-avancadas {
-    margin-top: var(--space-3);
-    border-top: 1px solid var(--color-border);
-    padding-top: var(--space-2);
-}
-
-.acoes-avancadas summary {
-    cursor: pointer;
-    color: var(--color-text-muted);
-    font-size: 0.85rem;
-    padding: var(--space-2);
-    list-style: none;
-    user-select: none;
-}
-
-.acoes-avancadas summary:hover {
-    color: var(--color-accent);
-}
-
-.acoes-avancadas summary::-webkit-details-marker {
-    display: none;
-}
-
-.acoes-avancadas-conteudo {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    padding: var(--space-2) 0;
-}
-
-.btn-acao-avancada {
-    padding: var(--space-2);
-    background: var(--color-surface-alt);
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    border-radius: var(--radius);
-    text-align: left;
-    transition: all 0.2s ease;
-}
-
-.btn-acao-avancada:hover {
-    border-color: var(--color-accent);
-    color: var(--color-accent);
-}
-
-/* ========================================== */
-/* FORM DE EVOLUÇÃO */
-/* ========================================== */
-.form-evolucao {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-2);
-    margin-top: var(--space-3);
-}
-
-.form-evolucao label {
-    font-weight: 600;
-    color: var(--color-accent);
-    font-size: 0.9rem;
-}
-
-.form-evolucao textarea,
-.form-evolucao select,
-.form-evolucao input[type="text"] {
-    width: 100%;
-    padding: var(--space-2);
-    background: var(--color-surface-alt);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-}
-
-.form-evolucao textarea {
-    resize: vertical;
-    min-height: 60px;
-}
-
-.form-evolucao textarea:focus-visible,
-.form-evolucao select:focus-visible,
-.form-evolucao input:focus-visible {
-    outline: var(--focus-ring);
-    outline-offset: 2px;
-    border-color: var(--color-accent);
-}
-
-/* Botão Evoluir no acervo */
-.btn-evoluir-acervo {
-    background: #2ecc71 !important;
-    color: #0a0a0a !important;
-    border-color: #2ecc71 !important;
-    font-weight: 700;
-}
-
-.btn-evoluir-acervo:hover {
-    background: #27ae60 !important;
-}
-
-/* ========================================== */
-/* BOTÃO NOVA TAREFA */
-/* ========================================== */
-.barra-acoes-kanban {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-.btn-nova-tarefa {
-    padding: var(--space-2) var(--space-4);
-    background: #2ecc71;
-    color: #0a0a0a;
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    min-height: 2.75rem;
-}
-
-.btn-nova-tarefa:hover {
-    background: #27ae60;
-}
-
-/* ========================================== */
-/* BOTÃO EXCLUIR NO KANBAN */
-/* ========================================== */
-.btn-excluir {
-    margin-top: var(--space-2);
-    padding: var(--space-1) var(--space-2);
-    background: rgba(231, 76, 60, 0.9);
-    color: #ffffff;
-    border: 1px solid #e74c3c;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    width: 100%;
-}
-
-.btn-excluir:hover {
-    background: #c0392b;
-}
-
-/* ========================================== */
-/* BOTÃO EVOLUIR NO ACERVO */
-/* ========================================== */
-.btn-evoluir-acervo {
-    background: #2ecc71 !important;
-    color: #0a0a0a !important;
-    border-color: #2ecc71 !important;
-    font-weight: 700;
-}
-
-.btn-evoluir-acervo:hover {
-    background: #27ae60 !important;
-}
-
-/* ========================================== */
-/* AÇÕES DA TAREFA CONCLUÍDA */
-/* ========================================== */
-.acoes-concluida {
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-1);
-    margin-top: var(--space-2);
-}
-
-.btn-arquivar {
-    padding: var(--space-1) var(--space-2);
-    background: #3498db;
-    color: #ffffff;
-    border: 1px solid #3498db;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-arquivar:hover {
-    background: #2980b9;
-}
-
-.btn-excluir {
-    padding: var(--space-1) var(--space-2);
-    background: rgba(231, 76, 60, 0.9);
-    color: #ffffff;
-    border: 1px solid #e74c3c;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-}
-
-.btn-excluir:hover {
-    background: #c0392b;
-}
-
-/* ========================================== */
-/* BOTÃO NOVA TAREFA */
-/* ========================================== */
-.barra-acoes-kanban {
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-}
-
-.btn-nova-tarefa {
-    padding: var(--space-2) var(--space-4);
-    background: #2ecc71;
-    color: #0a0a0a;
-    border: none;
-    border-radius: var(--radius);
-    font-family: inherit;
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    min-height: 2.75rem;
-}
-
-.btn-nova-tarefa:hover {
-    background: #27ae60;
-}
-
-/* ========================================== */
-/* BOTÕES DO ACERVO */
-/* ========================================== */
-.btn-evoluir-acervo {
-    background: #2ecc71 !important;
-    color: #0a0a0a !important;
-    border-color: #2ecc71 !important;
-    font-weight: 700;
-}
-
-.btn-evoluir-acervo:hover {
-    background: #27ae60 !important;
-}
-
-/* ========================================== */
-/* BOTÃO DE AÇÃO PERIGOSA (EXCLUIR) NO MODAL */
-/* ========================================== */
-.btn-acao-perigo {
-    border-color: #e74c3c !important;
-    color: #e74c3c !important;
-}
-
-.btn-acao-perigo:hover {
-    background: #e74c3c !important;
-    color: #ffffff !important;
-    border-color: #e74c3c !important;
 }
