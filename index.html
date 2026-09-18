@@ -83,7 +83,20 @@
     <!-- ============================================ -->
     <section id="modo-acervo" class="modo">
         <h2>📚 Acervo Vivo</h2>
-        <p class="aviso">Em breve: tarefas concluídas com anotações.</p>
+
+        <!-- Filtros do acervo -->
+        <section class="busca-filtros">
+            <label for="busca-acervo">Buscar por título ou tag:</label>
+            <input type="text" id="busca-acervo" placeholder="Ex: JavaScript, HTML..." />
+
+            <div class="tags-disponiveis">
+                <span class="label-tags">Filtrar por tag:</span>
+                <div id="acervo-tags" class="lista-tags"></div>
+            </div>
+        </section>
+
+        <!-- Lista de tarefas do acervo -->
+        <div id="acervo-container"></div>
     </section>
 
     <!-- ============================================ -->

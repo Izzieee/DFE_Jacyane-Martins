@@ -16,7 +16,8 @@ export const estado = {
     // ===== NOVOS CAMPOS (FASE 1) =====
     modo: 'kanban',           // 'kanban', 'acervo', 'mapa', 'legado'
     tagSelecionada: null,     // qual tag está filtrada (acervo/mapa)
-    tarefaSelecionada: null   // qual tarefa está no modal
+    tarefaSelecionada: null,   // qual tarefa está no modal
+    buscaAcervo: ''
 };
 
 // ==========================================
