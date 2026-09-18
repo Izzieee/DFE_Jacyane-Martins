@@ -57,6 +57,9 @@ export function abrirModal(tarefa) {
                     ${tarefa.publica ? '🔒 Despublicar' : '📤 Publicar no Legado'}
                   </button>
                 ` : ''}
+                <button type="button" class="btn-acao-avancada btn-acao-perigo" data-acao-modal="excluir">
+                  🗑️ Excluir tarefa
+                </button>
             </div>
         </details>
     `;
@@ -78,9 +81,37 @@ export function abrirModal(tarefa) {
                 tarefa.publica = !tarefa.publica;
                 abrirModal(tarefa);
                 if (window.renderizar) window.renderizar();
+            } else if (acao === 'excluir') {
+                excluirTarefa(tarefa);
             }
         });
     });
+}
+
+// ==========================================
+// EXCLUIR TAREFA
+// ==========================================
+function excluirTarefa(tarefa) {
+    const confirmar = confirm(
+        `Tem certeza que quer EXCLUIR "${tarefa.titulo}"?\n\n` +
+        `Essa ação não pode ser desfeita.`
+    );
+    if (!confirmar) return;
+
+    const idx = window.estado.tarefas.findIndex(t => t.id === tarefa.id);
+    if (idx >= 0) window.estado.tarefas.splice(idx, 1);
+
+    // Fecha o modal
+    const modal = document.getElementById('modal');
+    if (modal) modal.hidden = true;
+
+    // Re-renderiza
+    if (window.renderizar) window.renderizar();
+
+    const statusRegion = document.getElementById('status-region');
+    if (statusRegion) {
+        statusRegion.textContent = `"${tarefa.titulo}" excluída`;
+    }
 }
 
 // ==========================================
@@ -171,7 +202,8 @@ function criarNovaTarefa() {
         aprendizados: [],
         anotacoes: [],
         relacionadas: [],
-        publica: false
+        publica: false,
+        arquivada: false
     };
 
     window.estado.tarefas.push(novaTarefa);
@@ -266,7 +298,8 @@ function criarTarefaEvolucao(tarefaOriginal) {
             ? [{ data: new Date().toLocaleDateString('pt-BR'), texto: novaAnotacao }]
             : [],
         relacionadas: [...(tarefaOriginal.relacionadas || []), tarefaOriginal.id],
-        publica: false
+        publica: false,
+        arquivada: false
     };
 
     window.estado.tarefas.push(novaTarefa);
@@ -299,6 +332,7 @@ export function clonarTarefa(tarefaOriginal) {
         concluidaEm: null,
         anotacoes: [],
         publica: false,
+        arquivada: false,
         relacionadas: [...(tarefaOriginal.relacionadas || []), tarefaOriginal.id]
     };
 

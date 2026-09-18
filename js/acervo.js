@@ -2,7 +2,10 @@
 import { abrirModalEvolucao, abrirModal } from './modal.js';
 
 export function derivarAcervo(estado) {
-    let lista = estado.tarefas.filter(t => t.status === 'concluida');
+    // ⭐ Mostra tarefas arquivadas OU concluídas (compatibilidade)
+    let lista = estado.tarefas.filter(t => 
+        t.arquivada === true || t.status === 'concluida'
+    );
 
     if (estado.buscaAcervo && estado.buscaAcervo.trim() !== '') {
         const termo = estado.buscaAcervo.toLowerCase();
@@ -34,7 +37,7 @@ export function renderizarAcervo(lista) {
         container.innerHTML = `
             <div class="estado-vazio">
                 <p>📭 Nenhuma tarefa no acervo</p>
-                <p class="subtitulo">Conclua tarefas no Kanban para vê-las aqui</p>
+                <p class="subtitulo">Conclua e arquive tarefas no Kanban para vê-las aqui</p>
             </div>
         `;
         return;
@@ -85,7 +88,7 @@ export function renderizarTagsDisponiveis() {
 
     const tagsUnicas = new Set();
     window.estado.tarefas
-        .filter(t => t.status === 'concluida')
+        .filter(t => t.arquivada === true || t.status === 'concluida')
         .forEach(t => (t.tags || []).forEach(tag => tagsUnicas.add(tag)));
 
     const tags = Array.from(tagsUnicas).sort();

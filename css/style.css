@@ -1817,3 +1817,102 @@ li[draggable="true"]:active {
 .btn-evoluir-acervo:hover {
     background: #27ae60 !important;
 }
+
+/* ========================================== */
+/* AÇÕES DA TAREFA CONCLUÍDA */
+/* ========================================== */
+.acoes-concluida {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    margin-top: var(--space-2);
+}
+
+.btn-arquivar {
+    padding: var(--space-1) var(--space-2);
+    background: #3498db;
+    color: #ffffff;
+    border: 1px solid #3498db;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-arquivar:hover {
+    background: #2980b9;
+}
+
+.btn-excluir {
+    padding: var(--space-1) var(--space-2);
+    background: rgba(231, 76, 60, 0.9);
+    color: #ffffff;
+    border: 1px solid #e74c3c;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-excluir:hover {
+    background: #c0392b;
+}
+
+/* ========================================== */
+/* BOTÃO NOVA TAREFA */
+/* ========================================== */
+.barra-acoes-kanban {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.btn-nova-tarefa {
+    padding: var(--space-2) var(--space-4);
+    background: #2ecc71;
+    color: #0a0a0a;
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    min-height: 2.75rem;
+}
+
+.btn-nova-tarefa:hover {
+    background: #27ae60;
+}
+
+/* ========================================== */
+/* BOTÕES DO ACERVO */
+/* ========================================== */
+.btn-evoluir-acervo {
+    background: #2ecc71 !important;
+    color: #0a0a0a !important;
+    border-color: #2ecc71 !important;
+    font-weight: 700;
+}
+
+.btn-evoluir-acervo:hover {
+    background: #27ae60 !important;
+}
+
+/* ========================================== */
+/* BOTÃO DE AÇÃO PERIGOSA (EXCLUIR) NO MODAL */
+/* ========================================== */
+.btn-acao-perigo {
+    border-color: #e74c3c !important;
+    color: #e74c3c !important;
+}
+
+.btn-acao-perigo:hover {
+    background: #e74c3c !important;
+    color: #ffffff !important;
+    border-color: #e74c3c !important;
+}

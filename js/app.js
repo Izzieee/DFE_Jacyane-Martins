@@ -219,12 +219,12 @@ function conectarControles() {
     });
 
     // ==========================================
-    // KANBAN: EXCLUIR + DRAG & DROP
+    // KANBAN: ARQUIVAR + EXCLUIR + DRAG & DROP
     // ==========================================
     const container = document.getElementById('tarefas-container');
 
     container?.addEventListener('click', (evento) => {
-        const botao = evento.target.closest('button[data-acao="excluir"]');
+        const botao = evento.target.closest('button[data-acao]');
         if (!botao || !container.contains(botao)) return;
 
         const cartao = botao.closest('[data-tarefa-id]');
@@ -232,17 +232,32 @@ function conectarControles() {
         const tarefa = estado.tarefas.find(t => t.id === id);
         if (!tarefa) return;
 
-        const confirmar = confirm(`Tem certeza que quer excluir "${tarefa.titulo}"?`);
-        if (!confirmar) return;
+        const acao = botao.dataset.acao;
 
-        const idx = estado.tarefas.findIndex(t => t.id === id);
-        if (idx >= 0) estado.tarefas.splice(idx, 1);
-        renderizar();
+        if (acao === 'arquivar') {
+            tarefa.arquivada = true;
+            renderizar();
 
-        const statusRegion = document.getElementById('status-region');
-        if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" excluída`;
+            const statusRegion = document.getElementById('status-region');
+            if (statusRegion) {
+                statusRegion.textContent = `"${tarefa.titulo}" arquivada no acervo`;
+            }
+        } else if (acao === 'excluir') {
+            const confirmar = confirm(`Tem certeza que quer excluir "${tarefa.titulo}"?`);
+            if (!confirmar) return;
+
+            const idx = estado.tarefas.findIndex(t => t.id === id);
+            if (idx >= 0) estado.tarefas.splice(idx, 1);
+            renderizar();
+
+            const statusRegion = document.getElementById('status-region');
+            if (statusRegion) {
+                statusRegion.textContent = `"${tarefa.titulo}" excluída`;
+            }
+        }
     });
 
+    // Drag & drop
     inicializarDragDrop(container, (id, novoStatus) => {
         const tarefa = estado.tarefas.find(t => t.id === id);
         if (!tarefa) return;

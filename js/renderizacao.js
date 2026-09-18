@@ -2,7 +2,10 @@
 
 export function renderizarTarefas(tarefas) {
     const container = document.getElementById('tarefas-container');
-    if (!container || !tarefas || tarefas.length === 0) return;
+    if (!container) return;
+
+    // ⭐ FILTRA: não mostra tarefas arquivadas no Kanban
+    const tarefasVisiveis = tarefas.filter(t => !t.arquivada);
 
     const agrupadas = {
         'fazer': [],
@@ -11,7 +14,7 @@ export function renderizarTarefas(tarefas) {
         'concluida': []
     };
 
-    tarefas.forEach(tarefa => {
+    tarefasVisiveis.forEach(tarefa => {
         const status = tarefa.status || 'fazer';
         if (agrupadas[status]) {
             agrupadas[status].push(tarefa);
@@ -53,10 +56,16 @@ export function renderizarTarefas(tarefas) {
                    </div>`
                 : '';
 
-            const botaoExcluir = (tarefa.status === 'concluida')
-                ? `<button type="button" class="btn-excluir" data-acao="excluir" title="Excluir tarefa">
-                     🗑️ Excluir
-                   </button>`
+            // ⭐ Botões de ação só para tarefas concluídas
+            const acoesConcluida = (tarefa.status === 'concluida')
+                ? `<div class="acoes-concluida">
+                     <button type="button" class="btn-arquivar" data-acao="arquivar" title="Mover para o acervo">
+                       📚 Arquivar no Acervo
+                     </button>
+                     <button type="button" class="btn-excluir" data-acao="excluir" title="Excluir tarefa">
+                       🗑️ Excluir
+                     </button>
+                   </div>`
                 : '';
 
             html += `
@@ -68,7 +77,7 @@ export function renderizarTarefas(tarefas) {
                         <p><strong>Prazo:</strong> ${tarefa.prazo || 'Sem prazo'}</p>
                         <p><strong>Prioridade:</strong> ${tarefa.prioridade || 'Não definida'}</p>
                         ${tagsHTML}
-                        ${botaoExcluir}
+                        ${acoesConcluida}
                     </article>
                 </li>
             `;
