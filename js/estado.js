@@ -17,9 +17,8 @@ export const estado = {
     modo: 'kanban',
     tagSelecionada: null,
     tarefaSelecionada: null,
-
-    // ===== CAMPOS DA FASE 4 =====
-    buscaAcervo: ''
+    buscaAcervo: '',
+    buscaLegado: '' 
 };
 
 // ==========================================

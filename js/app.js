@@ -6,6 +6,7 @@ import { estado, derivarListaVisivel } from './estado.js';
 import { derivarAcervo, renderizarAcervo } from './acervo.js';
 import { derivarMapa, renderizarMapa } from './mapa.js';
 import { abrirModal } from './modal.js';
+import { derivarLegado, renderizarLegado, exportarMarkdown } from './legado.js';
 
 window.renderizarTarefas = renderizarTarefas;
 
@@ -73,9 +74,16 @@ export function renderizar() {
             }
             break;
         }
-        case 'legado':
-            console.log('Modo legado ainda não implementado');
+        case 'legado': {
+            const listaLegado = derivarLegado(estado);
+            renderizarLegado(listaLegado);
+
+            const statusRegion = document.getElementById('status-region');
+            if (statusRegion) {
+                statusRegion.textContent = `${listaLegado.length} tutorial${listaLegado.length !== 1 ? 'is' : ''} publicado${listaLegado.length !== 1 ? 's' : ''}`;
+            }
             break;
+}
     }
 }
 
@@ -140,6 +148,49 @@ function conectarControles() {
     });
     modal?.addEventListener('click', (e) => {
         if (e.target === modal) modal.hidden = true;
+    });
+
+    // ==========================================
+    // EVENTOS DO MODO LEGADO
+    // ==========================================
+    const buscaLegado = document.getElementById('busca-legado');
+    buscaLegado?.addEventListener('input', (e) => {
+        estado.buscaLegado = e.target.value;
+        if (estado.modo === 'legado') renderizar();
+    });
+
+    const legadoTags = document.getElementById('legado-tags');
+    legadoTags?.addEventListener('click', (e) => {
+        const btn = e.target.closest('.tag-filtro');
+        if (!btn) return;
+        estado.tagSelecionada = btn.dataset.tag || null;
+        renderizar();
+    });
+
+    const legadoContainer = document.getElementById('legado-container');
+    legadoContainer?.addEventListener('click', (e) => {
+        const btn = e.target.closest('button[data-acao]');
+        if (!btn) return;
+
+        const cartao = btn.closest('[data-tarefa-id]');
+        const id = Number(cartao?.dataset.tarefaId);
+        const tarefa = estado.tarefas.find(t => t.id === id);
+        if (!tarefa) return;
+
+        const acao = btn.dataset.acao;
+
+        if (acao === 'ver-detalhes') {
+            abrirModal(tarefa);
+        } else if (acao === 'exportar') {
+            exportarMarkdown(tarefa);
+        } else if (acao === 'despublicar') {
+            tarefa.publica = false;
+            renderizar();
+            const statusRegion = document.getElementById('status-region');
+            if (statusRegion) {
+                statusRegion.textContent = `"${tarefa.titulo}" despublicada`;
+            }
+        }
     });
 
     // ==========================================

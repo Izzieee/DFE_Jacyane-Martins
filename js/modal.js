@@ -8,6 +8,12 @@ export function abrirModal(tarefa) {
 
     window.estado.tarefaSelecionada = tarefa.id;
 
+    const botaoPublicar = tarefa.status === 'concluida'
+        ? `<button type="button" class="btn-publicar" data-acao-modal="publicar">
+             ${tarefa.publica ? '🔒 Despublicar' : '📤 Publicar no Legado'}
+           </button>`
+        : '';
+
     corpo.innerHTML = `
         <h2>${tarefa.titulo}</h2>
         <p><strong>Projeto:</strong> ${tarefa.projeto || '—'}</p>
@@ -48,6 +54,8 @@ export function abrirModal(tarefa) {
             ></textarea>
             <button type="submit" class="btn-anotar">➕ Adicionar anotação</button>
         </form>
+
+        ${botaoPublicar}
     `;
 
     modal.hidden = false;
@@ -56,6 +64,21 @@ export function abrirModal(tarefa) {
     form?.addEventListener('submit', (e) => {
         e.preventDefault();
         adicionarAnotacao(tarefa.id);
+    });
+
+    const btnPublicar = corpo.querySelector('[data-acao-modal="publicar"]');
+    btnPublicar?.addEventListener('click', () => {
+        tarefa.publica = !tarefa.publica;
+        abrirModal(tarefa);
+
+        const statusRegion = document.getElementById('status-region');
+        if (statusRegion) {
+            statusRegion.textContent = tarefa.publica
+                ? `"${tarefa.titulo}" publicada no Legado`
+                : `"${tarefa.titulo}" despublicada`;
+        }
+
+        if (window.renderizar) window.renderizar();
     });
 }
 

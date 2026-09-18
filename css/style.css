@@ -1447,3 +1447,97 @@ nav.modos button.ativo {
 .mapa-no:hover circle {
     r: 32;
 }
+
+/* ========================================== */
+/* MODO LEGADO */
+/* ========================================== */
+#legado-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+.cartao-legado {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 6px solid var(--color-accent);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.legado-cabecalho {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+}
+
+.legado-cabecalho h3 {
+    color: var(--color-text);
+    font-size: 1.05rem;
+}
+
+.data-publicacao {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+}
+
+.legado-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.btn-legado {
+    flex: 1 1 auto;
+    padding: var(--space-1) var(--space-2);
+    background: var(--color-surface-alt);
+    border: 1px solid var(--color-accent);
+    color: var(--color-accent);
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all 0.2s ease;
+}
+
+.btn-legado:hover {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+}
+
+/* Botão Publicar no modal */
+.btn-publicar {
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-4);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    border: none;
+    border-radius: var(--radius);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+}
+
+.btn-publicar:hover {
+    background: var(--color-accent-dim);
+}
+
+@media (min-width: 680px) {
+    #legado-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1080px) {
+    #legado-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

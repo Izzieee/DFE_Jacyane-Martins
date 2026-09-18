@@ -90,9 +90,21 @@
     </section>
 
     <!-- MODO: LEGADO -->
+    <!-- MODO: LEGADO -->
     <section id="modo-legado" class="modo">
-        <h2>📤 Legado</h2>
-        <p class="aviso">Em breve: tutoriais publicados.</p>
+        <h2>📤 Legado — Tutoriais Publicados</h2>
+
+        <section class="busca-filtros">
+            <label for="busca-legado">Buscar por título ou tag:</label>
+            <input type="text" id="busca-legado" placeholder="Ex: JavaScript, HTML..." />
+
+            <div class="tags-disponiveis">
+                <span class="label-tags">Filtrar por tag:</span>
+                <div id="legado-tags" class="lista-tags"></div>
+            </div>
+        </section>
+
+        <div id="legado-container"></div>
     </section>
 
     <!-- MODAL -->
