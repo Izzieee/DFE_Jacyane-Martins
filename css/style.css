@@ -24,38 +24,43 @@
    ========================================================================== */
 
 :root {
-    --background: 220 40% 8%;
-    --foreground: 210 100% 96%;
+    --background: 262 46% 6%;
+    --foreground: 260 45% 97%;
 
-    --card: 0 0% 6%;
-    --card-foreground: 0 0% 96%;
+    /* Cartões/painéis agora na mesma família de matiz do fundo,
+       em vez de cinza puro — evita o efeito "manchado" e cria
+       camadas de profundidade coerentes (bg < card < secondary) */
+    --card: 261 34% 10%;
+    --card-foreground: 260 45% 97%;
 
-    --secondary: 216 26% 16%;
-    --secondary-foreground: 210 100% 96%;
+    --secondary: 259 28% 17%;
+    --secondary-foreground: 260 45% 97%;
 
-    --muted: 214 24% 17%;
-    --muted-foreground: 210 25% 72%;
+    --muted: 258 24% 16%;
+    --muted-foreground: 258 20% 76%;
 
-    --accent: 216 40% 18%;
-    --accent-foreground: 210 100% 96%;
+    --accent: 258 38% 21%;
+    --accent-foreground: 260 45% 97%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 78% 62%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 214 31% 34%;
-    --input: 216 24% 14%;
-    --ring: 210 100% 74%;
+    --border: 258 26% 46%;
+    --input: 258 24% 15%;
+    --ring: 189 90% 62%;
 
-    --terminal-green: 196 100% 75%;
-    --terminal-amber: 206 100% 72%;
-    --terminal-cyan: 200 100% 75%;
-    --terminal-dim: 214 28% 60%;
+    /* Cores de status/categoria — matizes realmente distintos para dar
+       contraste e legibilidade ao mapa e às colunas do kanban */
+    --terminal-green: 152 58% 55%;
+    --terminal-amber: 38 96% 62%;
+    --terminal-cyan: 191 82% 58%;
+    --terminal-dim: 258 14% 62%;
 
-    --priority-high: 0 78% 56%;
-    --priority-medium: 28 92% 54%;
-    --priority-low: 142 60% 42%;
+    --priority-high: 0 78% 60%;
+    --priority-medium: 28 94% 58%;
+    --priority-low: 142 52% 50%;
 
-    --grid-color: 213 38% 18%;
+    --grid-color: 258 30% 16%;
 
     --radius: 0;
     --space-1: 0.25rem;
@@ -181,6 +186,12 @@ body::after {
     50% { border-color: hsl(var(--terminal-amber)); }
 }
 
+/* Entrada suave dos blocos principais ao carregar/trocar de aba */
+@keyframes surgir {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 
 /* ==========================================================================
    5. HEADER
@@ -202,6 +213,8 @@ header {
     width: 100%;
     max-width: 1200px;
     text-align: center;
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
 }
 
 header::after {
@@ -242,7 +255,7 @@ header h1::after {
     display: inline-block;
     width: 0.5em;
     height: 0.9em;
-    background: hsl(var(--terminal-dim));
+    background: hsl(var(--terminal-cyan));
     margin-left: 0.15em;
     vertical-align: -0.1em;
     animation: caret-blink 1s steps(2) infinite;
@@ -286,6 +299,9 @@ nav.modos {
     padding: var(--space-2);
     background: hsl(var(--card) / 0.6);
     border: 1px solid hsl(var(--border));
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
+    animation-delay: 0.1s;
 }
 
 nav.modos button {
@@ -342,6 +358,9 @@ nav.modos button.ativo {
     display: flex;
     align-items: center;
     transition: border-color 0.3s ease, background 0.3s ease;
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
+    animation-delay: 0.15s;
 }
 
 
@@ -456,13 +475,16 @@ nav.modos button.ativo {
     flex-direction: column;
     align-items: stretch;
     gap: var(--space-3);
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
+    animation-delay: 0.2s;
 }
 
 .busca-filtros label {
     font-weight: 700;
     color: hsl(var(--muted-foreground));
     font-size: 0.72rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
@@ -533,7 +555,7 @@ nav.modos button.ativo {
     color: hsl(var(--muted-foreground));
     padding-bottom: var(--space-2);
     font-size: 0.72rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
@@ -564,7 +586,7 @@ nav.modos button.ativo {
     min-height: 2.75rem;
     padding: var(--space-2) var(--space-4);
     font-weight: 700;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     font-size: 0.72rem;
     font-family: inherit;
@@ -641,7 +663,14 @@ main {
     flex-direction: column;
     min-width: 0;
     gap: var(--space-3);
+    opacity: 0;
+    animation: surgir 0.55s var(--ease-glass) both;
 }
+
+#tarefas-container section:nth-of-type(1) { animation-delay: 0.08s; }
+#tarefas-container section:nth-of-type(2) { animation-delay: 0.18s; }
+#tarefas-container section:nth-of-type(3) { animation-delay: 0.28s; }
+#tarefas-container section:nth-of-type(4) { animation-delay: 0.38s; }
 
 #tarefas-container section::before {
     content: '';
@@ -986,7 +1015,7 @@ li[draggable="true"]:active {
     font-weight: 700;
     color: hsl(var(--muted-foreground));
     font-size: 0.72rem;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
 }
 
@@ -1036,7 +1065,15 @@ li[draggable="true"]:active {
     flex-direction: column;
     gap: var(--space-2);
     transition: all 0.3s var(--ease-glass);
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
 }
+
+.cartao-acervo:nth-of-type(1) { animation-delay: 0.05s; }
+.cartao-acervo:nth-of-type(2) { animation-delay: 0.1s; }
+.cartao-acervo:nth-of-type(3) { animation-delay: 0.15s; }
+.cartao-acervo:nth-of-type(4) { animation-delay: 0.2s; }
+.cartao-acervo:nth-of-type(n+5) { animation-delay: 0.25s; }
 
 .cartao-acervo:hover {
     transform: translateY(-3px);
@@ -1152,10 +1189,11 @@ li[draggable="true"]:active {
     color: hsl(var(--muted-foreground));
     font-size: 0.85rem;
     text-align: center;
-    padding: var(--space-2);
-    background: hsl(var(--card) / 0.6);
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--card) / 0.85);
     border: 1px solid hsl(var(--border));
-    letter-spacing: 0.05em;
+    border-left: 3px solid hsl(var(--terminal-cyan));
+    letter-spacing: 0.04em;
 }
 
 .mapa-stats {
@@ -1163,7 +1201,7 @@ li[draggable="true"]:active {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-2);
     padding: var(--space-3);
-    background: hsl(var(--card) / 0.6);
+    background: hsl(var(--card) / 0.85);
     border: 1px solid hsl(var(--border));
 }
 
@@ -1180,11 +1218,17 @@ li[draggable="true"]:active {
     gap: 2px;
     padding: var(--space-2);
     border: 1px solid hsl(var(--border));
-    background: hsl(var(--background) / 0.4);
+    background: hsl(var(--background) / 0.55);
+    transition: border-color 0.25s var(--ease-glass), transform 0.25s var(--ease-glass);
+}
+
+.stat-item:hover {
+    border-color: hsl(var(--foreground) / 0.5);
+    transform: translateY(-2px);
 }
 
 .stat-numero {
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     font-weight: 700;
     color: hsl(var(--foreground));
     font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
@@ -1195,12 +1239,12 @@ li[draggable="true"]:active {
     font-size: 0.65rem;
     color: hsl(var(--muted-foreground));
     text-transform: uppercase;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
 }
 
 .stat-destaque {
     border-color: hsl(var(--terminal-green));
-    background: hsl(var(--terminal-green) / 0.08);
+    background: hsl(var(--terminal-green) / 0.1);
 }
 
 .stat-destaque .stat-numero {
@@ -1214,8 +1258,9 @@ li[draggable="true"]:active {
 }
 
 .mapa-lateral {
-    background: hsl(var(--card) / 0.6);
+    background: hsl(var(--card) / 0.9);
     border: 1px solid hsl(var(--border));
+    box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.05);
     padding: var(--space-3);
     max-height: 600px;
     overflow-y: auto;
@@ -1225,7 +1270,7 @@ li[draggable="true"]:active {
     color: hsl(var(--foreground));
     font-size: 0.85rem;
     font-weight: 700;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     margin-bottom: var(--space-2);
     padding-bottom: var(--space-2);
@@ -1245,22 +1290,30 @@ li[draggable="true"]:active {
     align-items: center;
     gap: var(--space-2);
     padding: var(--space-2);
+    background: hsl(var(--background) / 0.35);
     border: 1px solid hsl(var(--border));
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color 0.25s var(--ease-glass), background-color 0.25s var(--ease-glass), transform 0.25s var(--ease-glass);
 }
 
 .mapa-item:hover {
-    border-color: hsl(var(--foreground));
-    background: hsl(var(--secondary) / 0.5);
+    border-color: hsl(var(--foreground) / 0.6);
+    background: hsl(var(--secondary) / 0.7);
+    transform: translateX(2px);
+}
+
+.mapa-item.ativo {
+    border-color: hsl(var(--ring));
+    background: hsl(var(--ring) / 0.1);
 }
 
 .mapa-cor {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
     flex-shrink: 0;
-    border: 1px solid hsl(var(--background));
+    border: 2px solid hsl(var(--background));
+    box-shadow: 0 0 0 1px hsl(var(--border)), 0 0 8px currentColor;
 }
 
 .mapa-item-info {
@@ -1288,8 +1341,12 @@ li[draggable="true"]:active {
 }
 
 .mapa-grafo {
-    background: hsl(var(--card) / 0.6);
+    position: relative;
+    background:
+        radial-gradient(ellipse 70% 60% at 50% 40%, hsl(var(--accent) / 0.35), transparent 70%),
+        hsl(var(--card) / 0.92);
     border: 1px solid hsl(var(--border));
+    box-shadow: inset 0 1px 0 hsl(var(--foreground) / 0.06), inset 0 0 60px rgba(0, 0, 0, 0.35);
     padding: var(--space-3);
     overflow-x: auto;
 }
@@ -1301,21 +1358,41 @@ li[draggable="true"]:active {
     display: block;
 }
 
+/* Texto dentro do grafo sempre legível, seja qual for a cor do nó */
+.mapa-svg text {
+    font-family: 'JetBrains Mono', 'Share Tech Mono', monospace;
+    fill: hsl(var(--foreground));
+    paint-order: stroke;
+    stroke: hsl(var(--background));
+    stroke-width: 3px;
+    stroke-linejoin: round;
+}
+
+/* Contorno escuro em todo nó: separa cores próximas e garante contraste
+   contra o fundo, sem alterar a cor de categoria definida no elemento */
+.mapa-svg circle {
+    stroke: hsl(var(--background));
+    stroke-width: 2px;
+}
+
 .mapa-no {
     cursor: pointer;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.25s var(--ease-glass), filter 0.25s var(--ease-glass);
 }
 
 .mapa-no:hover {
-    opacity: 0.7;
+    opacity: 1;
+    filter: drop-shadow(0 0 10px hsl(var(--foreground) / 0.55));
 }
 
 .mapa-no circle {
-    transition: r 0.2s ease;
+    transition: r 0.25s var(--ease-glass), stroke-width 0.25s var(--ease-glass);
 }
 
 .mapa-no:hover circle {
     r: 32;
+    stroke: hsl(var(--foreground));
+    stroke-width: 2.5px;
 }
 
 
@@ -1338,7 +1415,15 @@ li[draggable="true"]:active {
     flex-direction: column;
     gap: var(--space-2);
     transition: all 0.3s var(--ease-glass);
+    opacity: 0;
+    animation: surgir 0.5s var(--ease-glass) both;
 }
+
+.cartao-legado:nth-of-type(1) { animation-delay: 0.05s; }
+.cartao-legado:nth-of-type(2) { animation-delay: 0.1s; }
+.cartao-legado:nth-of-type(3) { animation-delay: 0.15s; }
+.cartao-legado:nth-of-type(4) { animation-delay: 0.2s; }
+.cartao-legado:nth-of-type(n+5) { animation-delay: 0.25s; }
 
 .cartao-legado:hover {
     transform: translateY(-3px);
@@ -1681,7 +1766,7 @@ li[draggable="true"]:active {
 
 footer {
     position: relative;
-    background: linear-gradient(180deg, hsl(220 42% 14%), hsl(216 32% 10%));
+    background: linear-gradient(180deg, hsl(261 40% 15%), hsl(262 34% 9%));
     border: 1px solid hsl(var(--border));
     padding: 20px;
     text-align: center;
@@ -2283,8 +2368,26 @@ footer::before {
     #tarefas-container section::before,
     header h1::after,
     header p::before,
-    .autora-foto {
-        animation: none;
+    .autora-foto,
+    header,
+    nav.modos,
+    #status-region,
+    .busca-filtros,
+    #tarefas-container section,
+    .cartao-acervo,
+    .cartao-legado {
+        animation: none !important;
+    }
+
+    header,
+    nav.modos,
+    #status-region,
+    .busca-filtros,
+    #tarefas-container section,
+    .cartao-acervo,
+    .cartao-legado {
+        opacity: 1 !important;
+        transform: none !important;
     }
 
     #tarefas-container ul li,
