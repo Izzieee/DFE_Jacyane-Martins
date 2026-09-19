@@ -277,12 +277,6 @@ Evento → altera estado → derivação → renderização
 - **E4** — Estado único, busca, filtros e publicação
 - **Projeto final** — Releitura como Canivete de Tarefas
 
-**Links:**
-
-- GitHub: [@Izzieee](https://github.com/Izzieee)
-- Instagram: [@jacy_martins_](https://www.instagram.com/jacy_martins_)
-- LinkedIn: [Jacyane Martins](https://www.linkedin.com/in/jacyane-martins-a6b0723a3)
-
 ---
 
 ## Licença
