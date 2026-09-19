@@ -6,10 +6,22 @@ import { estado, derivarListaVisivel } from './estado.js';
 import { derivarAcervo, renderizarAcervo } from './acervo.js';
 import { derivarMapa, renderizarMapa } from './mapa.js';
 import { derivarLegado, renderizarLegado, exportarMarkdown } from './legado.js';
-import { abrirModal, abrirModalEvolucao, abrirModalNovaTarefa } from './modal.js';
+import { abrirModal, abrirModalEvolucao, abrirModalNovaTarefa, abrirModalEditar } from './modal.js';
 import { inicializarDragDrop } from './dragdrop.js';
+import { salvarTarefas, carregarTarefasSalvas, limparTarefasSalvas, temDadosSalvos } from './persistencia.js';
 
 window.renderizarTarefas = renderizarTarefas;
+
+// ==========================================
+// PERSISTÊNCIA AUTOMÁTICA
+// ==========================================
+let _salvarTimeout = null;
+function agendarSalvar() {
+    clearTimeout(_salvarTimeout);
+    _salvarTimeout = setTimeout(() => {
+        salvarTarefas(estado.tarefas);
+    }, 300);
+}
 
 // ==========================================
 // ALTERNADOR DE MODOS
@@ -28,6 +40,110 @@ function trocarModo(novoModo) {
 
     estado.modo = novoModo;
     renderizar();
+}
+
+// ==========================================
+// BUSCA GLOBAL
+// ==========================================
+function buscaGlobal(termo) {
+    const t = termo.toLowerCase().trim();
+    if (!t) return [];
+
+    return estado.tarefas.filter(tarefa => {
+        const campos = [
+            tarefa.titulo,
+            tarefa.projeto,
+            tarefa.responsavel,
+            ...(tarefa.tags || []),
+            ...(tarefa.passos || []),
+            ...(tarefa.aprendizados || [])
+        ];
+        return campos.some(c => c && c.toLowerCase().includes(t));
+    });
+}
+
+function renderizarBuscaGlobal(resultados, termo) {
+    const modal = document.getElementById('modal');
+    const corpo = document.getElementById('modal-corpo');
+    if (!modal || !corpo) return;
+
+    if (!termo.trim()) {
+        corpo.innerHTML = `
+            <h2>Busca global</h2>
+            <p class="subtitulo">Digite algo para buscar em todas as tarefas.</p>
+        `;
+    } else if (resultados.length === 0) {
+        corpo.innerHTML = `
+            <h2>Busca global</h2>
+            <p class="subtitulo">Nenhum resultado para "${termo}".</p>
+        `;
+    } else {
+        corpo.innerHTML = `
+            <h2>Busca global</h2>
+            <p class="subtitulo">${resultados.length} resultado${resultados.length !== 1 ? 's' : ''} para "${termo}"</p>
+            <ul class="busca-lista">
+                ${resultados.map(t => `
+                    <li class="busca-item" data-tarefa-id="${t.id}">
+                        <strong>${t.titulo}</strong>
+                        <small>${t.projeto || 'Sem projeto'} · ${t.status}</small>
+                    </li>
+                `).join('')}
+            </ul>
+        `;
+
+        corpo.querySelectorAll('.busca-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const id = Number(item.dataset.tarefaId);
+                const tarefa = estado.tarefas.find(t => t.id === id);
+                if (tarefa) abrirModal(tarefa);
+            });
+        });
+    }
+
+    modal.hidden = false;
+}
+
+// ==========================================
+// EXPORTAR TUDO
+// ==========================================
+function exportarTudo() {
+    const dados = {
+        exportadoEm: new Date().toISOString(),
+        total: estado.tarefas.length,
+        tarefas: estado.tarefas
+    };
+
+    const blob = new Blob(
+        [JSON.stringify(dados, null, 2)],
+        { type: 'application/json;charset=utf-8' }
+    );
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `step-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    const statusRegion = document.getElementById('status-region');
+    if (statusRegion) {
+        statusRegion.textContent = `${estado.tarefas.length} tarefas exportadas`;
+    }
+}
+
+// ==========================================
+// RESETAR DADOS
+// ==========================================
+function resetarDados() {
+    const confirmar = confirm(
+        'Isso vai APAGAR todas as suas alterações e recarregar os dados originais.\n\n' +
+        'Tem certeza?'
+    );
+    if (!confirmar) return;
+
+    limparTarefasSalvas();
+    location.reload();
 }
 
 // ==========================================
@@ -96,14 +212,25 @@ export function renderizar() {
 // CONECTAR CONTROLES
 // ==========================================
 function conectarControles() {
-    // Alternador de modos
     document.querySelectorAll('nav.modos button').forEach(btn => {
         btn.addEventListener('click', () => trocarModo(btn.dataset.modo));
     });
 
-    // Botão "+ Nova Tarefa"
-    const btnNovaTarefa = document.getElementById('btn-nova-tarefa');
-    btnNovaTarefa?.addEventListener('click', () => abrirModalNovaTarefa());
+    // Nova tarefa
+    document.getElementById('btn-nova-tarefa')?.addEventListener('click', () => abrirModalNovaTarefa());
+
+    // Exportar tudo
+    document.getElementById('btn-exportar-tudo')?.addEventListener('click', exportarTudo);
+
+    // Resetar dados
+    document.getElementById('btn-resetar-dados')?.addEventListener('click', resetarDados);
+
+    // Busca global
+    const inputBuscaGlobal = document.getElementById('busca-global');
+    inputBuscaGlobal?.addEventListener('input', (e) => {
+        const resultados = buscaGlobal(e.target.value);
+        renderizarBuscaGlobal(resultados, e.target.value);
+    });
 
     // Filtros do Kanban
     const busca = document.getElementById('titulo-tarefa');
@@ -136,25 +263,20 @@ function conectarControles() {
     document.querySelector('.modal-fechar')?.addEventListener('click', () => { modal.hidden = true; });
     modal?.addEventListener('click', (e) => { if (e.target === modal) modal.hidden = true; });
 
-    // ==========================================
-    // ACERVO
-    // ==========================================
-    const buscaAcervo = document.getElementById('busca-acervo');
-    buscaAcervo?.addEventListener('input', (e) => {
+    // Acervo
+    document.getElementById('busca-acervo')?.addEventListener('input', (e) => {
         estado.buscaAcervo = e.target.value;
         if (estado.modo === 'acervo') renderizar();
     });
 
-    const acervoTags = document.getElementById('acervo-tags');
-    acervoTags?.addEventListener('click', (e) => {
+    document.getElementById('acervo-tags')?.addEventListener('click', (e) => {
         const btn = e.target.closest('.tag-filtro');
         if (!btn) return;
         estado.tagSelecionada = btn.dataset.tag || null;
         renderizar();
     });
 
-    const acervoContainer = document.getElementById('acervo-container');
-    acervoContainer?.addEventListener('click', (e) => {
+    document.getElementById('acervo-container')?.addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-acao]');
         if (!btn) return;
         const cartao = btn.closest('[data-tarefa-id]');
@@ -167,6 +289,7 @@ function conectarControles() {
         else if (acao === 'evoluir') abrirModalEvolucao(tarefa);
         else if (acao === 'publicar') {
             tarefa.publica = !tarefa.publica;
+            agendarSalvar();
             renderizar();
             const statusRegion = document.getElementById('status-region');
             if (statusRegion) {
@@ -177,36 +300,28 @@ function conectarControles() {
         }
     });
 
-    // ==========================================
-    // MAPA
-    // ==========================================
-    const mapaTags = document.getElementById('mapa-tags');
-    mapaTags?.addEventListener('click', (e) => {
+    // Mapa
+    document.getElementById('mapa-tags')?.addEventListener('click', (e) => {
         const btn = e.target.closest('.tag-filtro');
         if (!btn) return;
         estado.tagSelecionada = btn.dataset.tag || null;
         renderizar();
     });
 
-    // ==========================================
-    // LEGADO
-    // ==========================================
-    const buscaLegado = document.getElementById('busca-legado');
-    buscaLegado?.addEventListener('input', (e) => {
+    // Legado
+    document.getElementById('busca-legado')?.addEventListener('input', (e) => {
         estado.buscaLegado = e.target.value;
         if (estado.modo === 'legado') renderizar();
     });
 
-    const legadoTags = document.getElementById('legado-tags');
-    legadoTags?.addEventListener('click', (e) => {
+    document.getElementById('legado-tags')?.addEventListener('click', (e) => {
         const btn = e.target.closest('.tag-filtro');
         if (!btn) return;
         estado.tagSelecionada = btn.dataset.tag || null;
         renderizar();
     });
 
-    const legadoContainer = document.getElementById('legado-container');
-    legadoContainer?.addEventListener('click', (e) => {
+    document.getElementById('legado-container')?.addEventListener('click', (e) => {
         const btn = e.target.closest('button[data-acao]');
         if (!btn) return;
         const cartao = btn.closest('[data-tarefa-id]');
@@ -219,15 +334,14 @@ function conectarControles() {
         else if (acao === 'exportar') exportarMarkdown(tarefa);
         else if (acao === 'despublicar') {
             tarefa.publica = false;
+            agendarSalvar();
             renderizar();
             const statusRegion = document.getElementById('status-region');
             if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" despublicada`;
         }
     });
 
-    // ==========================================
-    // KANBAN: ARQUIVAR + EXCLUIR + DRAG & DROP
-    // ==========================================
+    // Kanban
     const container = document.getElementById('tarefas-container');
 
     container?.addEventListener('click', (evento) => {
@@ -243,6 +357,7 @@ function conectarControles() {
 
         if (acao === 'arquivar') {
             tarefa.arquivada = true;
+            agendarSalvar();
             renderizar();
             const statusRegion = document.getElementById('status-region');
             if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" arquivada no acervo`;
@@ -251,6 +366,7 @@ function conectarControles() {
             if (!confirmar) return;
             const idx = estado.tarefas.findIndex(t => t.id === id);
             if (idx >= 0) estado.tarefas.splice(idx, 1);
+            agendarSalvar();
             renderizar();
             const statusRegion = document.getElementById('status-region');
             if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" excluída`;
@@ -268,6 +384,7 @@ function conectarControles() {
             tarefa.concluidaEm = null;
         }
 
+        agendarSalvar();
         renderizar();
 
         const statusRegion = document.getElementById('status-region');
@@ -285,8 +402,25 @@ async function iniciarAplicacao() {
     renderizar();
 
     try {
-        const tarefas = await carregarTarefas();
-        estado.tarefas = tarefas;
+        // 1. Tenta carregar dados salvos
+        const salvas = carregarTarefasSalvas();
+
+        if (salvas && salvas.length > 0) {
+            // Usa dados salvos
+            estado.tarefas = salvas;
+            const statusRegion = document.getElementById('status-region');
+            if (statusRegion) {
+                setTimeout(() => {
+                    statusRegion.textContent = `${salvas.length} tarefas carregadas do navegador`;
+                }, 100);
+            }
+        } else {
+            // Carrega do JSON
+            const tarefas = await carregarTarefas();
+            estado.tarefas = tarefas;
+            salvarTarefas(tarefas);
+        }
+
         estado.carregando = false;
         estado.erro = null;
     } catch (erro) {
@@ -305,5 +439,7 @@ window.estado = estado;
 window.abrirModal = abrirModal;
 window.abrirModalEvolucao = abrirModalEvolucao;
 window.abrirModalNovaTarefa = abrirModalNovaTarefa;
+window.abrirModalEditar = abrirModalEditar;
 window.renderizar = renderizar;
 window.trocarModo = trocarModo;
+window.exportarTudo = exportarTudo;

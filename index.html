@@ -11,6 +11,13 @@
     <header>
         <h1>S_T_E_P</h1>
         <p>Canivete de Tarefas</p>
+        <div class="busca-global-wrapper">
+            <input 
+            type="search" 
+            id="busca-global" 
+            placeholder="[?] Busca global em todas as tarefas..." 
+            aria-label="Busca global"/>
+        </div>
     </header>
 
     <nav class="modos" aria-label="Modos de visualização">
@@ -130,6 +137,27 @@
                 A ideia central é o <strong>Canivete Suíço</strong>: uma ferramenta, várias lâminas.
                 Cada modo serve um propósito diferente, mas todos trabalham sobre o mesmo estado.
             </p>
+            <div class="sobre-screenshots">
+        <h4>// Capturas</h4>
+        <div class="screenshots-grid">
+            <figure>
+                <img src="screenshots/kanban.png" alt="Modo Kanban com tarefas organizadas em colunas" />
+                <figcaption>Kanban — execução com drag & drop</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/acervo.png" alt="Modo Acervo com tarefas concluídas" />
+                <figcaption>Acervo — consulta e evolução</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/mapa.png" alt="Modo Mapa com grafo de conexões" />
+                <figcaption>Mapa — conexões por tags</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/legado.png" alt="Modo Legado com tutoriais publicados" />
+                <figcaption>Legado — tutoriais publicados</figcaption>
+            </figure>
+        </div>
+    </div>
         </article>
 
         <!-- MANUAL -->
@@ -207,37 +235,63 @@
         </article>
 
         <!-- CRIAÇÃO -->
-        <article class="sobre-bloco">
-            <h3>// Informações de criação</h3>
+<article class="sobre-bloco">
+    <h3>// Informações de criação</h3>
 
-            <dl class="sobre-info">
-                <dt>Autora</dt>
-                <dd>Jacyane Carvalho Martins</dd>
+    <div class="sobre-autora">
+        <div class="autora-foto">
+            <img 
+                src="img/avatar.jpeg" 
+                alt="Foto de Jacyane Carvalho Martins" 
+                onerror="this.style.display='none'"
+            />
+        </div>
+        <div class="autora-info">
+            <h4>Jacyane Carvalho Martins</h4>
+            <p class="autora-papel">Desenvolvedora & Autora</p>
+            <p class="autora-frase">
+                "A atividade me deu ideias que me fizeram pensar sobre a matéria e ficar o dia todo mechendo no projeto. Achei muito divertido e interessante, e me fez pensar em como eu posso aplicar isso na minha vida acadêmica."
+            </p>
+        </div>
+    </div>
 
-                <dt>Disciplina</dt>
-                <dd>Desenvolvimento Frontend — 2026.2</dd>
+    <dl class="sobre-info">
+        <dt>Disciplina</dt>
+        <dd>Desenvolvimento Frontend — 2026.2</dd>
 
-                <dt>Instituição</dt>
-                <dd>Professor(a): Marianne Lacerda Dutra Theodoro</dd>
+        <dt>Orientação</dt>
+        <dd>Profª Marianne Lacerda Dutra Theodoro</dd>
 
-                <dt>Etapas</dt>
-                <dd>
-                    E1 (estrutura semântica) · E2 (layout responsivo) ·
-                    E3 (fetch e estados) · E4 (estado único) ·
-                    Projeto final (canivete de tarefas)
-                </dd>
+        <dt>Etapas</dt>
+        <dd>
+            E1 (estrutura semântica) · E2 (layout responsivo) ·
+            E3 (fetch e estados) · E4 (estado único) ·
+            Projeto final (canivete de tarefas)
+        </dd>
 
-                <dt>Tecnologias</dt>
-                <dd>HTML5 · CSS3 · JavaScript (módulos ES) · Fetch API · SVG · GitHub Pages</dd>
+        <dt>Tecnologias</dt>
+        <dd>HTML5 · CSS3 · JavaScript (módulos ES) · Fetch API · SVG · GitHub Pages</dd>
 
-                <dt>Arquitetura</dt>
-                <dd>
-                    Estado único em <code>js/estado.js</code> ·
-                    Derivações por modo ·
-                    Ciclo único: evento → estado → derivação → renderização
-                </dd>
-            </dl>
-        </article>
+        <dt>Arquitetura</dt>
+        <dd>
+            Estado único em <code>js/estado.js</code> ·
+            Derivações por modo ·
+            Ciclo único: evento → estado → derivação → renderização
+        </dd>
+    </dl>
+
+    <div class="sobre-links">
+        <a href="https://github.com/Izzieee" target="_blank" rel="noopener">
+            [G] GitHub
+        </a>
+        <a href="https://www.instagram.com/jacy_martins_" target="_blank" rel="noopener">
+            [I] Instagram
+        </a>
+        <a href="https://www.linkedin.com/in/jacyane-martins-a6b0723a3" target="_blank" rel="noopener">
+            [L] LinkedIn
+        </a>
+    </div>
+</article>
 
         <!-- PRINCÍPIOS -->
         <article class="sobre-bloco">
@@ -282,6 +336,22 @@
                 <li>Ao arquivar uma tarefa, ela continua acessível no <strong>Acervo</strong></li>
             </ul>
         </article>
+
+            <article class="sobre-bloco">
+        <h3>// Dados</h3>
+        <p>
+            Suas tarefas são salvas automaticamente no navegador. Se você recarregar a página,
+            suas mudanças continuam aqui.
+        </p>
+        <div class="sobre-acoes">
+            <button type="button" id="btn-exportar-tudo" class="btn-nova-tarefa">
+                [+] Exportar tudo (JSON)
+            </button>
+            <button type="button" id="btn-resetar-dados" class="btn-perigo">
+                [x] Resetar dados (voltar ao original)
+            </button>
+        </div>
+    </article>
 
     </div>
 </section>

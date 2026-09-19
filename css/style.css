@@ -939,17 +939,27 @@ li[draggable="true"]:active {
 #busca-acervo,
 #busca-legado {
     width: 100%;
-    min-height: 2.75rem;
-    padding: var(--space-2) var(--space-3);
+    min-height: 3.2rem;
+    padding: 0.8rem 1rem;
     border: 1px solid hsl(var(--border));
     background: hsl(var(--secondary) / 0.8);
     color: hsl(var(--foreground));
     font-family: inherit;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    border-radius: 0;
+}
+
+#busca-acervo::placeholder,
+#busca-legado::placeholder {
+    color: hsl(var(--muted-foreground));
+    opacity: 1;
 }
 
 #busca-acervo:focus-visible,
-#busca-legado:focus-visible {
+#busca-legado:focus-visible,
+#modo-acervo .busca-filtros input[type="text"]:focus-visible,
+#modo-legado .busca-filtros input[type="text"]:focus-visible {
     outline: var(--focus-ring);
     outline-offset: 2px;
     border-color: hsl(var(--foreground) / 0.8);
@@ -1929,4 +1939,458 @@ footer::before {
     .manual-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+/* ==========================================================================
+   24. BUSCA GLOBAL
+   ========================================================================== */
+
+.busca-global-wrapper {
+    margin-top: var(--space-3);
+    width: 100%;
+}
+
+#busca-global {
+    width: 100%;
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--background) / 0.6);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+    font-family: inherit;
+    font-size: 0.9rem;
+    min-height: 2.75rem;
+    transition: border-color 0.2s ease;
+}
+
+#busca-global:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: 2px;
+    border-color: hsl(var(--foreground) / 0.8);
+}
+
+#busca-global::placeholder {
+    color: hsl(var(--muted-foreground));
+}
+
+/* Lista de resultados da busca */
+.busca-lista {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+    margin-top: var(--space-3);
+}
+
+.busca-item {
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--background) / 0.4);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--terminal-cyan));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.busca-item:hover {
+    border-color: hsl(var(--foreground));
+    background: hsl(var(--secondary) / 0.5);
+}
+
+.busca-item strong {
+    color: hsl(var(--foreground));
+    font-size: 0.9rem;
+}
+
+.busca-item small {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+
+/* ==========================================================================
+   25. ESTATÍSTICAS NO MAPA
+   ========================================================================== */
+
+.mapa-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-2);
+    padding: var(--space-3);
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+}
+
+@media (min-width: 680px) {
+    .mapa-stats {
+        grid-template-columns: repeat(6, 1fr);
+    }
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: var(--space-2);
+    border: 1px solid hsl(var(--border));
+    background: hsl(var(--background) / 0.4);
+}
+
+.stat-numero {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: hsl(var(--foreground));
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.65rem;
+    color: hsl(var(--muted-foreground));
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+}
+
+.stat-destaque {
+    border-color: hsl(var(--terminal-green));
+    background: hsl(var(--terminal-green) / 0.08);
+}
+
+.stat-destaque .stat-numero {
+    color: hsl(var(--terminal-green));
+}
+
+
+/* ==========================================================================
+   26. AÇÕES NO SOBRE
+   ========================================================================== */
+
+.sobre-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-2);
+}
+
+.btn-perigo {
+    padding: var(--space-2) var(--space-4);
+    background: hsl(var(--priority-high) / 0.15);
+    color: hsl(var(--priority-high));
+    border: 1px solid hsl(var(--priority-high));
+    font-family: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 2.75rem;
+}
+
+.btn-perigo:hover {
+    background: hsl(var(--priority-high));
+    color: hsl(var(--foreground));
+}
+
+
+/* ==========================================================================
+   27. SCREENSHOTS NO SOBRE
+   ========================================================================== */
+
+.sobre-screenshots {
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid hsl(var(--border));
+}
+
+.sobre-screenshots h4 {
+    font-size: 0.78rem;
+    color: hsl(var(--terminal-cyan));
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+}
+
+.screenshots-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+@media (min-width: 680px) {
+    .screenshots-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.screenshots-grid figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin: 0;
+}
+
+.screenshots-grid img {
+    width: 100%;
+    height: auto;
+    border: 1px solid hsl(var(--border));
+    display: block;
+    transition: border-color 0.3s ease;
+}
+
+.screenshots-grid figure:hover img {
+    border-color: hsl(var(--terminal-amber));
+}
+
+.screenshots-grid figcaption {
+    font-size: 0.78rem;
+    color: hsl(var(--muted-foreground));
+    text-align: center;
+    letter-spacing: 0.05em;
+}
+
+
+/* ==========================================================================
+   28. ANIMAÇÕES POLIDAS
+   ========================================================================== */
+
+/* Transição suave entre modos */
+.modo.ativo {
+    animation: fadeIn 0.3s var(--ease-glass);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover mais suave nos cartões */
+#tarefas-container ul li,
+.cartao-acervo,
+.cartao-legado {
+    transition: all 0.3s var(--ease-glass);
+}
+
+#tarefas-container ul li:hover,
+.cartao-acervo:hover,
+.cartao-legado:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+}
+
+/* Botões com transição uniforme */
+.btn-nova-tarefa,
+.btn-acervo,
+.btn-legado,
+.btn-anotar,
+.btn-arquivar,
+.btn-excluir,
+.btn-acao-avancada,
+.btn-acao-perigo,
+.btn-perigo {
+    transition: all 0.25s var(--ease-glass);
+}
+
+.btn-nova-tarefa:active,
+.btn-acervo:active,
+.btn-legado:active,
+.btn-anotar:active {
+    transform: scale(0.97);
+}
+
+/* Nav com transição */
+nav.modos button {
+    transition: all 0.3s var(--ease-glass);
+}
+
+/* Modal com fade-in */
+.modal:not([hidden]) {
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-conteudo {
+    animation: modalIn 0.3s var(--ease-glass);
+}
+
+@keyframes modalIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Inputs com transição */
+.busca-filtros input[type="text"],
+.busca-filtros select,
+.form-anotacao textarea,
+.form-evolucao textarea,
+.form-evolucao select,
+.form-evolucao input[type="text"],
+#busca-global,
+#busca-acervo,
+#busca-legado {
+    transition: border-color 0.25s ease, background 0.25s ease;
+}
+
+/* Região de status com transição suave */
+#status-region {
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+/* ==========================================================================
+   29. FOTO DA AUTORA NO SOBRE
+   ========================================================================== */
+
+.sobre-autora {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-3);
+    background: hsl(var(--background) / 0.4);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--terminal-cyan));
+    margin-bottom: var(--space-3);
+}
+
+@media (min-width: 680px) {
+    .sobre-autora {
+        flex-direction: row;
+        align-items: flex-start;
+        padding: var(--space-4);
+    }
+}
+
+.autora-foto {
+    flex-shrink: 0;
+    width: 120px;
+    height: 120px;
+    border: 2px solid hsl(var(--terminal-cyan));
+    overflow: hidden;
+    position: relative;
+}
+
+@media (min-width: 680px) {
+    .autora-foto {
+        width: 140px;
+        height: 140px;
+    }
+}
+
+.autora-foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: grayscale(0.2) contrast(1.05);
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.autora-foto:hover img {
+    filter: grayscale(0) contrast(1);
+    transform: scale(1.05);
+}
+
+.autora-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    flex: 1;
+    min-width: 0;
+}
+
+.autora-info h4 {
+    font-size: 1.1rem;
+    color: hsl(var(--foreground));
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.autora-papel {
+    font-size: 0.72rem;
+    color: hsl(var(--terminal-cyan));
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+}
+
+.autora-frase {
+    font-size: 0.88rem;
+    color: hsl(var(--muted-foreground));
+    font-style: italic;
+    line-height: 1.6;
+    padding-left: var(--space-3);
+    border-left: 2px solid hsl(var(--border));
+    margin-top: var(--space-1);
+}
+
+/* Links sociais no Sobre */
+.sobre-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    padding-top: var(--space-3);
+    border-top: 1px solid hsl(var(--border));
+}
+
+.sobre-links a {
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--secondary) / 0.6);
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--foreground));
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.25s var(--ease-glass);
+}
+
+.sobre-links a:hover {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+    border-color: hsl(var(--foreground));
+    transform: translateY(-2px);
+}
+
+.autora-foto {
+    border: 2px solid hsl(var(--terminal-cyan));
+    animation: pulse-border 3s ease-in-out infinite;
+}
+
+@keyframes pulse-border {
+    0%, 100% { border-color: hsl(var(--terminal-cyan)); }
+    50% { border-color: hsl(var(--terminal-amber)); }
+}
+
+.autora-foto::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        hsl(var(--background) / 0.15) 2px,
+        hsl(var(--background) / 0.15) 4px
+    );
+    opacity: 0.5;
 }

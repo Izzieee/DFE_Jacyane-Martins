@@ -1,6 +1,9 @@
 // js/mapa.js
 import { abrirModal } from './modal.js';
 
+// ==========================================
+// DERIVAÇÃO
+// ==========================================
 export function derivarMapa(estado) {
     let tarefas = estado.tarefas;
     if (estado.tagSelecionada) {
@@ -36,6 +39,9 @@ export function derivarMapa(estado) {
     return { nos, arestas };
 }
 
+// ==========================================
+// RENDERIZAÇÃO
+// ==========================================
 export function renderizarMapa({ nos, arestas }) {
     const container = document.getElementById('mapa-container');
     if (!container) return;
@@ -52,6 +58,14 @@ export function renderizarMapa({ nos, arestas }) {
         return;
     }
 
+    // ==========================================
+    // ESTATÍSTICAS
+    // ==========================================
+    const stats = calcularEstatisticas(nos);
+
+    // ==========================================
+    // POSIÇÕES DOS NÓS
+    // ==========================================
     const largura = 900;
     const altura = 500;
     const centroX = largura / 2;
@@ -68,10 +82,10 @@ export function renderizarMapa({ nos, arestas }) {
     });
 
     const corPorStatus = {
-        'fazer': 'hsl(355, 100%, 49%)',
-        'andamento': 'hsl(59, 100%, 50%)',
-        'revisao': 'hsl(278, 78%, 31%)',
-        'concluida': 'hsl(133, 81%, 29%)'
+        'fazer': 'hsl(214 28% 60%)',
+        'andamento': 'hsl(200 100% 75%)',
+        'revisao': 'hsl(206 100% 72%)',
+        'concluida': 'hsl(196 100% 75%)'
     };
 
     const labelPorStatus = {
@@ -81,8 +95,12 @@ export function renderizarMapa({ nos, arestas }) {
         'concluida': 'Concluída'
     };
 
+    // ==========================================
+    // SVG
+    // ==========================================
     let svg = `<svg viewBox="0 0 ${largura} ${altura}" class="mapa-svg" xmlns="http://www.w3.org/2000/svg">`;
 
+    // Arestas
     arestas.forEach(aresta => {
         const de = posicoes[aresta.de];
         const para = posicoes[aresta.para];
@@ -99,11 +117,12 @@ export function renderizarMapa({ nos, arestas }) {
         `;
     });
 
+    // Nós
     nos.forEach(no => {
         const pos = posicoes[no.id];
         const cor = corPorStatus[no.status] || corPorStatus.fazer;
-        const tituloCurto = no.titulo.length > 20 
-            ? no.titulo.substring(0, 18) + '...' 
+        const tituloCurto = no.titulo.length > 20
+            ? no.titulo.substring(0, 18) + '...'
             : no.titulo;
 
         svg += `
@@ -132,6 +151,9 @@ export function renderizarMapa({ nos, arestas }) {
 
     svg += `</svg>`;
 
+    // ==========================================
+    // LISTA LATERAL
+    // ==========================================
     const listaHTML = nos.map(no => `
         <li class="mapa-item" data-tarefa-id="${no.id}">
             <span class="mapa-cor" style="background: ${corPorStatus[no.status] || corPorStatus.fazer}"></span>
@@ -142,10 +164,41 @@ export function renderizarMapa({ nos, arestas }) {
         </li>
     `).join('');
 
+    // ==========================================
+    // HTML FINAL
+    // ==========================================
     container.innerHTML = `
         <div class="mapa-info">
             <p>${nos.length} ${nos.length === 1 ? 'tarefa' : 'tarefas'} · ${arestas.length} ${arestas.length === 1 ? 'conexão' : 'conexões'}</p>
         </div>
+
+        <div class="mapa-stats">
+            <div class="stat-item">
+                <span class="stat-numero">${stats.porStatus.fazer}</span>
+                <span class="stat-label">a fazer</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">${stats.porStatus.andamento}</span>
+                <span class="stat-label">andamento</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">${stats.porStatus.revisao}</span>
+                <span class="stat-label">revisão</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">${stats.porStatus.concluida}</span>
+                <span class="stat-label">concluída</span>
+            </div>
+            <div class="stat-item stat-destaque">
+                <span class="stat-numero">${stats.progresso}%</span>
+                <span class="stat-label">progresso</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-numero">${stats.tags}</span>
+                <span class="stat-label">tags únicas</span>
+            </div>
+        </div>
+
         <div class="mapa-layout">
             <aside class="mapa-lateral">
                 <h3>Tarefas (${nos.length})</h3>
@@ -159,6 +212,7 @@ export function renderizarMapa({ nos, arestas }) {
         </div>
     `;
 
+    // Eventos: itens da lista
     container.querySelectorAll('.mapa-item').forEach(item => {
         item.addEventListener('click', () => {
             const id = Number(item.dataset.tarefaId);
@@ -167,6 +221,7 @@ export function renderizarMapa({ nos, arestas }) {
         });
     });
 
+    // Eventos: nós do SVG
     container.querySelectorAll('.mapa-no').forEach(no => {
         no.addEventListener('click', () => {
             const id = Number(no.dataset.tarefaId);
@@ -176,12 +231,47 @@ export function renderizarMapa({ nos, arestas }) {
     });
 }
 
+// ==========================================
+// CALCULAR ESTATÍSTICAS
+// ==========================================
+function calcularEstatisticas(nos) {
+    const porStatus = {
+        'fazer': 0,
+        'andamento': 0,
+        'revisao': 0,
+        'concluida': 0
+    };
+
+    const tagsUnicas = new Set();
+
+    nos.forEach(no => {
+        if (porStatus[no.status] !== undefined) {
+            porStatus[no.status]++;
+        }
+        (no.tags || []).forEach(tag => tagsUnicas.add(tag));
+    });
+
+    const total = nos.length;
+    const progresso = total > 0
+        ? Math.round((porStatus.concluida / total) * 100)
+        : 0;
+
+    return {
+        porStatus,
+        tags: tagsUnicas.size,
+        progresso
+    };
+}
+
+// ==========================================
+// TAGS DISPONÍVEIS
+// ==========================================
 export function renderizarTagsMapa() {
     const container = document.getElementById('mapa-tags');
     if (!container) return;
 
     const tagsUnicas = new Set();
-    window.estado.tarefas.forEach(t => 
+    window.estado.tarefas.forEach(t =>
         (t.tags || []).forEach(tag => tagsUnicas.add(tag))
     );
 

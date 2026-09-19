@@ -45,6 +45,9 @@ export function abrirModal(tarefa) {
         <details class="acoes-avancadas">
             <summary>= Ações avançadas</summary>
             <div class="acoes-avancadas-conteudo">
+                <button type="button" class="btn-acao-avancada" data-acao-modal="editar">
+                  ✎ Editar tarefa
+                </button>
                 <button type="button" class="btn-acao-avancada" data-acao-modal="evoluir">
                   ^ Evoluir (criar nova tarefa)
                 </button>
@@ -74,7 +77,8 @@ export function abrirModal(tarefa) {
     corpo.querySelectorAll('[data-acao-modal]').forEach(btn => {
         btn.addEventListener('click', () => {
             const acao = btn.dataset.acaoModal;
-            if (acao === 'evoluir') abrirModalEvolucao(tarefa);
+            if (acao === 'editar') abrirModalEditar(tarefa);
+            else if (acao === 'evoluir') abrirModalEvolucao(tarefa);
             else if (acao === 'clonar') clonarTarefa(tarefa);
             else if (acao === 'publicar') {
                 tarefa.publica = !tarefa.publica;
@@ -85,6 +89,103 @@ export function abrirModal(tarefa) {
             }
         });
     });
+}
+
+// ==========================================
+// MODAL DE EDIÇÃO
+// ==========================================
+export function abrirModalEditar(tarefa) {
+    const modal = document.getElementById('modal');
+    const corpo = document.getElementById('modal-corpo');
+    if (!modal || !corpo) return;
+
+    corpo.innerHTML = `
+        <h2>✎ Editar: ${tarefa.titulo}</h2>
+
+        <form id="form-editar" class="form-evolucao">
+            <label for="ed-titulo">Título *:</label>
+            <input type="text" id="ed-titulo" value="${tarefa.titulo}" required />
+
+            <label for="ed-projeto">Projeto:</label>
+            <input type="text" id="ed-projeto" value="${tarefa.projeto || ''}" />
+
+            <label for="ed-responsavel">Responsável:</label>
+            <input type="text" id="ed-responsavel" value="${tarefa.responsavel || ''}" />
+
+            <label for="ed-prazo">Prazo (DD/MM/AAAA):</label>
+            <input type="text" id="ed-prazo" value="${tarefa.prazo || ''}" />
+
+            <label for="ed-status">Status:</label>
+            <select id="ed-status">
+                <option value="fazer" ${tarefa.status === 'fazer' ? 'selected' : ''}>A fazer</option>
+                <option value="andamento" ${tarefa.status === 'andamento' ? 'selected' : ''}>Em andamento</option>
+                <option value="revisao" ${tarefa.status === 'revisao' ? 'selected' : ''}>Revisão</option>
+                <option value="concluida" ${tarefa.status === 'concluida' ? 'selected' : ''}>Concluída</option>
+            </select>
+
+            <label for="ed-prioridade">Prioridade:</label>
+            <select id="ed-prioridade">
+                <option value="baixa" ${tarefa.prioridade === 'baixa' ? 'selected' : ''}>Baixa</option>
+                <option value="media" ${tarefa.prioridade === 'media' ? 'selected' : ''}>Média</option>
+                <option value="alta" ${tarefa.prioridade === 'alta' ? 'selected' : ''}>Alta</option>
+            </select>
+
+            <label for="ed-tags">Tags (separadas por vírgula):</label>
+            <input type="text" id="ed-tags" value="${(tarefa.tags || []).join(', ')}" />
+
+            <button type="submit" class="btn-anotar">[ok] Salvar alterações</button>
+        </form>
+    `;
+
+    modal.hidden = false;
+
+    const form = document.getElementById('form-editar');
+    form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        salvarEdicao(tarefa.id);
+    });
+}
+
+function salvarEdicao(idTarefa) {
+    const tarefa = window.estado.tarefas.find(t => t.id === idTarefa);
+    if (!tarefa) return;
+
+    const titulo = document.getElementById('ed-titulo')?.value.trim();
+    const projeto = document.getElementById('ed-projeto')?.value.trim();
+    const responsavel = document.getElementById('ed-responsavel')?.value.trim();
+    const prazo = document.getElementById('ed-prazo')?.value.trim();
+    const status = document.getElementById('ed-status')?.value;
+    const prioridade = document.getElementById('ed-prioridade')?.value;
+    const tagsTexto = document.getElementById('ed-tags')?.value.trim();
+
+    if (!titulo) return;
+
+    const statusAnterior = tarefa.status;
+
+    tarefa.titulo = titulo;
+    tarefa.projeto = projeto || tarefa.projeto;
+    tarefa.responsavel = responsavel || tarefa.responsavel;
+    tarefa.prazo = prazo;
+    tarefa.status = status;
+    tarefa.prioridade = prioridade;
+    tarefa.tags = tagsTexto
+        ? tagsTexto.split(',').map(t => t.trim()).filter(Boolean)
+        : [];
+
+    // Ajusta data de conclusão
+    if (status === 'concluida' && statusAnterior !== 'concluida') {
+        tarefa.concluidaEm = new Date().toLocaleDateString('pt-BR');
+    } else if (status !== 'concluida') {
+        tarefa.concluidaEm = null;
+    }
+
+    abrirModal(tarefa);
+    if (window.renderizar) window.renderizar();
+
+    const statusRegion = document.getElementById('status-region');
+    if (statusRegion) {
+        statusRegion.textContent = `"${titulo}" editada`;
+    }
 }
 
 // ==========================================
@@ -165,9 +266,6 @@ export function abrirModalNovaTarefa() {
     });
 }
 
-// ==========================================
-// CRIAR NOVA TAREFA
-// ==========================================
 function criarNovaTarefa() {
     const titulo = document.getElementById('nt-titulo')?.value.trim();
     const projeto = document.getElementById('nt-projeto')?.value.trim();
@@ -265,9 +363,6 @@ export function abrirModalEvolucao(tarefaOriginal) {
     });
 }
 
-// ==========================================
-// CRIAR TAREFA DE EVOLUÇÃO
-// ==========================================
 function criarTarefaEvolucao(tarefaOriginal) {
     const novaEtapa = document.getElementById('nova-etapa')?.value.trim();
     const novaAnotacao = document.getElementById('nova-anotacao')?.value.trim();
@@ -291,7 +386,7 @@ function criarTarefaEvolucao(tarefaOriginal) {
         tags: [...(tarefaOriginal.tags || [])],
         passos: [...(tarefaOriginal.passos || []), novaEtapa],
         aprendizados: [...(tarefaOriginal.aprendizados || [])],
-        anotacoes: novaAnotacao 
+        anotacoes: novaAnotacao
             ? [{ data: new Date().toLocaleDateString('pt-BR'), texto: novaAnotacao }]
             : [],
         relacionadas: [...(tarefaOriginal.relacionadas || []), tarefaOriginal.id],
