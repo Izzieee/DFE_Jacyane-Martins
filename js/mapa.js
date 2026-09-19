@@ -82,10 +82,10 @@ export function renderizarMapa({ nos, arestas }) {
     });
 
     const corPorStatus = {
-        'fazer': 'hsl(214 28% 60%)',
-        'andamento': 'hsl(200 100% 75%)',
-        'revisao': 'hsl(206 100% 72%)',
-        'concluida': 'hsl(196 100% 75%)'
+        'fazer': 'hsl(0, 100%, 50%)',
+        'andamento': 'hsl(71, 100%, 50%)',
+        'revisao': 'hsl(308, 100%, 51%)',
+        'concluida': 'hsl(125, 100%, 50%)'
     };
 
     const labelPorStatus = {
