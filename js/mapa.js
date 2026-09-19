@@ -1,11 +1,6 @@
 // js/mapa.js
-// RESPONSABILIDADE: MODO MAPA — grafo de tarefas conectadas por tags
-
 import { abrirModal } from './modal.js';
 
-// ==========================================
-// DERIVAÇÃO: constrói nós e arestas
-// ==========================================
 export function derivarMapa(estado) {
     let tarefas = estado.tarefas;
     if (estado.tagSelecionada) {
@@ -41,9 +36,6 @@ export function derivarMapa(estado) {
     return { nos, arestas };
 }
 
-// ==========================================
-// RENDERIZAÇÃO: SVG com nós e arestas + barra lateral
-// ==========================================
 export function renderizarMapa({ nos, arestas }) {
     const container = document.getElementById('mapa-container');
     if (!container) return;
@@ -53,7 +45,7 @@ export function renderizarMapa({ nos, arestas }) {
     if (nos.length === 0) {
         container.innerHTML = `
             <div class="estado-vazio">
-                <p>🕸️ Nenhuma tarefa para mostrar</p>
+                <p>Nenhuma tarefa para mostrar</p>
                 <p class="subtitulo">Tente limpar os filtros</p>
             </div>
         `;
@@ -76,10 +68,10 @@ export function renderizarMapa({ nos, arestas }) {
     });
 
     const corPorStatus = {
-        'fazer': '#ffd700',
-        'andamento': '#e0b400',
-        'revisao': '#b98f00',
-        'concluida': '#fff3b8'
+        'fazer': 'hsl(355, 100%, 49%)',
+        'andamento': 'hsl(59, 100%, 50%)',
+        'revisao': 'hsl(278, 78%, 31%)',
+        'concluida': 'hsl(133, 81%, 29%)'
     };
 
     const labelPorStatus = {
@@ -100,7 +92,7 @@ export function renderizarMapa({ nos, arestas }) {
             <line 
                 x1="${de.x}" y1="${de.y}" 
                 x2="${para.x}" y2="${para.y}" 
-                stroke="#3a3a3a" 
+                stroke="hsl(214 31% 34%)" 
                 stroke-width="2"
                 stroke-dasharray="4 4"
             />
@@ -109,7 +101,7 @@ export function renderizarMapa({ nos, arestas }) {
 
     nos.forEach(no => {
         const pos = posicoes[no.id];
-        const cor = corPorStatus[no.status] || '#ffd700';
+        const cor = corPorStatus[no.status] || corPorStatus.fazer;
         const tituloCurto = no.titulo.length > 20 
             ? no.titulo.substring(0, 18) + '...' 
             : no.titulo;
@@ -119,14 +111,14 @@ export function renderizarMapa({ nos, arestas }) {
                 <circle 
                     cx="${pos.x}" cy="${pos.y}" r="28" 
                     fill="${cor}" 
-                    stroke="#0a0a0a" 
+                    stroke="hsl(220 40% 8%)" 
                     stroke-width="2"
                     style="cursor: pointer;"
                 />
                 <text 
                     x="${pos.x}" y="${pos.y + 45}" 
                     text-anchor="middle" 
-                    fill="#f3f3ec" 
+                    fill="hsl(210 100% 96%)" 
                     font-size="11"
                     font-family="inherit"
                     style="pointer-events: none;"
@@ -142,7 +134,7 @@ export function renderizarMapa({ nos, arestas }) {
 
     const listaHTML = nos.map(no => `
         <li class="mapa-item" data-tarefa-id="${no.id}">
-            <span class="mapa-cor" style="background: ${corPorStatus[no.status] || '#ffd700'}"></span>
+            <span class="mapa-cor" style="background: ${corPorStatus[no.status] || corPorStatus.fazer}"></span>
             <div class="mapa-item-info">
                 <strong>${no.titulo}</strong>
                 <small>${labelPorStatus[no.status] || no.status}</small>
@@ -152,11 +144,11 @@ export function renderizarMapa({ nos, arestas }) {
 
     container.innerHTML = `
         <div class="mapa-info">
-            <p>🕸️ ${nos.length} ${nos.length === 1 ? 'tarefa' : 'tarefas'} · ${arestas.length} ${arestas.length === 1 ? 'conexão' : 'conexões'}</p>
+            <p>${nos.length} ${nos.length === 1 ? 'tarefa' : 'tarefas'} · ${arestas.length} ${arestas.length === 1 ? 'conexão' : 'conexões'}</p>
         </div>
         <div class="mapa-layout">
             <aside class="mapa-lateral">
-                <h3>📋 Tarefas (${nos.length})</h3>
+                <h3>Tarefas (${nos.length})</h3>
                 <ul class="mapa-lista">
                     ${listaHTML}
                 </ul>
@@ -167,7 +159,6 @@ export function renderizarMapa({ nos, arestas }) {
         </div>
     `;
 
-    // Evento de clique nos itens da lista
     container.querySelectorAll('.mapa-item').forEach(item => {
         item.addEventListener('click', () => {
             const id = Number(item.dataset.tarefaId);
@@ -176,7 +167,6 @@ export function renderizarMapa({ nos, arestas }) {
         });
     });
 
-    // Evento de clique nos nós do SVG
     container.querySelectorAll('.mapa-no').forEach(no => {
         no.addEventListener('click', () => {
             const id = Number(no.dataset.tarefaId);
@@ -186,9 +176,6 @@ export function renderizarMapa({ nos, arestas }) {
     });
 }
 
-// ==========================================
-// RENDERIZAÇÃO: tags disponíveis (filtros)
-// ==========================================
 export function renderizarTagsMapa() {
     const container = document.getElementById('mapa-tags');
     if (!container) return;
@@ -202,15 +189,11 @@ export function renderizarTagsMapa() {
     const tagSelecionada = window.estado.tagSelecionada;
 
     container.innerHTML = `
-        <button type="button" 
-                class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" 
-                data-tag="">
+        <button type="button" class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" data-tag="">
             Todas
         </button>
         ${tags.map(tag => `
-            <button type="button" 
-                    class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" 
-                    data-tag="${tag}">
+            <button type="button" class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" data-tag="${tag}">
                 ${tag}
             </button>
         `).join('')}

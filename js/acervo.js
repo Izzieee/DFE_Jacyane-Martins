@@ -2,7 +2,6 @@
 import { abrirModalEvolucao, abrirModal } from './modal.js';
 
 export function derivarAcervo(estado) {
-    // ⭐ Mostra tarefas arquivadas OU concluídas (compatibilidade)
     let lista = estado.tarefas.filter(t => 
         t.arquivada === true || t.status === 'concluida'
     );
@@ -36,7 +35,7 @@ export function renderizarAcervo(lista) {
     if (lista.length === 0) {
         container.innerHTML = `
             <div class="estado-vazio">
-                <p>📭 Nenhuma tarefa no acervo</p>
+                <p>Nenhuma tarefa no acervo</p>
                 <p class="subtitulo">Conclua e arquive tarefas no Kanban para vê-las aqui</p>
             </div>
         `;
@@ -46,8 +45,8 @@ export function renderizarAcervo(lista) {
     container.innerHTML = lista.map(tarefa => `
         <article class="cartao-acervo" data-tarefa-id="${tarefa.id}">
             <header class="acervo-cabecalho">
-                <h3>✅ ${tarefa.titulo}</h3>
-                <span class="data-conclusao">📅 ${tarefa.concluidaEm || 'sem data'}</span>
+                <h3>[ok] ${tarefa.titulo}</h3>
+                <span class="data-conclusao">// ${tarefa.concluidaEm || 'sem data'}</span>
             </header>
 
             <div class="tags-cartao">
@@ -56,26 +55,26 @@ export function renderizarAcervo(lista) {
 
             ${tarefa.aprendizados && tarefa.aprendizados.length > 0 ? `
                 <div class="resumo-aprendizados">
-                    <strong>💡 Aprendizados:</strong>
+                    <strong>! Aprendizados:</strong>
                     <ul>${tarefa.aprendizados.map(a => `<li>${a}</li>`).join('')}</ul>
                 </div>
             ` : ''}
 
             ${tarefa.anotacoes && tarefa.anotacoes.length > 0 ? `
                 <div class="contagem-anotacoes">
-                    📌 ${tarefa.anotacoes.length} anotaç${tarefa.anotacoes.length === 1 ? 'ão' : 'ões'}
+                    &gt; ${tarefa.anotacoes.length} anotaç${tarefa.anotacoes.length === 1 ? 'ão' : 'ões'}
                 </div>
             ` : ''}
 
             <footer class="acervo-acoes">
                 <button type="button" class="btn-acervo btn-evoluir-acervo" data-acao="evoluir">
-                    ⬆️ Evoluir Tarefa
+                    ^ Evoluir Tarefa
                 </button>
                 <button type="button" class="btn-acervo" data-acao="ver-detalhes">
-                    👁️ Ver detalhes
+                    &gt; Ver detalhes
                 </button>
                 <button type="button" class="btn-acervo" data-acao="publicar">
-                    ${tarefa.publica ? '🔒 Despublicar' : '📤 Publicar'}
+                    ${tarefa.publica ? '[#] Despublicar' : '[>] Publicar'}
                 </button>
             </footer>
         </article>

@@ -1,5 +1,4 @@
 // js/modal.js
-// RESPONSABILIDADE: Modais (detalhes, evolução, clonagem, nova tarefa)
 
 // ==========================================
 // MODAL DE DETALHES
@@ -23,16 +22,16 @@ export function abrirModal(tarefa) {
         </div>
 
         ${tarefa.passos && tarefa.passos.length > 0 ? `
-            <h3>📝 Passos</h3>
+            <h3>// Passos</h3>
             <ol>${tarefa.passos.map(p => `<li>${p}</li>`).join('')}</ol>
         ` : ''}
 
         ${tarefa.aprendizados && tarefa.aprendizados.length > 0 ? `
-            <h3>💡 Aprendizados</h3>
+            <h3>! Aprendizados</h3>
             <ul>${tarefa.aprendizados.map(a => `<li>${a}</li>`).join('')}</ul>
         ` : ''}
 
-        <h3>📌 Anotações</h3>
+        <h3>&gt; Anotações</h3>
         <div id="anotacoes-lista">
             ${renderizarAnotacoes(tarefa.anotacoes || [])}
         </div>
@@ -40,25 +39,25 @@ export function abrirModal(tarefa) {
         <form id="form-anotacao" class="form-anotacao">
             <label for="texto-anotacao">Nova anotação:</label>
             <textarea id="texto-anotacao" rows="3" placeholder="O que você quer registrar?" required></textarea>
-            <button type="submit" class="btn-anotar">➕ Adicionar anotação</button>
+            <button type="submit" class="btn-anotar">+ Adicionar anotação</button>
         </form>
 
         <details class="acoes-avancadas">
-            <summary>⚙️ Ações avançadas</summary>
+            <summary>= Ações avançadas</summary>
             <div class="acoes-avancadas-conteudo">
                 <button type="button" class="btn-acao-avancada" data-acao-modal="evoluir">
-                  ⬆️ Evoluir (criar nova tarefa)
+                  ^ Evoluir (criar nova tarefa)
                 </button>
                 <button type="button" class="btn-acao-avancada" data-acao-modal="clonar">
-                  📋 Clonar tarefa
+                  &gt; Clonar tarefa
                 </button>
                 ${tarefa.status === 'concluida' ? `
                   <button type="button" class="btn-acao-avancada" data-acao-modal="publicar">
-                    ${tarefa.publica ? '🔒 Despublicar' : '📤 Publicar no Legado'}
+                    ${tarefa.publica ? '[#] Despublicar' : '[>] Publicar no Legado'}
                   </button>
                 ` : ''}
                 <button type="button" class="btn-acao-avancada btn-acao-perigo" data-acao-modal="excluir">
-                  🗑️ Excluir tarefa
+                  [x] Excluir tarefa
                 </button>
             </div>
         </details>
@@ -101,11 +100,9 @@ function excluirTarefa(tarefa) {
     const idx = window.estado.tarefas.findIndex(t => t.id === tarefa.id);
     if (idx >= 0) window.estado.tarefas.splice(idx, 1);
 
-    // Fecha o modal
     const modal = document.getElementById('modal');
     if (modal) modal.hidden = true;
 
-    // Re-renderiza
     if (window.renderizar) window.renderizar();
 
     const statusRegion = document.getElementById('status-region');
@@ -123,7 +120,7 @@ export function abrirModalNovaTarefa() {
     if (!modal || !corpo) return;
 
     corpo.innerHTML = `
-        <h2>➕ Nova Tarefa</h2>
+        <h2>+ Nova Tarefa</h2>
 
         <form id="form-nova-tarefa" class="form-evolucao">
             <label for="nt-titulo">Título *:</label>
@@ -155,7 +152,7 @@ export function abrirModalNovaTarefa() {
             <label for="nt-tags">Tags (separadas por vírgula):</label>
             <input type="text" id="nt-tags" placeholder="Ex: JavaScript, Frontend" />
 
-            <button type="submit" class="btn-anotar">✅ Criar tarefa</button>
+            <button type="submit" class="btn-anotar">[ok] Criar tarefa</button>
         </form>
     `;
 
@@ -228,14 +225,14 @@ export function abrirModalEvolucao(tarefaOriginal) {
     if (!modal || !corpo) return;
 
     corpo.innerHTML = `
-        <h2>⬆️ Evoluir: ${tarefaOriginal.titulo}</h2>
+        <h2>^ Evoluir: ${tarefaOriginal.titulo}</h2>
         <p class="subtitulo">Crie uma nova tarefa baseada nesta, com uma nova etapa.</p>
 
         <form id="form-evolucao" class="form-evolucao">
-            <label for="nova-etapa">📝 Nova etapa (o que fazer agora?):</label>
+            <label for="nova-etapa">// Nova etapa (o que fazer agora?):</label>
             <textarea id="nova-etapa" rows="3" placeholder="Ex: Refatorar o código..." required></textarea>
 
-            <label for="nova-anotacao">📌 Anotação inicial (opcional):</label>
+            <label for="nova-anotacao">&gt; Anotação inicial (opcional):</label>
             <textarea id="nova-anotacao" rows="2" placeholder="Contexto do que aprendeu..."></textarea>
 
             <label for="novo-status">Status inicial:</label>
@@ -255,7 +252,7 @@ export function abrirModalEvolucao(tarefaOriginal) {
             <label for="novo-prazo">Prazo (DD/MM/AAAA):</label>
             <input type="text" id="novo-prazo" placeholder="Ex: 30/09/2026" />
 
-            <button type="submit" class="btn-anotar">✅ Criar nova tarefa</button>
+            <button type="submit" class="btn-anotar">[ok] Criar nova tarefa</button>
         </form>
     `;
 

@@ -4,7 +4,6 @@ export function renderizarTarefas(tarefas) {
     const container = document.getElementById('tarefas-container');
     if (!container) return;
 
-    // ⭐ FILTRA: não mostra tarefas arquivadas no Kanban
     const tarefasVisiveis = tarefas.filter(t => !t.arquivada);
 
     const agrupadas = {
@@ -22,10 +21,10 @@ export function renderizarTarefas(tarefas) {
     });
 
     const titulosStatus = {
-        'fazer': '📋 A fazer',
-        'andamento': '🔄 Em andamento',
-        'revisao': '🔍 Em revisão',
-        'concluida': '✅ Concluída'
+        'fazer': '[ ] A fazer',
+        'andamento': '[~] Em andamento',
+        'revisao': '[?] Em revisão',
+        'concluida': '[ok] Concluída'
     };
 
     const prioridadeClasse = {
@@ -56,14 +55,13 @@ export function renderizarTarefas(tarefas) {
                    </div>`
                 : '';
 
-            // ⭐ Botões de ação só para tarefas concluídas
             const acoesConcluida = (tarefa.status === 'concluida')
                 ? `<div class="acoes-concluida">
                      <button type="button" class="btn-arquivar" data-acao="arquivar" title="Mover para o acervo">
-                       📚 Arquivar no Acervo
+                       [#] Arquivar no Acervo
                      </button>
                      <button type="button" class="btn-excluir" data-acao="excluir" title="Excluir tarefa">
-                       🗑️ Excluir
+                       [x] Excluir
                      </button>
                    </div>`
                 : '';

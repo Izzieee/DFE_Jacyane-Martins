@@ -1,11 +1,6 @@
 // js/legado.js
-// RESPONSABILIDADE: MODO LEGADO — publicar tarefas como tutoriais
-
 import { abrirModal } from './modal.js';
 
-// ==========================================
-// DERIVAÇÃO: só tarefas públicas
-// ==========================================
 export function derivarLegado(estado) {
     let lista = estado.tarefas.filter(t => t.publica === true);
 
@@ -29,9 +24,6 @@ export function derivarLegado(estado) {
     return lista;
 }
 
-// ==========================================
-// RENDERIZAÇÃO
-// ==========================================
 export function renderizarLegado(lista) {
     const container = document.getElementById('legado-container');
     if (!container) return;
@@ -41,7 +33,7 @@ export function renderizarLegado(lista) {
     if (lista.length === 0) {
         container.innerHTML = `
             <div class="estado-vazio">
-                <p>📤 Nenhum tutorial publicado</p>
+                <p>Nenhum tutorial publicado</p>
                 <p class="subtitulo">Publique tarefas do acervo para vê-las aqui</p>
             </div>
         `;
@@ -51,19 +43,17 @@ export function renderizarLegado(lista) {
     container.innerHTML = lista.map(tarefa => `
         <article class="cartao-legado" data-tarefa-id="${tarefa.id}">
             <header class="legado-cabecalho">
-                <h3>📄 ${tarefa.titulo}</h3>
-                <span class="data-publicacao">📅 ${tarefa.concluidaEm || 'sem data'}</span>
+                <h3>${tarefa.titulo}</h3>
+                <span class="data-publicacao">// ${tarefa.concluidaEm || 'sem data'}</span>
             </header>
 
             <div class="tags-cartao">
-                ${(tarefa.tags || []).map(tag => 
-                    `<span class="tag">${tag}</span>`
-                ).join('')}
+                ${(tarefa.tags || []).map(tag => `<span class="tag">${tag}</span>`).join('')}
             </div>
 
             ${tarefa.aprendizados && tarefa.aprendizados.length > 0 ? `
                 <div class="resumo-aprendizados">
-                    <strong>💡 Aprendizados:</strong>
+                    <strong>! Aprendizados:</strong>
                     <ul>
                         ${tarefa.aprendizados.slice(0, 2).map(a => `<li>${a}</li>`).join('')}
                     </ul>
@@ -72,22 +62,19 @@ export function renderizarLegado(lista) {
 
             <footer class="legado-acoes">
                 <button type="button" class="btn-legado" data-acao="ver-detalhes">
-                    👁️ Ver detalhes
+                    &gt; Ver detalhes
                 </button>
                 <button type="button" class="btn-legado" data-acao="exportar">
-                    📥 Exportar Markdown
+                    [+] Exportar Markdown
                 </button>
                 <button type="button" class="btn-legado" data-acao="despublicar">
-                    🔒 Despublicar
+                    [#] Despublicar
                 </button>
             </footer>
         </article>
     `).join('');
 }
 
-// ==========================================
-// TAGS DISPONÍVEIS
-// ==========================================
 export function renderizarTagsLegado() {
     const container = document.getElementById('legado-tags');
     if (!container) return;
@@ -101,24 +88,17 @@ export function renderizarTagsLegado() {
     const tagSelecionada = window.estado.tagSelecionada;
 
     container.innerHTML = `
-        <button type="button" 
-                class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" 
-                data-tag="">
+        <button type="button" class="tag-filtro ${!tagSelecionada ? 'ativa' : ''}" data-tag="">
             Todas
         </button>
         ${tags.map(tag => `
-            <button type="button" 
-                    class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" 
-                    data-tag="${tag}">
+            <button type="button" class="tag-filtro ${tagSelecionada === tag ? 'ativa' : ''}" data-tag="${tag}">
                 ${tag}
             </button>
         `).join('')}
     `;
 }
 
-// ==========================================
-// EXPORTAR COMO MARKDOWN
-// ==========================================
 export function exportarMarkdown(tarefa) {
     const linhas = [];
 
@@ -133,7 +113,7 @@ export function exportarMarkdown(tarefa) {
     linhas.push('');
 
     if (tarefa.passos && tarefa.passos.length > 0) {
-        linhas.push('## 📝 Passos');
+        linhas.push('## Passos');
         linhas.push('');
         tarefa.passos.forEach((p, i) => {
             linhas.push(`${i + 1}. ${p}`);
@@ -142,7 +122,7 @@ export function exportarMarkdown(tarefa) {
     }
 
     if (tarefa.aprendizados && tarefa.aprendizados.length > 0) {
-        linhas.push('## 💡 Aprendizados');
+        linhas.push('## Aprendizados');
         linhas.push('');
         tarefa.aprendizados.forEach(a => {
             linhas.push(`- ${a}`);
@@ -151,7 +131,7 @@ export function exportarMarkdown(tarefa) {
     }
 
     if (tarefa.anotacoes && tarefa.anotacoes.length > 0) {
-        linhas.push('## 📌 Anotações');
+        linhas.push('## Anotações');
         linhas.push('');
         tarefa.anotacoes.forEach(a => {
             linhas.push(`- **${a.data}:** ${a.texto}`);

@@ -11,9 +11,6 @@ import { inicializarDragDrop } from './dragdrop.js';
 
 window.renderizarTarefas = renderizarTarefas;
 
-// ==========================================
-// ALTERNADOR DE MODOS
-// ==========================================
 function trocarModo(novoModo) {
     document.querySelectorAll('.modo').forEach(secao => {
         secao.classList.remove('ativo');
@@ -30,9 +27,6 @@ function trocarModo(novoModo) {
     renderizar();
 }
 
-// ==========================================
-// RENDERIZAÇÃO
-// ==========================================
 export function renderizar() {
     if (estado.carregando) {
         renderizarEstado('carregando', []);
@@ -85,20 +79,14 @@ export function renderizar() {
     }
 }
 
-// ==========================================
-// CONECTAR CONTROLES
-// ==========================================
 function conectarControles() {
-    // Alternador de modos
     document.querySelectorAll('nav.modos button').forEach(btn => {
         btn.addEventListener('click', () => trocarModo(btn.dataset.modo));
     });
 
-    // ⭐ Botão "+ Nova Tarefa"
     const btnNovaTarefa = document.getElementById('btn-nova-tarefa');
     btnNovaTarefa?.addEventListener('click', () => abrirModalNovaTarefa());
 
-    // Filtros do Kanban
     const busca = document.getElementById('titulo-tarefa');
     const status = document.getElementById('status');
     const prioridade = document.querySelectorAll('input[name="prioridade"]');
@@ -124,14 +112,10 @@ function conectarControles() {
         renderizar();
     });
 
-    // Modal - fechar
     const modal = document.getElementById('modal');
     document.querySelector('.modal-fechar')?.addEventListener('click', () => { modal.hidden = true; });
     modal?.addEventListener('click', (e) => { if (e.target === modal) modal.hidden = true; });
 
-    // ==========================================
-    // ACERVO
-    // ==========================================
     const buscaAcervo = document.getElementById('busca-acervo');
     buscaAcervo?.addEventListener('input', (e) => {
         estado.buscaAcervo = e.target.value;
@@ -170,9 +154,6 @@ function conectarControles() {
         }
     });
 
-    // ==========================================
-    // MAPA
-    // ==========================================
     const mapaTags = document.getElementById('mapa-tags');
     mapaTags?.addEventListener('click', (e) => {
         const btn = e.target.closest('.tag-filtro');
@@ -181,9 +162,6 @@ function conectarControles() {
         renderizar();
     });
 
-    // ==========================================
-    // LEGADO
-    // ==========================================
     const buscaLegado = document.getElementById('busca-legado');
     buscaLegado?.addEventListener('input', (e) => {
         estado.buscaLegado = e.target.value;
@@ -218,9 +196,6 @@ function conectarControles() {
         }
     });
 
-    // ==========================================
-    // KANBAN: ARQUIVAR + EXCLUIR + DRAG & DROP
-    // ==========================================
     const container = document.getElementById('tarefas-container');
 
     container?.addEventListener('click', (evento) => {
@@ -237,27 +212,19 @@ function conectarControles() {
         if (acao === 'arquivar') {
             tarefa.arquivada = true;
             renderizar();
-
             const statusRegion = document.getElementById('status-region');
-            if (statusRegion) {
-                statusRegion.textContent = `"${tarefa.titulo}" arquivada no acervo`;
-            }
+            if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" arquivada no acervo`;
         } else if (acao === 'excluir') {
             const confirmar = confirm(`Tem certeza que quer excluir "${tarefa.titulo}"?`);
             if (!confirmar) return;
-
             const idx = estado.tarefas.findIndex(t => t.id === id);
             if (idx >= 0) estado.tarefas.splice(idx, 1);
             renderizar();
-
             const statusRegion = document.getElementById('status-region');
-            if (statusRegion) {
-                statusRegion.textContent = `"${tarefa.titulo}" excluída`;
-            }
+            if (statusRegion) statusRegion.textContent = `"${tarefa.titulo}" excluída`;
         }
     });
 
-    // Drag & drop
     inicializarDragDrop(container, (id, novoStatus) => {
         const tarefa = estado.tarefas.find(t => t.id === id);
         if (!tarefa) return;
@@ -278,9 +245,6 @@ function conectarControles() {
     });
 }
 
-// ==========================================
-// INICIALIZAÇÃO
-// ==========================================
 async function iniciarAplicacao() {
     estado.carregando = true;
     renderizar();
@@ -301,7 +265,6 @@ async function iniciarAplicacao() {
 
 iniciarAplicacao();
 
-// ⚠️ DEBUG
 window.estado = estado;
 window.abrirModal = abrirModal;
 window.abrirModalEvolucao = abrirModalEvolucao;

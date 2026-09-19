@@ -4,10 +4,7 @@ export function renderizarEstado(estado, dados) {
     const container = document.getElementById('tarefas-container');
     const statusRegion = document.getElementById('status-region');
 
-    if (!container || !statusRegion) {
-        console.error('Elementos não encontrados');
-        return;
-    }
+    if (!container || !statusRegion) return;
 
     container.innerHTML = '';
 
@@ -16,19 +13,17 @@ export function renderizarEstado(estado, dados) {
             container.innerHTML = `
                 <div class="estado-carregando">
                     <div class="spinner"></div>
-                    <p>⏳ Carregando tarefas...</p>
+                    <p>Carregando tarefas...</p>
                 </div>
             `;
             statusRegion.textContent = 'Carregando tarefas, aguarde...';
             break;
 
         case 'sucesso':
-            // Aqui `dados` é a lista VISÍVEL (já filtrada/ordenada)
             if (dados.length === 0) {
-                // Resultado vazio: filtros não acharam nada
                 container.innerHTML = `
                     <div class="estado-vazio">
-                        <p>🔍 Nenhum resultado para os critérios</p>
+                        <p>Nenhum resultado para os critérios</p>
                         <p class="subtitulo">Tente alterar ou limpar os filtros</p>
                     </div>
                 `;
@@ -43,7 +38,7 @@ export function renderizarEstado(estado, dados) {
         case 'origem-vazia':
             container.innerHTML = `
                 <div class="estado-vazio">
-                    <p>📭 Nenhuma tarefa cadastrada</p>
+                    <p>Nenhuma tarefa cadastrada</p>
                     <p class="subtitulo">O arquivo de dados está vazio</p>
                 </div>
             `;
@@ -52,15 +47,11 @@ export function renderizarEstado(estado, dados) {
 
         case 'erro':
             let mensagemErro = '';
-            let icone = '❌';
-
             if (dados instanceof Error) {
                 if (dados.name === 'TypeError') {
                     mensagemErro = 'Falha de rede: verifique sua conexão.';
-                    icone = '🌐';
                 } else if (dados.name === 'SyntaxError') {
                     mensagemErro = 'Erro de formato: o JSON está mal formatado.';
-                    icone = '📄';
                 } else {
                     mensagemErro = dados.message || 'Erro desconhecido.';
                 }
@@ -70,13 +61,10 @@ export function renderizarEstado(estado, dados) {
 
             container.innerHTML = `
                 <div class="estado-erro">
-                    <p>${icone} ${mensagemErro}</p>
+                    <p>${mensagemErro}</p>
                 </div>
             `;
             statusRegion.textContent = `Erro: ${mensagemErro}`;
             break;
-
-        default:
-            console.warn('Estado desconhecido:', estado);
     }
 }
