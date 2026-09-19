@@ -1739,3 +1739,194 @@ footer::before {
         transition: none;
     }
 }
+
+/* ==========================================================================
+   23. MODO SOBRE
+   ========================================================================== */
+
+.sobre-container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sobre-bloco {
+    background: hsl(var(--card) / 0.6);
+    border: 1px solid hsl(var(--border));
+    border-left: 3px solid hsl(var(--terminal-amber));
+    padding: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+}
+
+.sobre-bloco h3 {
+    color: hsl(var(--terminal-amber));
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding-bottom: var(--space-2);
+    border-bottom: 2px solid hsl(var(--border));
+}
+
+.sobre-bloco p {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.92rem;
+    line-height: 1.7;
+}
+
+.sobre-bloco p strong {
+    color: hsl(var(--foreground));
+}
+
+.sobre-bloco code {
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    background: hsl(var(--background) / 0.6);
+    padding: 2px 6px;
+    border: 1px solid hsl(var(--border));
+    color: hsl(var(--terminal-cyan));
+    font-size: 0.85em;
+}
+
+/* Manual */
+.manual-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+}
+
+.manual-item {
+    background: hsl(var(--background) / 0.4);
+    border: 1px solid hsl(var(--border));
+    padding: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+}
+
+.manual-item h4 {
+    color: hsl(var(--terminal-green));
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.manual-item p {
+    font-size: 0.88rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.manual-item ul,
+.manual-item ol {
+    padding-left: var(--space-4);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    font-size: 0.85rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.manual-item ul li strong,
+.manual-item ol li strong {
+    color: hsl(var(--foreground));
+}
+
+/* Info de criação */
+.sobre-info {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+}
+
+.sobre-info dt {
+    color: hsl(var(--terminal-cyan));
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-top: var(--space-2);
+}
+
+.sobre-info dd {
+    color: hsl(var(--muted-foreground));
+    font-size: 0.9rem;
+    padding-left: var(--space-2);
+    border-left: 2px solid hsl(var(--border));
+}
+
+/* Princípios */
+.sobre-principios {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+}
+
+.sobre-principios li {
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--background) / 0.4);
+    border-left: 3px solid hsl(var(--terminal-green));
+    font-size: 0.88rem;
+    color: hsl(var(--muted-foreground));
+    line-height: 1.6;
+}
+
+.sobre-principios li strong {
+    color: hsl(var(--foreground));
+}
+
+/* Dicas */
+.sobre-dicas {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+}
+
+.sobre-dicas li {
+    padding: var(--space-2) var(--space-3);
+    background: hsl(var(--background) / 0.4);
+    border-left: 3px solid hsl(var(--terminal-cyan));
+    font-size: 0.88rem;
+    color: hsl(var(--muted-foreground));
+}
+
+.sobre-dicas kbd {
+    display: inline-block;
+    padding: 2px 6px;
+    background: hsl(var(--secondary));
+    border: 1px solid hsl(var(--border));
+    border-bottom-width: 2px;
+    font-family: 'Share Tech Mono', 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: hsl(var(--foreground));
+    border-radius: 2px;
+}
+
+/* Responsivo */
+@media (min-width: 680px) {
+    .manual-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .sobre-info {
+        grid-template-columns: 180px 1fr;
+        gap: var(--space-2) var(--space-4);
+    }
+
+    .sobre-info dt {
+        margin-top: 0;
+        text-align: right;
+        padding-top: 2px;
+    }
+}
+
+@media (min-width: 1080px) {
+    .manual-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

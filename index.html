@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>S.T.E.P — Canivete de Tarefas</title>
+    <title>S_T_E_P</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -18,6 +18,7 @@
         <button type="button" data-modo="acervo">[#] Acervo</button>
         <button type="button" data-modo="mapa">[~] Mapa</button>
         <button type="button" data-modo="legado">[>] Legado</button>
+        <button type="button" data-modo="sobre">[i] Sobre</button>
     </nav>
 
     <div id="status-region" role="status" aria-live="polite"></div>
@@ -111,6 +112,180 @@
         <div id="legado-container"></div>
     </section>
 
+    <!-- MODO: SOBRE -->
+<section id="modo-sobre" class="modo">
+    <h2>[i] Sobre o S.T.E.P</h2>
+
+    <div class="sobre-container">
+
+        <!-- PROPÓSITO -->
+        <article class="sobre-bloco">
+            <h3>// Propósito</h3>
+            <p>
+                O <strong>S.T.E.P — Simple Task Execution Platform</strong> é um gerenciador de tarefas
+                acadêmicas que <strong>não descarta o que foi feito</strong>. Cada tarefa concluída
+                vira conhecimento vivo, conectado e compartilhável.
+            </p>
+            <p>
+                A ideia central é o <strong>Canivete Suíço</strong>: uma ferramenta, várias lâminas.
+                Cada modo serve um propósito diferente, mas todos trabalham sobre o mesmo estado.
+            </p>
+        </article>
+
+        <!-- MANUAL -->
+        <article class="sobre-bloco">
+            <h3>// Manual de uso</h3>
+
+            <div class="manual-grid">
+
+                <div class="manual-item">
+                    <h4>[ ] Kanban</h4>
+                    <p>Onde você <strong>executa</strong> as tarefas.</p>
+                    <ul>
+                        <li><strong>Arrastar e soltar</strong> move tarefas entre colunas</li>
+                        <li><strong>+ Nova Tarefa</strong> cria uma tarefa</li>
+                        <li><strong>Filtros</strong> buscam por título, status e prioridade</li>
+                        <li>Tarefas concluídas ganham <strong>[#] Arquivar</strong> e <strong>[x] Excluir</strong></li>
+                    </ul>
+                </div>
+
+                <div class="manual-item">
+                    <h4>[#] Acervo Vivo</h4>
+                    <p>Onde você <strong>consulta e evolui</strong> tarefas concluídas.</p>
+                    <ul>
+                        <li>Lista de tarefas arquivadas ou concluídas</li>
+                        <li><strong>^ Evoluir Tarefa</strong> cria uma nova tarefa baseada nesta</li>
+                        <li><strong>&gt; Ver detalhes</strong> abre o modal com passos, aprendizados e anotações</li>
+                        <li><strong>[>] Publicar</strong> envia a tarefa para o Legado</li>
+                    </ul>
+                </div>
+
+                <div class="manual-item">
+                    <h4>[~] Mapa</h4>
+                    <p>Onde você <strong>descobre conexões</strong> entre tarefas.</p>
+                    <ul>
+                        <li>Cada tarefa é um nó; linhas conectam tarefas com tags em comum</li>
+                        <li><strong>Clique num nó</strong> ou item da lista para abrir detalhes</li>
+                        <li><strong>Filtro por tag</strong> destaca um grupo</li>
+                    </ul>
+                </div>
+
+                <div class="manual-item">
+                    <h4>[>] Legado</h4>
+                    <p>Onde você <strong>compartilha</strong> tarefas como tutoriais.</p>
+                    <ul>
+                        <li>Lista de tarefas publicadas</li>
+                        <li><strong>[+] Exportar Markdown</strong> baixa um arquivo <code>.md</code></li>
+                        <li><strong>[#] Despublicar</strong> remove do Legado</li>
+                    </ul>
+                </div>
+
+                <div class="manual-item">
+                    <h4>= Ações avançadas (modal)</h4>
+                    <p>Dentro do modal de detalhes:</p>
+                    <ul>
+                        <li><strong>^ Evoluir</strong> cria nova tarefa com nova etapa</li>
+                        <li><strong>&gt; Clonar</strong> duplica a tarefa com novo ID</li>
+                        <li><strong>[>] Publicar / [#] Despublicar</strong> no Legado</li>
+                        <li><strong>[x] Excluir</strong> apaga permanentemente</li>
+                    </ul>
+                </div>
+
+                <div class="manual-item">
+                    <h4>Fluxo sugerido</h4>
+                    <p>Como usar no dia a dia:</p>
+                    <ol>
+                        <li>Crie tarefas no <strong>Kanban</strong></li>
+                        <li>Arraste para <strong>A fazer → Andamento → Revisão → Concluída</strong></li>
+                        <li>Arquive no <strong>Acervo</strong></li>
+                        <li>Evolua tarefas recorrentes</li>
+                        <li>Publique no <strong>Legado</strong> o que vale compartilhar</li>
+                    </ol>
+                </div>
+
+            </div>
+        </article>
+
+        <!-- CRIAÇÃO -->
+        <article class="sobre-bloco">
+            <h3>// Informações de criação</h3>
+
+            <dl class="sobre-info">
+                <dt>Autora</dt>
+                <dd>Jacyane Carvalho Martins</dd>
+
+                <dt>Disciplina</dt>
+                <dd>Desenvolvimento Frontend — 2026.2</dd>
+
+                <dt>Instituição</dt>
+                <dd>Professor(a): Marianne Lacerda Dutra Theodoro</dd>
+
+                <dt>Etapas</dt>
+                <dd>
+                    E1 (estrutura semântica) · E2 (layout responsivo) ·
+                    E3 (fetch e estados) · E4 (estado único) ·
+                    Projeto final (canivete de tarefas)
+                </dd>
+
+                <dt>Tecnologias</dt>
+                <dd>HTML5 · CSS3 · JavaScript (módulos ES) · Fetch API · SVG · GitHub Pages</dd>
+
+                <dt>Arquitetura</dt>
+                <dd>
+                    Estado único em <code>js/estado.js</code> ·
+                    Derivações por modo ·
+                    Ciclo único: evento → estado → derivação → renderização
+                </dd>
+            </dl>
+        </article>
+
+        <!-- PRINCÍPIOS -->
+        <article class="sobre-bloco">
+            <h3>// Princípios de design</h3>
+
+            <ul class="sobre-principios">
+                <li>
+                    <strong>Fonte única de verdade:</strong>
+                    todo o estado vive num único objeto. A tela é uma projeção.
+                </li>
+                <li>
+                    <strong>Derivação sem mutação:</strong>
+                    a lista visível é calculada a partir do estado, sem alterar o array original.
+                </li>
+                <li>
+                    <strong>Ciclo único de atualização:</strong>
+                    todo evento altera o estado e chama o mesmo ponto de renderização.
+                </li>
+                <li>
+                    <strong>Separação de responsabilidades:</strong>
+                    buscar, derivar, renderizar e decidir estado são funções diferentes.
+                </li>
+                <li>
+                    <strong>Acessibilidade:</strong>
+                    região de status com <code>aria-live=&quot;polite&quot;</code> anuncia cada mudança.
+                </li>
+                <li>
+                    <strong>Estética de terminal:</strong>
+                    sem emojis; apenas símbolos, monocromia e alto contraste.
+                </li>
+            </ul>
+        </article>
+
+        <!-- ATALHOS -->
+        <article class="sobre-bloco">
+            <h3>// Atalhos e dicas</h3>
+            <ul class="sobre-dicas">
+                <li>Use <kbd>Tab</kbd> para navegar por todos os controles</li>
+                <li>Pressione <kbd>Esc</kbd> ou clique fora do modal para fechá-lo</li>
+                <li>Arraste cartões entre colunas do Kanban para mudar o status</li>
+                <li>Tags conectam tarefas — explore no <strong>Mapa</strong></li>
+                <li>Ao arquivar uma tarefa, ela continua acessível no <strong>Acervo</strong></li>
+            </ul>
+        </article>
+
+    </div>
+</section>
+
     <!-- MODAL -->
     <div id="modal" class="modal" hidden>
         <div class="modal-conteudo">
@@ -135,7 +310,7 @@
                 </a>
             </div>
         </div>
-        <p>&copy; S.T.E.P — Canivete de Tarefas | Jacyane Carvalho Martins</p>
+        <p>&copy; S_T_E_P — Canivete de Tarefas | Jacyane Carvalho Martins</p>
         <p>Última atualização: 18/09/2026</p>
     </footer>
 
