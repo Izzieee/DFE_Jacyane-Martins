@@ -305,38 +305,41 @@ Região de status com role="status" e aria-live="polite" anuncia cada mudança p
 
 ## Estrutura do projeto
 
-/
-├── index.html              # Estrutura da SPA (5 modos + modal)
-├── README.md               # Este arquivo
-├── dados.json              # Dados iniciais carregados por fetch
+```text
+DFE_Jacyane-Martins/
+├── index.html                 # Estrutura principal da SPA e modal
+├── README.md                  # Documentação do projeto
+├── dados.json                 # Dados iniciais carregados via fetch
 │
 ├── css/
-│   └── style.css           # Tema terminal completo
+│   └── style.css              # Tema visual, layout e estilos do sistema
 │
 ├── img/
-│   └── avatar.jpeg         # Foto da autora
+│   └── avatar.jpeg            # Foto da autora no modo Sobre
 │
-├── logo/                   # Ícones das redes sociais
+├── logo/                      # Ícones e elementos visuais das redes sociais
 │
-├── screenshots/            # Capturas para o modo Sobre
+├── screenshots/               # Capturas dos modos principais do app
 │   ├── kanban.png
 │   ├── acervo.png
 │   ├── mapa.png
 │   └── legado.png
 │
 └── js/
-    ├── api.js
-    ├── estado.js
-    ├── estados.js
-    ├── renderizacao.js
-    ├── acervo.js
-    ├── mapa.js
-    ├── legado.js
-    ├── modal.js
-    ├── dragdrop.js
-    ├── persistencia.js
-    └── app.js
+    ├── api.js                 # Busca e carregamento de dados
+    ├── estado.js              # Estado global e derivações
+    ├── estados.js             # Estados da interface
+    ├── renderizacao.js        # Renderização dos cartões e listas
+    ├── acervo.js              # Lógica do modo Acervo
+    ├── mapa.js                # Lógica do modo Mapa e estatísticas
+    ├── legado.js              # Lógica do modo Legado e exportação
+    ├── modal.js               # Modais de detalhe e ações
+    ├── dragdrop.js            # Drag & drop do Kanban
+    ├── persistencia.js        # Salvo em localStorage
+    └── app.js                 # Inicialização e eventos da aplicação
+```
 
+A estrutura foi organizada para separar claramente apresentação, dados, lógica e documentação, mantendo o projeto em uma arquitetura simples e escalável para uma SPA acadêmica.
 ---
 
 ## Princípios de design
