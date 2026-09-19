@@ -1,8 +1,8 @@
 # S.T.E.P — Simple Task Execution Platform
 
-**Canivete de Tarefas** — um gerenciador de tarefas acadêmicas que **não descarta o que foi feito**. Cada tarefa concluída vira conhecimento vivo, conectado e compartilhável.
+**Canivete de Tarefas** — um gerenciador de tarefas acadêmicas que não descarta o que foi feito. Cada tarefa concluída vira conhecimento vivo, conectado e compartilhável.
 
-[**Acessar a aplicação →**] (https://izzieee.github.io/DFE_Jacyane-Martins)
+[**Acessar a aplicação**](https://izzieee.github.io/DFE_Jacyane-Martins)
 
 ---
 
@@ -10,39 +10,68 @@
 
 - [Propósito](#propósito)
 - [Conceito](#conceito)
+- [Funcionalidades](#funcionalidades)
 - [Manual de uso](#manual-de-uso)
+- [Persistência](#persistência)
 - [Arquitetura](#arquitetura)
 - [Tecnologias](#tecnologias)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Princípios de design](#princípios-de-design)
 - [Informações de criação](#informações-de-criação)
+- [Licença](#licença)
 
 ---
 
 ## Propósito
 
-O **S.T.E.P** foi criado para resolver um problema comum: tarefas acadêmicas se perdem em cadernos, mensagens e na memória. Mais do que um gerenciador, o S.T.E.P. transforma cada tarefa concluída em **material de estudo reutilizável**.
+O **S.T.E.P** foi criado para resolver um problema comum: tarefas acadêmicas se perdem em cadernos, mensagens e na memória. Mais do que um gerenciador, o S.T.E.P transforma cada tarefa concluída em material de estudo reutilizável.
 
-Quando você conclui uma tarefa, ela não desaparece — ela vira uma entrada no **acervo**, com passos, aprendizados e anotações. Você pode **evoluí-la** em uma nova tarefa, **conectá-la** a outras por tags e **publicá-la** como tutorial.
+Quando você conclui uma tarefa, ela não desaparece — ela vira uma entrada no acervo, com passos, aprendizados e anotações. Você pode evoluí-la em uma nova tarefa, conectá-la a outras por tags e publicá-la como tutorial.
 
 ---
 
 ## Conceito
 
-A metáfora central é o **canivete suíço**: uma ferramenta, várias lâminas.
+A metáfora central é o canivete suíço: uma ferramenta, várias lâminas.
 
 | Lâmina | Modo | Função |
 |--------|------|--------|
-| Executar | **[ ] Kanban** | Onde você faz as tarefas |
-| Consultar | **[#] Acervo Vivo** | Onde você revisa o que fez |
-| Descobrir | **[~] Mapa** | Onde você vê conexões |
-| Compartilhar | **[>] Legado** | Onde você publica tutoriais |
+| Executar | [ ] Kanban | Onde você faz as tarefas |
+| Consultar | [#] Acervo Vivo | Onde você revisa o que fez |
+| Descobrir | [~] Mapa | Onde você vê conexões |
+| Compartilhar | [>] Legado | Onde você publica tutoriais |
+| Entender | [i] Sobre | Onde está o manual |
 
 O ciclo:
 
-```
-Kanban → conclui → Acervo → Mapa → Legado → Evoluir → Kanban
-```
+Kanban -> conclui -> Acervo -> Mapa -> Legado -> Evoluir -> Kanban
+
+---
+
+## Funcionalidades
+
+Essenciais:
+- Drag & drop entre colunas do Kanban
+- Criar, editar, excluir tarefas
+- Busca e filtros combinados
+- Persistência automática no navegador
+- Exportar tudo como JSON
+- Resetar dados para o original
+
+Diferenciais:
+- Acervo Vivo com anotações em timeline
+- Evoluir tarefa — cria nova versão com uma etapa extra
+- Clonar tarefa — duplica como template
+- Mapa de conexões — grafo SVG por tags
+- Estatísticas — progresso, tags, distribuição
+- Publicar no Legado — exporta como Markdown
+- Busca global — procura em todas as tarefas
+
+Acessibilidade:
+- Região de status com aria-live="polite"
+- Foco visível em todos os controles
+- Navegação completa por teclado
+- Contraste alto (WCAG AA)
 
 ---
 
@@ -50,16 +79,14 @@ Kanban → conclui → Acervo → Mapa → Legado → Evoluir → Kanban
 
 ### [ ] Kanban
 
-Onde você **executa** as tarefas.
+Onde você executa as tarefas.
 
-- **Arrastar e soltar** cartões entre colunas para mudar o status
-- **+ Nova Tarefa** abre um formulário para criar uma tarefa
-- **Filtros** buscam por título, status e prioridade
-- Tarefas na coluna **Concluída** ganham dois botões:
-  - **[#] Arquivar no Acervo** — some do Kanban, aparece no Acervo
-  - **[x] Excluir** — apaga permanentemente
+- Arrastar e soltar cartões entre colunas para mudar o status
+- + Nova Tarefa abre um formulário completo
+- Filtros buscam por título, status e prioridade
+- Ordenação por prazo ou padrão
 
-**Colunas:**
+Colunas:
 
 | Coluna | Significado |
 |--------|-------------|
@@ -68,98 +95,151 @@ Onde você **executa** as tarefas.
 | Em revisão | Precisa de revisão |
 | Concluída | Finalizada |
 
-**Prioridades:**
+Tarefas concluídas ganham dois botões:
 
-- **Alta** (vermelho) — urgente
-- **Média** (laranja) — normal
-- **Baixa** (verde) — pode esperar
+- [#] Arquivar no Acervo — some do Kanban, vai para o Acervo
+- [x] Excluir — apaga permanentemente
+
+Prioridades:
+
+- Alta (vermelho) — urgente
+- Média (laranja) — normal
+- Baixa (verde) — pode esperar
 
 ### [#] Acervo Vivo
 
-Onde você **consulta e evolui** tarefas concluídas.
+Onde você consulta e evolui tarefas concluídas.
 
-- Lista de todas as tarefas arquivadas ou concluídas
-- **Busca** por título ou tag
-- **Filtro por tag** — clique numa tag para filtrar
+- Lista todas as tarefas arquivadas ou concluídas
+- Busca por título ou tag
+- Filtro por tag — clique numa tag para filtrar
 
-**Ações por tarefa:**
+Ações por tarefa:
 
 | Botão | Função |
 |-------|--------|
-| **^ Evoluir Tarefa** | Cria uma nova tarefa baseada nesta, com nova etapa, e joga de volta pro Kanban |
-| **> Ver detalhes** | Abre o modal com passos, aprendizados e anotações |
-| **[>] Publicar** | Envia a tarefa para o Legado |
+| ^ Evoluir Tarefa | Cria nova tarefa com nova etapa, volta pro Kanban |
+| > Ver detalhes | Abre modal com passos, aprendizados e anotações |
+| [>] Publicar | Envia para o Legado |
 
 ### [~] Mapa
 
-Onde você **descobre conexões** entre tarefas.
+Onde você descobre conexões entre tarefas.
 
-- Cada tarefa é um **nó** no grafo
-- Linhas conectam tarefas que **compartilham tags**
-- **Clique num nó ou item da lista** para abrir os detalhes
-- **Filtro por tag** destaca um grupo específico
+- Cada tarefa é um nó no grafo
+- Linhas tracejadas conectam tarefas que compartilham tags
+- Clique num nó ou item da lista para abrir detalhes
+- Filtro por tag destaca um grupo
 
-**Cores dos nós:**
+Estatísticas exibidas:
+
+- Quantidade por status (a fazer, andamento, revisão, concluída)
+- Progresso em percentual
+- Tags únicas usadas
+
+Cores dos nós:
 
 | Status | Cor |
 |--------|-----|
-| A fazer | Vermelho |
-| Em andamento | Amarelo |
-| Em revisão | Roxo |
+| A fazer | Cinza |
+| Em andamento | Ciano |
+| Em revisão | Âmbar |
 | Concluída | Verde |
 
 ### [>] Legado
 
-Onde você **compartilha** tarefas como tutoriais.
+Onde você compartilha tarefas como tutoriais.
 
 - Lista de todas as tarefas publicadas
-- **Busca** por título ou tag
-- **Filtro por tag**
+- Busca por título ou tag
+- Filtro por tag
 
-**Ações por tarefa:**
+Ações por tarefa:
 
 | Botão | Função |
 |-------|--------|
-| **> Ver detalhes** | Abre o modal |
-| **[+] Exportar Markdown** | Baixa um arquivo `.md` com passos, aprendizados e anotações |
-| **[#] Despublicar** | Remove do Legado |
+| > Ver detalhes | Abre o modal |
+| [+] Exportar Markdown | Baixa um arquivo .md |
+| [#] Despublicar | Remove do Legado |
+
+### [i] Sobre
+
+Manual completo e informações do projeto.
+
+Seções:
+
+- Propósito — o que é o S.T.E.P
+- Capturas — screenshots dos 4 modos principais
+- Manual — guia de cada modo
+- Informações de criação — autora, disciplina, tecnologias
+- Princípios — filosofia de design
+- Atalhos — dicas de uso
+- Dados — exportar tudo / resetar
+
+### Busca global
+
+No header, há um campo de busca que procura em:
+
+- Título
+- Projeto
+- Responsável
+- Tags
+- Passos
+- Aprendizados
+
+Como usar:
+
+1. Digite algo no campo [?] Busca global...
+2. Um modal abre com os resultados
+3. Clique num resultado para abrir a tarefa
 
 ### = Ações avançadas
 
-Dentro do **modal de detalhes**, na seção `= Ações avançadas`:
+Dentro do modal de detalhes, na seção = Ações avançadas:
 
 | Botão | Função |
 |-------|--------|
-| **^ Evoluir** | Cria nova tarefa baseada nesta |
-| **> Clonar** | Duplica a tarefa com novo ID (status "a fazer") |
-| **[>] Publicar / [#] Despublicar** | Alterna publicação no Legado |
-| **[x] Excluir** | Apaga permanentemente |
+| Editar tarefa | Abre formulário de edição completa |
+| ^ Evoluir | Cria nova tarefa baseada nesta |
+| > Clonar | Duplica a tarefa com novo ID |
+| [>] Publicar / [#] Despublicar | Alterna publicação no Legado |
+| [x] Excluir | Apaga permanentemente |
 
-**Adicionar anotação:** em qualquer modal, digite no campo de texto e clique em **+ Adicionar anotação**. A anotação aparece na timeline com a data de hoje.
+Adicionar anotação: em qualquer modal, digite no campo de texto e clique em + Adicionar anotação. A anotação aparece na timeline com a data de hoje.
 
 ### Fluxo sugerido
 
-```
 1. Crie tarefas no Kanban
-2. Arraste para A fazer → Andamento → Revisão → Concluída
-3. Arraste ou clique em [#] Arquivar no Acervo
+2. Arraste para A fazer -> Andamento -> Revisão -> Concluída
+3. Clique em [#] Arquivar no Acervo
 4. Evolua tarefas recorrentes com ^ Evoluir
 5. Conecte tarefas por tags no Mapa
 6. Publique no Legado o que vale compartilhar
 7. Exporte como Markdown para guardar fora do app
-```
+
+---
+
+## Persistência
+
+Suas tarefas são salvas automaticamente no navegador usando localStorage.
+
+- Cada mudança é salva com debounce de 300ms
+- Ao recarregar, os dados salvos são carregados primeiro
+- Se não houver nada salvo, o dados.json original é carregado
+- Resetar dados apaga o localStorage e recarrega o JSON
 
 ---
 
 ## Arquitetura
 
-O projeto segue **5 princípios**:
+O projeto segue 5 princípios:
 
-**1. Estado único** — todo o estado vive em `js/estado.js`:
+### 1. Estado único
 
-```javascript
+Todo o estado vive em js/estado.js:
+
 export const estado = {
-    tarefas: [],          // array original
+    tarefas: [],
     busca: '',
     status: 'todos',
     prioridade: 'todas',
@@ -172,110 +252,118 @@ export const estado = {
     carregando: false,
     erro: null
 };
-```
 
-**2. Derivação sem mutação** — a lista visível é calculada a partir do estado, sem alterar o array original:
+### 2. Derivação sem mutação
 
-```javascript
+A lista visível é calculada a partir do estado, sem alterar o array original:
+
 export function derivarListaVisivel(estado) {
-    let lista = [...estado.tarefas];   // cópia!
+    let lista = [...estado.tarefas];
     // aplica busca, filtro, ordenação
     return lista;
 }
-```
 
-**3. Ciclo único de atualização:**
+### 3. Ciclo único de atualização
 
-```
-Evento → altera estado → derivação → renderização
-```
+Evento -> altera estado -> derivação -> renderização
 
-**4. Separação de responsabilidades:**
+Todo evento (input, click, change) passa pelo mesmo caminho.
+
+### 4. Separação de responsabilidades
 
 | Arquivo | Responsabilidade |
 |---------|------------------|
-| `api.js` | Buscar dados (fetch) |
-| `estado.js` | Estado único + derivações |
-| `estados.js` | 4 estados da tela (carregando, sucesso, erro, origem-vazia) |
-| `renderizacao.js` | Desenhar cartões do Kanban |
-| `acervo.js` | Modo Acervo |
-| `mapa.js` | Modo Mapa |
-| `legado.js` | Modo Legado |
-| `modal.js` | Modais (detalhes, evolução, clonagem, nova tarefa) |
-| `dragdrop.js` | Drag & drop entre colunas |
-| `app.js` | Inicialização + eventos |
+| api.js | Buscar dados (fetch) |
+| estado.js | Estado único + derivações |
+| estados.js | 4 estados da tela |
+| renderizacao.js | Cartões do Kanban |
+| acervo.js | Modo Acervo |
+| mapa.js | Modo Mapa + estatísticas |
+| legado.js | Modo Legado + exportação |
+| modal.js | Modais (detalhes, editar, evoluir, clonar, nova tarefa) |
+| dragdrop.js | Drag & drop entre colunas |
+| persistencia.js | localStorage |
+| app.js | Inicialização + eventos |
 
-**5. Acessibilidade** — região de status com `role="status"` e `aria-live="polite"` anuncia cada mudança para leitores de tela. O elemento existe vazio no HTML desde o início.
+### 5. Acessibilidade
+
+Região de status com role="status" e aria-live="polite" anuncia cada mudança para leitores de tela. O elemento existe vazio no HTML desde o início.
 
 ---
 
 ## Tecnologias
 
-- **HTML5** semântico
-- **CSS3** com variáveis HSL, grid, flexbox, backdrop-filter
-- **JavaScript** (ES Modules)
-- **Fetch API** com `try/catch`, `response.ok` e tratamento de 4 tipos de erro
-- **SVG** para o grafo do Mapa
-- **GitHub Pages** para publicação
+- HTML5 semântico
+- CSS3 com variáveis HSL, grid, flexbox, backdrop-filter
+- JavaScript (ES Modules)
+- Fetch API com try/catch, response.ok e tratamento de 4 tipos de erro
+- SVG para o grafo do Mapa
+- localStorage para persistência
+- GitHub Pages para publicação
 
 ---
 
 ## Estrutura do projeto
 
-```
 /
 ├── index.html              # Estrutura da SPA (5 modos + modal)
 ├── README.md               # Este arquivo
-├── dados.json              # Dados carregados por fetch
+├── dados.json              # Dados iniciais carregados por fetch
 │
 ├── css/
-│   └── style.css           # Tema terminal (dark + monocromia + 3 cores de prioridade)
+│   └── style.css           # Tema terminal completo
+│
+├── img/
+│   └── avatar.jpeg         # Foto da autora
 │
 ├── logo/                   # Ícones das redes sociais
-│   ├── github.png
-│   ├── instagram.png
-│   └── linkedln.png
+│
+├── screenshots/            # Capturas para o modo Sobre
+│   ├── kanban.png
+│   ├── acervo.png
+│   ├── mapa.png
+│   └── legado.png
 │
 └── js/
-    ├── api.js              # Fetch
-    ├── estado.js           # Estado único + derivação
-    ├── estados.js          # 4 estados (carregando, sucesso, erro, origem-vazia)
-    ├── renderizacao.js     # Kanban
-    ├── acervo.js           # Acervo
-    ├── mapa.js             # Mapa
-    ├── legado.js           # Legado + exportação Markdown
-    ├── modal.js            # Modais
-    ├── dragdrop.js         # Drag & drop
-    └── app.js              # Inicialização e eventos
-```
+    ├── api.js
+    ├── estado.js
+    ├── estados.js
+    ├── renderizacao.js
+    ├── acervo.js
+    ├── mapa.js
+    ├── legado.js
+    ├── modal.js
+    ├── dragdrop.js
+    ├── persistencia.js
+    └── app.js
 
 ---
 
 ## Princípios de design
 
-- **Fonte única de verdade** — o estado é a fonte; a tela é uma projeção
-- **Derivação sem mutação** — a lista visível é sempre recalculada
-- **Ciclo único de atualização** — todo evento passa pelo mesmo ponto
-- **Separação de responsabilidades** — buscar ≠ derivar ≠ renderizar
-- **Acessibilidade** — região de status anuncia cada mudança
-- **Estética de terminal** — sem emojis; apenas símbolos, monocromia e alto contraste
-- **Zero frameworks** — JavaScript puro, ES Modules, SVG nativo
+- Fonte única de verdade — o estado é a fonte; a tela é uma projeção
+- Derivação sem mutação — a lista visível é sempre recalculada
+- Ciclo único de atualização — todo evento passa pelo mesmo ponto
+- Separação de responsabilidades — buscar, derivar e renderizar são funções distintas
+- Acessibilidade — região de status anuncia cada mudança
+- Estética de terminal — sem emojis; apenas símbolos, monocromia e alto contraste
+- Zero frameworks — JavaScript puro, ES Modules, SVG nativo
 
 ---
 
 ## Informações de criação
 
-**Autora:** Jacyane Carvalho Martins  
-**Disciplina:** Desenvolvimento Frontend — 2026.2  
-**Orientação:** Profª Marianne Lacerda Dutra Theodoro  
+Autora: Jacyane Carvalho Martins
+Disciplina: Desenvolvimento Frontend — 2026.2
+Orientação: Profª Marianne Lacerda Dutra Theodoro
 
-**Etapas do projeto:**
+Etapas do projeto:
 
-- **E1** — Estrutura semântica e acessível
-- **E2** — Layout responsivo (Flexbox + Grid)
-- **E3** — Fetch e os 4 estados da tela
-- **E4** — Estado único, busca, filtros e publicação
-- **Projeto final** — Releitura como Canivete de Tarefas
+- E1 — Estrutura semântica e acessível
+- E2 — Layout responsivo (Flexbox + Grid)
+- E3 — Fetch e os 4 estados da tela
+- E4 — Estado único, busca, filtros e publicação
+- Projeto final — Releitura como Canivete de Tarefas
 
 ---
 
