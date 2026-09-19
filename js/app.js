@@ -194,7 +194,7 @@ export function renderizar() {
             renderizarLegado(listaLegado);
             const statusRegion = document.getElementById('status-region');
             if (statusRegion) {
-                statusRegion.textContent = `${listaLegado.length} tutorial${listaLegado.length !== 1 ? 'is' : ''} publicado${listaLegado.length !== 1 ? 's' : ''}`;
+                statusRegion.textContent = `${listaLegado.length} ${listaLegado.length === 1 ? 'tutorial publicado' : 'tutoriais publicados'}`;
             }
             break;
         }
